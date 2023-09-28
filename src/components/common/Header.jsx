@@ -1,0 +1,112 @@
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/high-vista-guild.svg';
+
+const Header = () => {
+    const [toggle, setToggle] = useState(false)
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const navigate = useNavigate();
+    useEffect(() => {
+
+    }, []);
+    const logout = (e) => {
+        localStorage.clear();
+        //dispatch(setLoginStatus({isLoggedIn: false}));
+        //dispatch(setUserInfo({userInfo: []}));
+        window.location.href = '/login';
+    }
+    /**
+     * Handle signup as ambassador
+     * 
+     */
+    const handleSignUpAmbassador = (e) => {
+        e.preventDefault();
+        if(userInfo) {
+            navigate('/learner/subscription');
+        } else {
+            navigate('/signup');
+        }
+        
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    
+    return (
+        <React.Fragment>
+            <header className="hvg__header">
+                <div className="container">
+                    <div className="header_panel">
+                        <div className="logo-header">
+                            <Link className="navbar-brand" to="#">
+                                <div className="logo">
+                                    <img className="logo-img" src={logo} alt="" />
+                                </div>
+                            </Link>
+                            <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#nav" onClick="myFunction(this)">
+                                <div className="bar1"></div>
+                                <div className="bar2"></div>
+                                <div className="bar3"></div>
+                            </button>
+                        </div>
+                        <nav className="navbar navbar-expand-md main-navbar ">
+                            <div className="main-menu">
+                                <div className="collapse navbar-collapse justify-content-between p-2" id="nav">
+                                    <ul className="navbar-nav mr-auto">
+                                        <li className="nav-item active">
+                                            <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="#">Browse Courses</Link>
+                                        </li>
+                                        <li className="nav-item dropdown">
+                                            <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Earn cash as an ambassador
+                                            </Link>
+                                            <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                                <Link className="dropdown-item" to="#">Action</Link>
+                                                <Link className="dropdown-item" to="#">How it works</Link>
+                                                <Link className="dropdown-item" to="#" onClick={handleSignUpAmbassador}>Sign up as ambassador</Link>
+                                                <Link className="nav-link" to="/signup">Subscribe now</Link>
+                                        
+                                            </div>
+                                        </li>
+                                        
+                                        <li className="nav-item dropdown login-btn">
+                                            {userInfo && userInfo.name ? (
+                                                <>
+                                                <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={(e) => setToggle(!toggle)}>
+                                                    Welcome {userInfo.name}</Link>
+                                                    {toggle && (
+                                                            <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
+                                                                <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
+                                                            </div>
+                                                    )}
+                                                    </>
+                                            ) : (
+                                                <>
+                                                <Link className="nav-link dropdown-toggle" to="/login" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={() => setToggle(!toggle)}>
+                                                    Login</Link>
+                                                    {toggle && (
+                                                        <div className="dropdown-menu dropdown-menu-wrapper show" aria-labelledby="navbarDropdown">
+                                                            <Link className="dropdown-item" to="/login">Learner Sign in</Link>
+                                                            <Link className="dropdown-item" to="/login">Ambassador Sign in</Link>
+                                                            <Link className="dropdown-item" to="/login">Owner / Merchant Sign in</Link>
+                                                        </div>
+                                                    )}
+                                                
+                                                </>
+                                            )}
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+        </React.Fragment>
+    )
+}
+
+export default Header;
