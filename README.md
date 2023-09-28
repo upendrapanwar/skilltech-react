@@ -71,4 +71,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # skilltech-react
 # skilltech-react
 # skilltech-react
+<<<<<<< HEAD
 # skilltech-react
+=======
+>>>>>>> ba9f4e7d4d7fb837cf4861e285afcef69e4530f9
