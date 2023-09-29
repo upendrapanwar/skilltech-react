@@ -259,20 +259,17 @@ const Subscription = () => {
                                                         <label htmlFor="province">Province<span>*</span></label>
                                                         {/*<input type="text" className="form-control" name="province" id="province" placeholder="" onChange={handleChange} onBlur={handleBlur} value={values.province} />*/}
                                                         <select className="form-control" name="province" id="province" onChange={handleChange} onBlur={handleBlur} value={values.province} >
-                                                        <option value="">Select Province</option>
-                                                        <option value="eastern_cape">Eastern Cape
-</option>
-                                                        <option value="free_state">Free State
-</option>
-                                                        <option value="gauteng">Gauteng
-</option>
-                                                        <option value="kwaZulu_natal">KwaZulu-Natal</option>
-                                                        <option value="limpopo">Limpopo</option>
-                                                        <option value="mpumalanga">Mpumalanga</option>
-                                                        <option value="north_west">North West</option>
-                                                        <option value="northern_cape">Northern Cape</option>
-                                                        <option value="western_cape">Western Cape</option>
-                                                    </select>
+                                                            <option value="">Select Province</option>
+                                                            <option value="eastern_cape">Eastern Cape</option>
+                                                            <option value="free_state">Free State</option>
+                                                            <option value="gauteng">Gauteng</option>
+                                                            <option value="kwaZulu_natal">KwaZulu-Natal</option>
+                                                            <option value="limpopo">Limpopo</option>
+                                                            <option value="mpumalanga">Mpumalanga</option>
+                                                            <option value="north_west">North West</option>
+                                                            <option value="northern_cape">Northern Cape</option>
+                                                            <option value="western_cape">Western Cape</option>
+                                                        </select>
                                                         {touched.province && errors.province ? (
                                                             <small className="text-danger">{errors.province}</small>
                                                         ) : null}
