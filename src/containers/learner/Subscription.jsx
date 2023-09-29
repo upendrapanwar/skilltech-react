@@ -1,52 +1,31 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import Loader from "../../components/common/Loader";
 import { toast } from 'react-toastify';
 import SubscriptionSchema from "../../validation-schemas/SubscriptionSchema";
-import ReCAPTCHA from 'react-google-recaptcha';
-import { Formik, Form, useField } from 'formik';
+import termsConditionPDF from "../../assets/pdf/Skill Tech Solutions - Website Privacy Policy_2023.pdf";
+import { Formik} from 'formik';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-import SignatureCanvas from 'react-signature-canvas';
-import styles from '../../assets/css/styles.module.css';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import DatePicker from 'react-datepicker';
+import { Link, useNavigate } from 'react-router-dom';
 
-import 'react-datepicker/dist/react-datepicker.css';
 
 const Subscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
 
     let [loading, setLoading] = useState('false');
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-    let [showOption, setShowOption] = useState(false);
     let [showReferred, setShowReferred] = useState(false);
-    let [signatures, setSignatures] = useState(null);
     let [userid, setUserid] = useState(userInfo.id);
-    let [uploadCertificate, setUploadCertificate] = useState(null);
-    let [uploadQualification, setUploadQualification] = useState(null);
-    let [uploadBankProof, setUploadBankProof] = useState(null);
-    const [captchaToken, setCaptchaToken] = useState(null);
-    const captchaRef = useRef(null);
-
-    let sigPad = {};
-    const clear = () => {
-        sigPad.clear()
-    }
+    
     const navigate = useNavigate();
     useEffect(() => {
 
     }, []);
     toast.configure();
-
-    const trim = () => {
-        setTrimmedDataURL(sigPad.getTrimmedCanvas().toDataURL('image/png'))
-    }
     const txtunderline = {
-        "textDecoration": "underline"
+        "textDecoration": "underline",
+        "width": "100%"
     }
 
     /**
@@ -65,119 +44,14 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    /**
-     * Manages certificate upload
-     * 
-     */
-    const handleCertificateUpload = (e) => {
-        console.log(e.target.files[0].name);
-        setUploadCertificate(e.target.files[0].name)
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-    /**
-     * Manages Qualification upload
-     * 
-     */
-    const handleQualificationUpload = (e) => {
-        console.log(e.target.files);
-        setUploadQualification(e.target.files[0].name)
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-    /**
-     * Manages Bank proof uploads
-     */
-    const handleBankProofUpload = (e) => {
-        setUploadBankProof(e.target.files[0].name)
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-    /**
-     * Manages signature pop up data
-     * 
-     */
-    const SignaturePopup = () => (
-        <Popup trigger={<button type="button">Click for Signature</button>} position="top left">
-            {close => (
-                <div>
-                    <div>
-                        <div className={styles.sigContainer}>
-                            <SignatureCanvas canvasProps={{ className: styles.sigPad }}
-                                ref={(ref) => { sigPad = ref }} />
-                        </div>
-                        <div>
-                            <button className="" onClick={clear}>
-                                Clear
-                            </button>
-                            <button className="" onClick={trim}>
-                                Trim
-                            </button>
-                        </div>
-
-                        {trimmedDataURL
-                            ? <img className={styles.sigImage}
-                                src={trimmedDataURL} />
-                            : null}
-                        {setSignatures(trimmedDataURL)}
-
-                    </div>
-                    <a className="close" onClick={close}>
-                        &times;
-                    </a>
-                </div>
-            )}
-        </Popup>);
-    /***********************************************************************/
-    /***********************************************************************/
-    /**
-     * Set recaptcha token
-     */
-    const verify = () => {
-        const token = captchaRef.current.getValue();
-        setCaptchaToken(token);
-        //captchaRef.current.reset();
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-    const MyDatePicker = ({ name = "" }) => {
-        const [field, meta, helpers] = useField(name);
-
-        const { value } = meta;
-        const { setValue } = helpers;
-
-        return (
-            <DatePicker
-                {...field}
-                selected={value}
-                onChange={(signed_on) => setValue(signed_on)}
-            />
-        );
-    }
+    
     /**
      * Handle after form submission
      * 
      */
     const handleSubmit = (values, { setSubmitting }) => {
         setLoading(true);
-        const token = captchaRef.current.getValue();
-        console.log("token=", token);
-
         console.log("values=", values);
-
-        if (token === null) {
-            console.log('inside');
-            toast.error('Please enter captcha value', { autoClose: 3000 });
-            return false;
-        }
-
-        //captchaRef.current.reset();
-        const config = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data;application/json;charset=UTF-8',
-            },
-        };
 
         axios.post('common/subscription', values).then(response => {
             toast.dismiss();
@@ -198,23 +72,6 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    /**
-     * Manages the show other option textfield
-     * 
-     * @param {*} e 
-     * 
-     */
-    const handleOtherOption = (e) => {
-        const option = e.target.value;
-        if (option === "other") {
-            setShowOption(true);
-        } else {
-            setShowOption(false);
-        }
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-
     return (
 
         <>
@@ -250,46 +107,16 @@ const Subscription = () => {
                                         town_city: '',
                                         province: '',
                                         postal_code: '',
-                                        payment_option: '',
-                                        account_holder_title: '',
-                                        account_holder_name: '',
-                                        account_holder_surname: '',
-                                        bank: '',
-                                        branch: '',
-                                        branch_code: '',
-                                        type_of_account: '',
-                                        account_number: '',
                                         method_of_communication: [],
-                                        //promotion_newsletter:'',
-                                        //promotion_deals:'',
-                                        //keep_in_loop:'',
                                         race: '',
                                         gender: '',
                                         qualification: '',
-                                        employed: '',
-                                        occupation: '',
-                                        how_did_you_hear_about_us: '',
-                                        reasons_for_subscribing: '',
-                                        opt_in_promotional: [],
-                                        topic_interest: '',
-                                        referredby: '',
-                                        referredby_firstname: '',
-                                        referredby_surname: '',
-                                        referral_code: '',
-                                        referredby_email: '',
-                                        referredby_mobile_number: '',
-                                        refer_friend: '',
-                                        center_to_assist: '',
-                                        certificate: uploadCertificate,
-                                        highest_qualication_certificate: uploadQualification,
-                                        bank_proof: uploadBankProof,
-                                        pop: '',
-                                        signature: signatures,
-                                        signed_place: '',
-                                        signed_on: new Date(),
-                                        //password: '',
-                                        //confirmPassword: '',
-                                        //role: ''
+                                        how_did_you_hear_about_us: [],
+                                        opt_in_promotional: '',
+                                        privacy:'',
+                                        deals_promotion:'',
+                                        in_loop:'',
+                                        
                                     }}
                                     onSubmit={(values, { setSubmitting }) => {
                                         setSubmitting(true);
@@ -361,11 +188,9 @@ const Subscription = () => {
                                                 </div>
                                                 <div className="row form-row">
                                                     <div className="form-group col-md-6">
-                                                        <label htmlFor="alternate_mobile_number">Alternative Mobile Contact Number <span>*</span></label>
+                                                        <label htmlFor="alternate_mobile_number">Alternative Mobile Contact Number</label>
                                                         <input type="text" className="form-control" name="alternate_mobile_number" id="alternate_mobile_number" aria-describedby="alternateMobileNumberHelp" placeholder="" onChange={handleChange} onBlur={handleBlur} value={values.alternate_mobile_number} />
-                                                        {touched.alternate_mobile_number && errors.alternate_mobile_number ? (
-                                                            <small className="text-danger">{errors.alternate_mobile_number}</small>
-                                                        ) : null}
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -391,7 +216,7 @@ const Subscription = () => {
                                                 </div>
                                                 <div className="row form-row">
                                                     <div className="form-group col-md-6">
-                                                        <label htmlFor="complex_n_unit">Complex Name (if appl.)<span>*</span></label>
+                                                        <label htmlFor="complex_n_unit">Complex Name (if appl.)</label>
                                                         <input type="text" className="form-control" name="complex_n_unit" id="complex_n_unit" placeholder="" onChange={handleChange} onBlur={handleBlur} value={values.complex_n_unit} />
                                                     </div>
                                                 </div>
@@ -501,8 +326,7 @@ const Subscription = () => {
                                                 </div>
                                             </div>
                                             <div className="avg__form_panel">
-                                                <p className="mb-2"> <strong>4. How can we contact you?
-</strong><span>*</span></p>
+                                                <p className="mb-2"> <strong>4. How can we contact you?</strong><span>*</span></p>
 
                                                 <div className="row form-row">
                                                     <div className="form-group col-md-12">
@@ -527,135 +351,152 @@ const Subscription = () => {
                                                                     <input type="checkbox" id="com_phone" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="phone_call" />Telephone
                                                                 </label>
                                                             </div>
-                                                            {touched.method_of_communication && errors.method_of_communication ? (
-                                                                <small className="text-danger">{errors.method_of_communication}</small>
-                                                            ) : null}
+                                                            <div className="col-md-3">
+                                                                {touched.method_of_communication && errors.method_of_communication ? (
+                                                                    <small className="text-danger">{errors.method_of_communication}</small>
+                                                                ) : null}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 
                                             </div>
 
-                                            
-                                            <div className="row form-row">
-                                                <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions here.<span>*</span></p>
-                                                <div className="form-group col-md-6">
-                                                    <div className="row">
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="yesprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
-                                                            </label>
+                                            <div className="avg__form_panel">
+                                                <div className="row form-row">
+                                                    <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions <Link to={termsConditionPDF}>here</Link>.<span>*</span></p>
+                                                    <div className="form-group col-md-6">
+                                                        <div className="row">
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="yesprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
+                                                                </label>
+                                                            </div>
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="noprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
+                                                                </label>
+                                                            </div>
+                                                            
                                                         </div>
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="noprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
-                                                            </label>
-                                                        </div>
-                                                        {touched.privacy && errors.referredby ? (
+                                                        {touched.privacy && errors.privacy ? (
                                                             <small className="text-danger">{errors.privacy}</small>
                                                         ) : null}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="row form-row">
-                                                <p style={txtunderline}>Opt-in for promotional emails,newsletter:<span>*</span></p>
-                                                {touched.opt_in_promotional && errors.opt_in_promotional ? (
-                                                    <small className="text-danger">{errors.opt_in_promotional}</small>
-                                                ) : null}
-                                                <p>I'd like to receive the monthly High Vista newsletter</p>
-                                                <div className="form-group col-md-6">
+                                            <div className="avg__form_panel">
+                                                <div className="row form-row">
+                                                    <p style={txtunderline} className="mb-2"> <strong>5. Opt-in for promotional emails,newsletter:</strong></p>
                                                     
-                                                    <div className="row">
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="opt_in_promotional" name="opt_in_promotional" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
-                                                            </label>
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="opt_in_promotional" name="opt_in_promotional" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
-                                                            </label>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                                <p>I'd like to receive information about deals and promotions</p>
-                                                <div className="form-group col-md-6">
+                                                    <p>I'd like to receive the monthly High Vista newsletter<span>*</span></p>
                                                     
-                                                    <div className="row">
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="yes_deals_promotion" name="deals_promotion" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
-                                                            </label>
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="no_deals_promotion" name="deals_promotion" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
-                                                            </label>
-                                                        </div>
+                                                    <div className="form-group col-md-6">
+                                                           
+                                                        <div className="row">
                                                         
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="opt_in_promotional" name="opt_in_promotional" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
+                                                                </label>
+                                                            </div>
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="opt_in_promotional" name="opt_in_promotional" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
+                                                                </label>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-md-6">
+                                                                {touched.opt_in_promotional && errors.opt_in_promotional ? (
+                                                                    <small className="text-danger">{errors.opt_in_promotional}</small>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p>I'd like to receive information about upcomong courses, webinars and events.</p>
-                                                <div className="form-group col-md-6">
+                                                    <p>I'd like to receive information about deals and promotions<span>*</span></p>
+                                                    <div className="form-group col-md-6">
+                                                        
+                                                        <div className="row">
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="yes_deals_promotion" name="deals_promotion" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
+                                                                </label>
+                                                            </div>
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="no_deals_promotion" name="deals_promotion" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
+                                                                </label>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        {touched.deals_promotion && errors.deals_promotion ? (
+                                                            <small className="text-danger">{errors.deals_promotion}</small>
+                                                        ) : null}
+                                                    </div>
+                                                    <p>I'd like to receive information about upcomong courses, webinars and events.<span>*</span></p>
+                                                    <div className="form-group col-md-6">
+                                                        
+                                                        <div className="row">
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="yes_in_loop" name="in_loop" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
+                                                                </label>
+                                                            </div>
+                                                            <div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="no_in_loop" name="in_loop" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
+                                                                </label>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        {touched.in_loop && errors.in_loop ? (
+                                                            <small className="text-danger">{errors.in_loop}</small>
+                                                        ) : null}
+                                                    </div>
+                                                <div/>
                                                     
-                                                    <div className="row">
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="yes_in_loop" name="in_loop" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
-                                                            </label>
-                                                        </div>
-                                                        <div className="col-md-3">
-                                                            <label className="radio-inline">
-                                                                <input type="radio" id="no_in_loop" name="in_loop" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
-                                                            </label>
-                                                        </div>
-                                                        
-                                                    </div>
                                                 </div>
-                                            <div/>
-                                                
                                             </div>
                                             <div className="avg__form_panel">
-                                                <p>How did you hear abourt High Vista Guild?<span>*</span></p>
+                                                <p>How did you hear abourt High Vista Guild?</p>
 
                                                 <div className="row form-row">
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="social_media_page" name="hear_about_us" onChange={handleChange} onBlur={handleBlur} value="social_media_page" />Our social media pages
+                                                                    <input type="checkbox" id="social_media_page" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="social_media_page" />Our social media pages
 
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="our_website" name="hear_about_us" onChange={handleChange} onBlur={handleBlur} value="our_website" />Our website
+                                                                    <input type="checkbox" id="our_website" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="our_website" />Our website
 
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="referred_by_ambassador" name="hear_about_us" onChange={handleChange} onBlur={handleBlur} value="referred_by_ambassador" />I was referred by an ambassador
+                                                                    <input type="checkbox" id="referred_by_ambassador" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="referred_by_ambassador" />I was referred by an ambassador
 
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="referred_by_friend" name="hear_about_us" onChange={handleChange} onBlur={handleBlur} value="referred_by_friend" />I was referred by a friend
+                                                                    <input type="checkbox" id="referred_by_friend" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="referred_by_friend" />I was referred by a friend
 
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="stumbled_on_browsing" name="hear_about_us" onChange={handleChange} onBlur={handleBlur} value="stumbled_on_browsing" />I stumbled on it while browsing
+                                                                    <input type="checkbox" id="stumbled_on_browsing" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="stumbled_on_browsing" />I stumbled on it while browsing
 
 
                                                                 </label>
                                                             </div>
-                                                            {touched.hear_about_us && errors.hear_about_us ? (
-                                                                <small className="text-danger">{errors.hear_about_us}</small>
-                                                            ) : null}
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
