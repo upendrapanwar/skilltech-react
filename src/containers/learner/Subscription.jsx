@@ -51,8 +51,25 @@ const Subscription = () => {
      */
     const handleSubmit = (values, { setSubmitting }) => {
         setLoading(true);
-        console.log("values=", values);
-
+        
+        let communication = [];
+        const com = values.method_of_communication; 
+        if(com.includes("email")) {
+            communication.push({"email": values.email});
+        }
+        if(com.includes("whatsapp")) {
+            communication.push({"whatsapp": values.mobile_number});
+        }
+        if(com.includes("sms")) {
+            communication.push({"sms": values.mobile_number});
+        }
+        if(com.includes("phone_call")) {
+            communication.push({"phone_call": values.mobile_number})
+        }
+        
+        values.method_of_communication = communication;
+        //console.log("values=", values);
+        
         axios.post('common/subscription', values).then(response => {
             toast.dismiss();
             if (response.data.status) {
@@ -333,22 +350,22 @@ const Subscription = () => {
                                                         <div className="row">
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="com_email" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="email" />Email
+                                                                    <input type="checkbox" id="com_email" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="email"/>Email
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="com_whatsapp" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="whatsapp" />WhatsApp
+                                                                    <input type="checkbox" id="com_whatsapp" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="whatsapp"/>WhatsApp
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="com_sms" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="sms" />SMS
+                                                                    <input type="checkbox" id="com_sms" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="sms"/>SMS
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="com_phone" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="phone_call" />Telephone
+                                                                    <input type="checkbox" id="com_phone" name="method_of_communication" onChange={handleChange} onBlur={handleBlur} value="phone_call"/>Telephone
                                                                 </label>
                                                             </div>
                                                             <div className="col-md-3">
