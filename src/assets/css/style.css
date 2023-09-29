@@ -127,7 +127,9 @@ section#shadow-host-companion {
     justify-content: space-between;
     align-items: center;
 }
-
+.radio-inline input{
+    margin-right: 5px;
+}
 .hvg__header .main-menu ul li a.nav-link {
     margin-left: 12px;
     margin-right: 12px;
