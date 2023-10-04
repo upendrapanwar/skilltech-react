@@ -37,7 +37,7 @@ const AmbassadorSubscription = () => {
      */
     const handleCertificateUpload = (e) => {
         console.log(e.target.files[0].name);
-        setUploadCertificate(e.target.files[0].name)
+        setUploadCertificate(e.target.files[0])
     }
     /***********************************************************************/
     /***********************************************************************/
@@ -45,7 +45,7 @@ const AmbassadorSubscription = () => {
      * Manages Bank proof uploads
      */
     const handleBankProofUpload = (e) => {
-        setUploadBankProof(e.target.files[0].name)
+        setUploadBankProof(e.target.files[0])
     }
     /***********************************************************************/
     /***********************************************************************/
@@ -65,7 +65,7 @@ const AmbassadorSubscription = () => {
             },
         };
 
-        axios.post('common/ambassador-subscription', values).then(response => {
+        axios.post('common/ambassador-subscription', values,config).then(response => {
             toast.dismiss();
             console.log('inside2');
             if (response.data.status) {
@@ -148,7 +148,7 @@ const AmbassadorSubscription = () => {
                                         //referral_code: '',
                                         //referredby_email: '',
                                         //referredby_mobile_number: '',
-                                        refer_friend: '',
+                                        refer_friend: [],
                                         certificate:'',
                                         confirm_details:'',
                                         terms_n_condition:'',
@@ -175,7 +175,7 @@ const AmbassadorSubscription = () => {
                                         isValid,
                                         isSubmitting
                                     }) => (
-                                        <form onSubmit={handleSubmit}>
+                                        <form enctype="multipart/form-data" onSubmit={handleSubmit}>
                                             <fieldset>
                                                 <div className="avg__form_panel">
                                                     <div className="form-row">
@@ -334,7 +334,7 @@ const AmbassadorSubscription = () => {
                                                 </div>
                                                 
                                                 <div className="avg__form_panel">
-                                                    <input type="checkbox" id="confirm_details" name="confirm_details" onChange={handleChange} onBlur={handleBlur} value="confirm_details" />Please confirm the detail you have provided is correct
+                                                    <input type="checkbox" id="confirm_details" name="confirm_details" onChange={handleChange} onBlur={handleBlur} value="true" />Please confirm the detail you have provided is correct
                                                     <div className="form-group col-md-6">
                                                         {touched.confirm_details && errors.confirm_details ? (
                                                             <small className="text-danger">{errors.confirm_details}</small>
@@ -343,7 +343,7 @@ const AmbassadorSubscription = () => {
                                                     
                                                 </div>
                                                 <div className="avg__form_panel">
-                                                    <input type="checkbox" id="terms_n_condition" name="terms_n_condition" onChange={handleChange} onBlur={handleBlur} value="terms_n_condition" />Please accept our terms and conditions
+                                                    <input type="checkbox" id="terms_n_condition" name="terms_n_condition" onChange={handleChange} onBlur={handleBlur} value="true" />Please accept our terms and conditions
                                                     <div className="form-group col-md-6">
                                                         {touched.terms_n_condition && errors.terms_n_condition ? (
                                                             <small className="text-danger">{errors.terms_n_condition}</small>
@@ -352,7 +352,7 @@ const AmbassadorSubscription = () => {
                                                     
                                                 </div>
                                                 <div className="avg__form_panel">
-                                                    <input type="checkbox" id="update_information" name="update_information" onChange={handleChange} onBlur={handleBlur} value="update_information" />Please confirm that you will update any infomration provided should it change
+                                                    <input type="checkbox" id="update_information" name="update_information" onChange={handleChange} onBlur={handleBlur} value="true" />Please confirm that you will update any infomration provided should it change
                                                     <div className="form-group col-md-6">
                                                         {touched.update_information && errors.update_information ? (
                                                             <small className="text-danger">{errors.update_information}</small>
