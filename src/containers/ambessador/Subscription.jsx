@@ -5,66 +5,32 @@ import Footer from "../../components/common/Footer";
 import Loader from "../../components/common/Loader";
 import { toast } from 'react-toastify';
 import AmbessadorSchema from "../../validation-schemas/AmbessadorSchema";
-import ReCAPTCHA from 'react-google-recaptcha';
-import { Formik, Form, useField } from 'formik';
+
+import { Formik } from 'formik';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import SignatureCanvas from 'react-signature-canvas';
-import styles from '../../assets/css/styles.module.css';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import DatePicker from 'react-datepicker';
 
-import 'react-datepicker/dist/react-datepicker.css';
+import styles from '../../assets/css/styles.module.css';
+
+
 
 const AmbassadorSubscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
 
     let [loading, setLoading] = useState('false');
-    let [trimmedDataURL, setTrimmedDataURL] = useState(null);
-    let [showOption, setShowOption] = useState(false);
-    let [showReferred, setShowReferred] = useState(false);
-    let [signatures, setSignatures] = useState(null);
+    
     let [userid, setUserid] = useState(userInfo.id);
     let [uploadCertificate, setUploadCertificate] = useState(null);
-    let [uploadQualification, setUploadQualification] = useState(null);
     let [uploadBankProof, setUploadBankProof] = useState(null);
-    const [captchaToken, setCaptchaToken] = useState(null);
-    const captchaRef = useRef(null);
+    
     console.log('userid',userid);
-    let sigPad = {};
-    const clear = () => {
-        sigPad.clear()
-    }
+    
     const navigate = useNavigate();
     useEffect(() => {
 
     }, []);
     toast.configure();
 
-    const trim = () => {
-        setTrimmedDataURL(sigPad.getTrimmedCanvas().toDataURL('image/png'))
-    }
-    const txtunderline = {
-        "textDecoration": "underline"
-    }
-
-    /**
-     * Manages visibility of referred by fields
-     * 
-     * @param {*} e 
-     * 
-     */
-    const handleRefferedBy = (e) => {
-        const referred = e.target.value;
-        if (referred === 'yes') {
-            setShowReferred(true);
-        } else {
-            setShowReferred(false);
-        }
-    }
-    /***********************************************************************/
-    /***********************************************************************/
     /**
      * Manages certificate upload
      * 
@@ -76,16 +42,6 @@ const AmbassadorSubscription = () => {
     /***********************************************************************/
     /***********************************************************************/
     /**
-     * Manages Qualification upload
-     * 
-     */
-    const handleQualificationUpload = (e) => {
-        console.log(e.target.files);
-        setUploadQualification(e.target.files[0].name)
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-    /**
      * Manages Bank proof uploads
      */
     const handleBankProofUpload = (e) => {
@@ -93,86 +49,15 @@ const AmbassadorSubscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    /**
-     * Manages signature pop up data
-     * 
-     */
-    const SignaturePopup = () => (
-        <Popup trigger={<button type="button">Click for Signature</button>} position="top left">
-            {close => (
-                <div>
-                    <div>
-                        <div className={styles.sigContainer}>
-                            <SignatureCanvas canvasProps={{ className: styles.sigPad }}
-                                ref={(ref) => { sigPad = ref }} />
-                        </div>
-                        <div>
-                            <button className="" onClick={clear}>
-                                Clear
-                            </button>
-                            <button className="" onClick={trim}>
-                                Trim
-                            </button>
-                        </div>
-
-                        {trimmedDataURL
-                            ? <img className={styles.sigImage}
-                                src={trimmedDataURL} />
-                            : null}
-                        {setSignatures(trimmedDataURL)}
-
-                    </div>
-                    <a className="close" onClick={close}>
-                        &times;
-                    </a>
-                </div>
-            )}
-        </Popup>);
-    /***********************************************************************/
-    /***********************************************************************/
-    /**
-     * Set recaptcha token
-     */
-    const verify = () => {
-        const token = captchaRef.current.getValue();
-        setCaptchaToken(token);
-        //captchaRef.current.reset();
-    }
-    /***********************************************************************/
-    /***********************************************************************/
-    const MyDatePicker = ({ name = "" }) => {
-        const [field, meta, helpers] = useField(name);
-
-        const { value } = meta;
-        const { setValue } = helpers;
-
-        return (
-            <DatePicker
-                {...field}
-                selected={value}
-                onChange={(signed_on) => setValue(signed_on)}
-            />
-        );
-    }
+       
     /**
      * Handle after form submission
      * 
      */
     const handleSubmit = (values, { setSubmitting }) => {
-        console.log('inside');
         setLoading(true);
-        const token = captchaRef.current.getValue();
-        console.log("token=", token);
 
         console.log("values=", values);
-
-        if (token === null) {
-            console.log('inside1');
-            toast.error('Please enter captcha value', { autoClose: 3000 });
-            return false;
-        }
-
-        //captchaRef.current.reset();
         const config = {
             headers: {
                 'Accept': 'application/json',
@@ -201,22 +86,7 @@ const AmbassadorSubscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    /**
-     * Manages the show other option textfield
-     * 
-     * @param {*} e 
-     * 
-     */
-    const handleOtherOption = (e) => {
-        const option = e.target.value;
-        if (option === "other") {
-            setShowOption(true);
-        } else {
-            setShowOption(false);
-        }
-    }
-    /***********************************************************************/
-    /***********************************************************************/
+    
     /**
      * Handle after form submission
      * 
@@ -271,18 +141,23 @@ const AmbassadorSubscription = () => {
                                         branch_code: '',
                                         type_of_account: '',
                                         account_number: '',
-                                        referredby: '',
-                                        referredby_firstname: '',
-                                        referredby_surname: '',
-                                        referral_code: '',
-                                        referredby_email: '',
-                                        referredby_mobile_number: '',
+                                        bank_proof:'',
+                                        //referredby: '',
+                                        //referredby_firstname: '',
+                                        //referredby_surname: '',
+                                        //referral_code: '',
+                                        //referredby_email: '',
+                                        //referredby_mobile_number: '',
                                         refer_friend: '',
-                                        center_to_assist: '',
-                                        pop: '',
-                                        signature: signatures,
-                                        signed_place: '',
-                                        signed_on: new Date(),
+                                        certificate:'',
+                                        confirm_details:'',
+                                        terms_n_condition:'',
+                                        update_information:'',
+                                        //center_to_assist: '',
+                                        //pop: '',
+                                        //signature: signatures,
+                                        //signed_place: '',
+                                       // signed_on: new Date(),
                                     }}
                                     onSubmit={(values, { setSubmitting }) => {
                                         setSubmitting(true);
@@ -342,10 +217,12 @@ const AmbassadorSubscription = () => {
                                                                         <input type="checkbox" id="my_facebook_page" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_facebook_page" />My Facebook page
                                                                     </label>
                                                                 </div>
+                                                                <div className="form-group col-md-6">
+                                                                    {touched.refer_friend && errors.refer_friend ? (
+                                                                        <small className="text-danger">{errors.refer_friend}</small>
+                                                                    ) : null}
+                                                                </div>
                                                                 
-                                                                {touched.refer_friend && errors.refer_friend ? (
-                                                                    <small className="text-danger">{errors.refer_friend}</small>
-                                                                ) : null}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -356,6 +233,11 @@ const AmbassadorSubscription = () => {
                                                     <div className="row form-row">
                                                         <div className="form-group col-md-12">
                                                             <input type="file" id="certificate" name="certificate" onChange={(e) => { handleChange(e); handleCertificateUpload(e) }} onBlur={handleBlur} />
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {touched.certificate && errors.certificate ? (
+                                                                <small className="text-danger">{errors.certificate}</small>
+                                                            ) : null}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -379,8 +261,13 @@ const AmbassadorSubscription = () => {
                                                                 <option value="standard_bank">Standard Bank</option>
                                                                 <option value="tyme_bank">TymeBank</option>
                                                             </select>
+                                                            
                                                         </div>
-                                                        
+                                                        <div className="form-group col-md-8">
+                                                                {touched.bank && errors.bank ? (
+                                                                    <small className="text-danger">{errors.bank}</small>
+                                                                ) : null}
+                                                        </div>
                                                     </div>
                                                     <div className="row form-row">
                                                         <div className="form-group col-md-6">
@@ -436,30 +323,42 @@ const AmbassadorSubscription = () => {
                                                     <div className="row form-row">
                                                         <div className="form-group col-md-12">
                                                             <input type="file" id="bank_proof" name="bank_proof" onChange={(e) => { handleChange(e); handleBankProofUpload(e) }} onBlur={handleBlur} />
+                                                               
+                                                        </div>
+                                                        <div className="form-group col-md-6">
                                                             {touched.bank_proof && errors.bank_proof ? (
                                                                 <small className="text-danger">{errors.bank_proof}</small>
-                                                            ) : null}    
+                                                            ) : null} 
                                                         </div>
                                                     </div>
                                                 </div>
                                                 
                                                 <div className="avg__form_panel">
                                                     <input type="checkbox" id="confirm_details" name="confirm_details" onChange={handleChange} onBlur={handleBlur} value="confirm_details" />Please confirm the detail you have provided is correct
-                                                    {touched.confirm_details && errors.confirm_details ? (
-                                                        <small className="text-danger">{errors.confirm_details}</small>
-                                                    ) : null}
+                                                    <div className="form-group col-md-6">
+                                                        {touched.confirm_details && errors.confirm_details ? (
+                                                            <small className="text-danger">{errors.confirm_details}</small>
+                                                        ) : null}        
+                                                    </div>
+                                                    
                                                 </div>
                                                 <div className="avg__form_panel">
                                                     <input type="checkbox" id="terms_n_condition" name="terms_n_condition" onChange={handleChange} onBlur={handleBlur} value="terms_n_condition" />Please accept our terms and conditions
-                                                    {touched.terms_n_condition && errors.terms_n_condition ? (
-                                                        <small className="text-danger">{errors.terms_n_condition}</small>
-                                                    ) : null}
+                                                    <div className="form-group col-md-6">
+                                                        {touched.terms_n_condition && errors.terms_n_condition ? (
+                                                            <small className="text-danger">{errors.terms_n_condition}</small>
+                                                        ) : null}
+                                                    </div>
+                                                    
                                                 </div>
                                                 <div className="avg__form_panel">
                                                     <input type="checkbox" id="update_information" name="update_information" onChange={handleChange} onBlur={handleBlur} value="update_information" />Please confirm that you will update any infomration provided should it change
-                                                    {touched.update_information && errors.update_information ? (
-                                                        <small className="text-danger">{errors.update_information}</small>
-                                                    ) : null}
+                                                    <div className="form-group col-md-6">
+                                                        {touched.update_information && errors.update_information ? (
+                                                            <small className="text-danger">{errors.update_information}</small>
+                                                        ) : null}
+                                                    </div>
+                                                    
                                                 </div>
                                                 <div className="">
                                                     <button type="submit" className="btn btn-primary btn-color bt-size mt-4 mb-4" data-id={isSubmitting}>Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span>
