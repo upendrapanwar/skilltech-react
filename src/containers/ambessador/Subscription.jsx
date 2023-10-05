@@ -36,8 +36,14 @@ const AmbassadorSubscription = () => {
      * 
      */
     const handleCertificateUpload = (e) => {
-        console.log(e.target.files[0].name);
-        setUploadCertificate(e.target.files[0])
+        const reader = new FileReader()
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            console.log('called: ', reader)
+            setUploadCertificate(reader.result)
+        }
+        console.log(e.target.files[0]);
+        //setUploadCertificate(e.target.files[0])
     }
     /***********************************************************************/
     /***********************************************************************/
@@ -45,7 +51,12 @@ const AmbassadorSubscription = () => {
      * Manages Bank proof uploads
      */
     const handleBankProofUpload = (e) => {
-        setUploadBankProof(e.target.files[0])
+        const reader = new FileReader()
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            console.log('called: ', reader)
+            setUploadBankProof(reader.result)
+        }
     }
     /***********************************************************************/
     /***********************************************************************/
@@ -56,16 +67,19 @@ const AmbassadorSubscription = () => {
      */
     const handleSubmit = (values, { setSubmitting }) => {
         setLoading(true);
-
+        //console.log("uploadBankProof",uploadBankProof);
+        //console.log("uploadCertificate",uploadCertificate);
+        values.certificate = uploadCertificate;
+        values.bank_proof = uploadBankProof;
         console.log("values=", values);
         const config = {
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data;application/json;charset=UTF-8',
-            },
+                'Content-Type': 'multipart/form-data;application/json;charset=UTF-8'
+            }
         };
 
-        axios.post('common/ambassador-subscription', values,config).then(response => {
+        axios.post('common/ambassador-subscription', values).then(response => {
             toast.dismiss();
             console.log('inside2');
             if (response.data.status) {
@@ -124,6 +138,7 @@ const AmbassadorSubscription = () => {
                             </div>*/}
 
                             <div className="form-wrapper mt-4 ">
+                                
                                 <Formik
                                     initialValues={{
                                         uid: userid,
@@ -149,7 +164,7 @@ const AmbassadorSubscription = () => {
                                         //referredby_email: '',
                                         //referredby_mobile_number: '',
                                         refer_friend: [],
-                                        certificate:'',
+                                        certificate: '',
                                         confirm_details:'',
                                         terms_n_condition:'',
                                         update_information:'',
@@ -175,7 +190,7 @@ const AmbassadorSubscription = () => {
                                         isValid,
                                         isSubmitting
                                     }) => (
-                                        <form enctype="multipart/form-data" onSubmit={handleSubmit}>
+                                        <form encType="multipart/form-data" onSubmit={handleSubmit}>
                                             <fieldset>
                                                 <div className="avg__form_panel">
                                                     <div className="form-row">

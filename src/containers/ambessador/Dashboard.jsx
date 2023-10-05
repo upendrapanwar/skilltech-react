@@ -7,7 +7,7 @@ import Footer from "../../components/common/Footer";
 import { toast } from 'react-toastify';
 
 const Dashboard = () => {
-
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     useEffect(() => {
 
     }, []);
@@ -43,7 +43,7 @@ const Dashboard = () => {
                     <div class="card welcome_user_card mb-4">
                         <div class="card-body">
                             <p class="mb-0">
-                                Welcome to, <strong>Smith Moory</strong> <span class="user_icon"><i
+                                Welcome to, <strong>{userInfo.name}</strong> <span class="user_icon"><i
                                     class="far fa-smile"></i></span>
                             </p>
                         </div>
