@@ -21,7 +21,7 @@ const Dashboard = () => {
      * 
      */
     const handleRedirect = () => {
-        navigate('/learner/subscription');
+        navigate('/ambessador/ambassador-subscription');
     }
     /***********************************************************************/
     /***********************************************************************/

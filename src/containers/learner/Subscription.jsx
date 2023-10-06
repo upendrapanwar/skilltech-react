@@ -74,7 +74,7 @@ const Subscription = () => {
             toast.dismiss();
             if (response.data.status) {
                 toast.success(response.data.message, { autoClose: 3000 });
-                navigate('/ambessador/ambassador-subscription');
+                navigate('/login');
             }
         }).catch(error => {
             toast.dismiss();

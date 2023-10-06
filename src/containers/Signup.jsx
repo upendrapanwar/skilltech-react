@@ -28,7 +28,7 @@ const Signup = () => {
 
     const onFailure = (res) => {
         console.log('Login failed: res:', res);
-        alert(`Failed to login.`);
+        //alert(`Failed to login.`);
     };
     toast.configure();
 
@@ -54,10 +54,15 @@ const Signup = () => {
         //this.dispatch(setLoading({loading: true}));
         axios.post('common/signup', values).then(response => {
             toast.dismiss();
+            console.log(response.data);
             if (response.data.status) {
-                toast.success(response.data.message, { autoClose: 3000 });
+                //toast.success(response.data.message, { autoClose: 3000 });
                 resetForm();
-                navigate('/login');
+                let authInfo = {
+                    id: response.data.data['_id'],
+                };
+                localStorage.setItem('authInfo', JSON.stringify(authInfo));
+                navigate('/learner/subscription');
 
             }
         }).catch(error => {
@@ -182,7 +187,7 @@ const Signup = () => {
                                                         <small className="text-danger">{errors.role}</small>
                                                     ) : null}
                                                 </div>
-                                                <button type="submit" className="btn btn-primary login-btn bt-size">SignUp <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
+                                                <button type="submit" className="btn btn-primary login-btn bt-size">Next <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
 
                                                 {/*<div className="or text-center mt-3">
                                                     <h6>OR</h6>
@@ -195,7 +200,7 @@ const Signup = () => {
                                                         <button type="button" className="btn btn-primary faceb"><span><img src={image2} alt="My Happy SVG" /></span>Login with Facebook</button>
                                                     </div>
                                                 </div>*/}
-                                                <FacebookLogin
+                                                {/*<FacebookLogin
                                                     appId="854178489549971"
                                                     autoLoad={true}
                                                     fields="name,email,picture"
@@ -211,7 +216,7 @@ const Signup = () => {
                                                         cookiePolicy={'single_host_origin'}
                                                         style={{ marginTop: '100px' }}
                                                         isSignedIn={true}
-                                                    />    
+                                                    />*/}    
                                             </form>
                                         )}
                                     </Formik>
