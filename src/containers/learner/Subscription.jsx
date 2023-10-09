@@ -20,7 +20,10 @@ const Subscription = () => {
     
     const navigate = useNavigate();
     useEffect(() => {
-
+        if(userid){
+            completeRegistration();
+        }
+        
     }, []);
     toast.configure();
     const txtunderline = {
@@ -44,7 +47,35 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    
+    /**
+     * Handle complete regsitration
+     * 
+     */
+    const completeRegistration = () => {
+        setLoading(true);
+        const dataArray = {'userid':userid};
+        axios.post('common/complete-registration', dataArray).then(response => {
+            toast.dismiss();
+            if (response.data.status) {
+                if(response.data.message === "Error while saving.") {
+                    toast.success('Please complete ambessador registation if not done', { autoClose: 3000 });
+                }
+                
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Please complete ambessador registation if not done', { autoClose: 3000 });
+            }
+        }).finally(() => {
+            setTimeout(() => {
+                setLoading(false);
+            }, 300);
+        });
+    }
+    /***********************************************************************/
+    /***********************************************************************/
     /**
      * Handle after form submission
      * 

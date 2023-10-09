@@ -9,6 +9,7 @@ const Header = () => {
     useEffect(() => {
 
     }, []);
+    
     const logout = (e) => {
         localStorage.clear();
         //dispatch(setLoginStatus({isLoggedIn: false}));
@@ -22,7 +23,7 @@ const Header = () => {
     const handleSignUpAmbassador = (e) => {
         e.preventDefault();
         if(userInfo) {
-            navigate('/learner/subscription');
+            navigate('/ambessador/ambassador-subscription');
         } else {
             navigate('/signup');
         }
@@ -78,6 +79,7 @@ const Header = () => {
                                                     Welcome {userInfo.name}</Link>
                                                     {toggle && (
                                                             <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
+                                                                <Link className="dropdown-item" to="/ambessador/ambassador-subscription">Update profile / Complete Registration</Link>
                                                                 <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
                                                             </div>
                                                     )}

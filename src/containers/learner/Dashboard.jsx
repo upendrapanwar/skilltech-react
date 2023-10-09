@@ -1,21 +1,54 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import banner from '../../assets/images/Banner.png';
 import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
+import Loader from "../../components/common/Loader";
+import axios from "axios";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-
+    const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    let [loading, setLoading] = useState('false');
+    let [userid, setUserid] = useState(userInfo.id);
     useEffect(() => {
-
+        if(userid){
+            completeRegistration();
+        }
     }, []);
     toast.configure();
     const navigate = useNavigate();
     /***********************************************************************/
     /***********************************************************************/
-
+    /**
+     * Handle complete regsitration
+     * 
+     */
+    const completeRegistration = () => {
+        setLoading(true);
+        const dataArray = {'userid':userid};
+        axios.post('common/complete-registration', dataArray).then(response => {
+            toast.dismiss();
+            if (response.data.status) {
+                if(response.data.message === "Error while saving.") {
+                    toast.success('Please complete ambessador registation if not done', { autoClose: 3000 });
+                }
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Please complete ambessador registation if not done', { autoClose: 3000 });
+            }
+        }).finally(() => {
+            setTimeout(() => {
+                setLoading(false);
+            }, 300);
+        });
+    }
+    /***********************************************************************/
+    /***********************************************************************/
     /**
      * Handle after form submission
      * 
