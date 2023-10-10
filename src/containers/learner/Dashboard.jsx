@@ -13,9 +13,14 @@ const Dashboard = () => {
     let [loading, setLoading] = useState('false');
     let [userid, setUserid] = useState(userInfo.id);
     useEffect(() => {
-        if(userid){
+        console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
+        if(userInfo.isSubscriberRegister === null){
             completeRegistration();
         }
+        let authInfo = {
+            isSubscriberRegister: null
+        };
+        localStorage.setItem('authInfo', JSON.stringify(authInfo));
     }, []);
     toast.configure();
     const navigate = useNavigate();

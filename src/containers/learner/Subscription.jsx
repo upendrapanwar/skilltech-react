@@ -20,10 +20,15 @@ const Subscription = () => {
     
     const navigate = useNavigate();
     useEffect(() => {
-        if(userid){
+        console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
+        if(userInfo.isSubscriberRegister === null){
+            
             completeRegistration();
         }
-        
+        let authInfo = {
+            isSubscriberRegister: null
+        };
+        localStorage.setItem('authInfo', JSON.stringify(authInfo));
     }, []);
     toast.configure();
     const txtunderline = {
@@ -52,7 +57,7 @@ const Subscription = () => {
      * 
      */
     const completeRegistration = () => {
-        setLoading(false);
+        setLoading(true);
         const dataArray = {'userid':userid};
         axios.post('common/complete-registration', dataArray).then(response => {
             toast.dismiss();

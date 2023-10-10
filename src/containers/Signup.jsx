@@ -60,6 +60,7 @@ const Signup = () => {
                 resetForm();
                 let authInfo = {
                     id: response.data.data['_id'],
+                    isSubscriberRegister: 'yes'
                 };
                 localStorage.setItem('authInfo', JSON.stringify(authInfo));
                 navigate('/learner/subscription');
