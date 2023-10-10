@@ -67,7 +67,7 @@ const Header = () => {
                                                 <Link className="dropdown-item" to="#">Action</Link>
                                                 <Link className="dropdown-item" to="#">How it works</Link>
                                                 <Link className="dropdown-item" to="#" onClick={handleSignUpAmbassador}>Sign up as ambassador</Link>
-                                                <Link className="nav-link" to="/signup">Subscribe now</Link>
+                                                <Link className="nav-link" to="/learner/subscription">Subscribe now</Link>
                                         
                                             </div>
                                         </li>
@@ -79,7 +79,7 @@ const Header = () => {
                                                     Welcome {userInfo.name}</Link>
                                                     {toggle && (
                                                             <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
-                                                                <Link className="dropdown-item" to="/ambessador/ambassador-subscription">Update profile / Complete Registration</Link>
+                                                                <Link className="dropdown-item" to="/learner/subscription">Update profile / Complete Registration</Link>
                                                                 <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
                                                             </div>
                                                     )}

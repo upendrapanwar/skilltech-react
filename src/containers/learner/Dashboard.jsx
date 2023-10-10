@@ -32,14 +32,14 @@ const Dashboard = () => {
             toast.dismiss();
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
-                    toast.success('Please complete ambessador registation if not done', { autoClose: 3000 });
+                    toast.success('Please complete your registation', { autoClose: 3000 });
                 }
                 //navigate('/login');
             }
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error('Please complete ambessador registation if not done', { autoClose: 3000 });
+                toast.error('Please complete your registation', { autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {
