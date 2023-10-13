@@ -75,7 +75,17 @@ section#shadow-host-companion {
     color: #FFF;
     border-color: #134573;
 }
-
+.headingcls {
+    text-align: center;
+    margin-bottom:20px;
+}
+.subheadingcls {
+    text-align: center;
+    margin-bottom:20px;
+}
+.subheadingNote {
+    text-align: center;
+}
 .btn {
     min-width: 160px;
     text-align: left;

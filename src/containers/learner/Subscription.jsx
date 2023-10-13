@@ -63,7 +63,7 @@ const Subscription = () => {
             toast.dismiss();
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
-                    toast.success('Please complete your registation', { autoClose: 3000 });
+                    toast.success('Please complete your registation', { position: "top-center",autoClose: 3000 });
                 }
                 
                 //navigate('/login');
@@ -71,7 +71,7 @@ const Subscription = () => {
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error('Please complete your registation', { autoClose: 3000 });
+                toast.error('Please complete your registation', { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {
@@ -109,13 +109,13 @@ const Subscription = () => {
         axios.post('common/subscription', values).then(response => {
             toast.dismiss();
             if (response.data.status) {
-                toast.success(response.data.message, { autoClose: 3000 });
+                toast.success(response.data.message, { position: "top-center",autoClose: 3000 });
                 navigate('/login');
             }
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error(error.response.data.message, { autoClose: 3000 });
+                toast.error(error.response.data.message, { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {
@@ -161,6 +161,7 @@ const Subscription = () => {
                                         province: '',
                                         postal_code: '',
                                         method_of_communication: [],
+                                        ecommercePolicy: '',
                                         race: '',
                                         gender: '',
                                         qualification: '',
@@ -411,22 +412,43 @@ const Subscription = () => {
                                                 </div>
                                                 
                                             </div>
-
                                             <div className="avg__form_panel">
                                                 <div className="row form-row">
-                                                    <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions <Link to={termsConditionPDF}>here</Link>.<span>*</span></p>
-                                                    <div className="form-group col-md-6">
+                                                    <div className="form-group col-md-12">
                                                         <div className="row">
-                                                            <div className="col-md-3">
+                                                            <div className="form-group col-md-12">
                                                                 <label className="radio-inline">
-                                                                    <input type="radio" id="yesprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="yes" />Yes
+                                                                    <input type="checkbox" id="ecommercePolicy" name="ecommercePolicy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the e-commerce policy.<span>*</span>
                                                                 </label>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            {/*<div className="col-md-3">
                                                                 <label className="radio-inline">
                                                                     <input type="radio" id="noprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
                                                                 </label>
+                                                            </div>*/}
+                                                            
+                                                        </div>
+                                                        {touched.ecommercePolicy && errors.ecommercePolicy ? (
+                                                            <small className="text-danger">{errors.ecommercePolicy}</small>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="avg__form_panel">
+                                                <div className="row form-row">
+                                                    <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions <Link to={termsConditionPDF}>here</Link>.<span>*</span></p>
+                                                    <div className="form-group col-md-12">
+                                                        <div className="row">
+                                                            <div className="form-group col-md-12">
+                                                                <label className="radio-inline">
+                                                                    <input type="checkbox" id="yesprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the private policy
+                                                                </label>
                                                             </div>
+                                                            {/*<div className="col-md-3">
+                                                                <label className="radio-inline">
+                                                                    <input type="radio" id="noprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
+                                                                </label>
+                                                            </div>*/}
                                                             
                                                         </div>
                                                         {touched.privacy && errors.privacy ? (
@@ -515,31 +537,31 @@ const Subscription = () => {
                                                 <div className="row form-row">
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-5">
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="social_media_page" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="social_media_page" />Our social media pages
 
                                                                 </label>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-5">
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="our_website" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="our_website" />Our website
 
                                                                 </label>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-5">
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="referred_by_ambassador" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="referred_by_ambassador" />I was referred by an ambassador
 
                                                                 </label>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-5">
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="referred_by_friend" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="referred_by_friend" />I was referred by a friend
 
                                                                 </label>
                                                             </div>
-                                                            <div className="col-md-3">
+                                                            <div className="col-md-5">
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="stumbled_on_browsing" name="how_did_you_hear_about_us" onChange={handleChange} onBlur={handleBlur} value="stumbled_on_browsing" />I stumbled on it while browsing
 

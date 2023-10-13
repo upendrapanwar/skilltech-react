@@ -69,7 +69,7 @@ const Signup = () => {
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error(error.response.data.message, { autoClose: 3000 });
+                toast.error(error.response.data.message, { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {
@@ -117,11 +117,12 @@ const Signup = () => {
                                 <div className="login-form-wrapper">
                                     <Formik
                                         initialValues={{
-                                            name: '',
+                                            firstname: '',
+                                            surname:'',
                                             email: '',
                                             password: '',
                                             confirmPassword: '',
-                                            role: ''
+                                            //role: ''
 
                                         }}
                                         onSubmit={(values, { resetForm }) => {
@@ -141,10 +142,17 @@ const Signup = () => {
                                         }) => (
                                             <form onSubmit={handleSubmit}>
                                                 <div className="form-group">
-                                                    <label htmlFor="exampleInputName">Name</label>
-                                                    <input type="text" name="name" className="form-control" id="exampleInputName" aria-describedby="nameHelp" placeholder="" onChange={handleChange} onBlur={handleBlur} value={values.name} />
-                                                    {touched.name && errors.name ? (
-                                                        <small className="text-danger">{errors.name}</small>
+                                                    <label htmlFor="exampleInputName">First Name</label>
+                                                    <input type="text" name="firstname" className="form-control" id="exampleInputName" aria-describedby="nameHelp" placeholder="" onChange={handleChange} onBlur={handleBlur} value={values.firstname} />
+                                                    {touched.firstname && errors.firstname ? (
+                                                        <small className="text-danger">{errors.firstname}</small>
+                                                    ) : null}
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="exampleInputName">Last Name</label>
+                                                    <input type="text" name="surname" className="form-control" id="exampleInputName" aria-describedby="nameHelp" placeholder="" onChange={handleChange} onBlur={handleBlur} value={values.surname} />
+                                                    {touched.surname && errors.surname ? (
+                                                        <small className="text-danger">{errors.surname}</small>
                                                     ) : null}
                                                 </div>
 
@@ -175,7 +183,7 @@ const Signup = () => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="form-group">
+                                                {/*<div className="form-group">
                                                     <label htmlFor="exampleFormControlSelect1">Login With</label>
                                                     <select className="form-control" name="role" id="exampleFormControlSelect1" onChange={handleChange} onBlur={handleBlur} value={values.role} >
                                                         <option value="">Select User Type</option>
@@ -187,7 +195,7 @@ const Signup = () => {
                                                     {touched.role && errors.role ? (
                                                         <small className="text-danger">{errors.role}</small>
                                                     ) : null}
-                                                </div>
+                                                </div>*/}
                                                 <button type="submit" className="btn btn-primary login-btn bt-size">Next <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
 
                                                 {/*<div className="or text-center mt-3">

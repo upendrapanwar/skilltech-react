@@ -26,7 +26,7 @@ export default Yup.object().shape({
     certificate: Yup.string().required("Certificate copy is required"),
     bank_proof: Yup.string().required("Bank Proof is required"),
     confirm_details: Yup.boolean().required('Confirm Details is required'),
-    terms_n_condition: Yup.boolean().required('Terms and condition is required'),
+    //terms_n_condition: Yup.boolean().required('Terms and condition is required'),
     update_information: Yup.boolean().required('Update information is required'),
     //center_to_assist: Yup.string().required("Field is required"),
     //pop: Yup.string().required("Field is required"),

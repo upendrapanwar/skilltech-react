@@ -83,13 +83,13 @@ const AmbassadorSubscription = () => {
             toast.dismiss();
             console.log('inside2');
             if (response.data.status) {
-                toast.success(response.data.message, { autoClose: 3000 });
+                toast.success(response.data.message, { position: "top-center",autoClose: 3000 });
                 navigate('/ambessador/dashboard');
             }
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error(error.response.data.message, { autoClose: 3000 });
+                toast.error(error.response.data.message, { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             console.log('inside3');
@@ -124,6 +124,22 @@ const AmbassadorSubscription = () => {
 
                     <div className="row">
                         <div className="hvg__subscribeForm_wrapper col-md-8 mx-auto">
+                            <div className="headingcls">
+                                <h4>You’re one step away from becoming a High Vista Ambassador and
+unlocking the awesome benefits this offers.</h4>
+                            </div>
+                            <div className="subheadingcls">
+                            To get signed up as ambassador, please provide the information requested below. When you’re
+done, keep an eye on your inbox for the your referral code and useful information on how to
+maximise your rewards.
+                            </div>
+                            
+                            <div className="subheadingNote">
+                                <strong>Please note:</strong></div>
+                            <div>
+                            You’ll need to upload some important documents to complete the Ambassador sign-up. Please
+have certified copies of your South African ID and proof of banking ready
+                            </div>
                             {/*<div className="text-left">
                                 <div className="allField_required">
                                     <p>Required fields are marked with a " <span style={{ color: "#000" }}>*</span> "</p>
@@ -166,7 +182,7 @@ const AmbassadorSubscription = () => {
                                         refer_friend: [],
                                         certificate: '',
                                         confirm_details:'',
-                                        terms_n_condition:'',
+                                        //terms_n_condition:'',
                                         update_information:'',
                                         //center_to_assist: '',
                                         //pop: '',
@@ -192,72 +208,10 @@ const AmbassadorSubscription = () => {
                                     }) => (
                                         <form encType="multipart/form-data" onSubmit={handleSubmit}>
                                             <fieldset>
+                                                
+                                                
                                                 <div className="avg__form_panel">
-                                                    <div className="form-row">
-                                                        <legend>1. How will you most likely refer people to the High Vista Guild?<span>*</span></legend>
-                                                        <div className="form-group col-md-12">
-                                                            <div className="row">
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="whatsApp" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="whatsApp" />WhatsApp
-                                                                    </label>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="email" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="email" />Email
-                                                                    </label>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="word_of_mouth" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="word_of_mouth" />Word of mouth
-                                                                    </label>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="my_instagram_pages" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_instagram_pages" />My Instagram pages
-                                                                    </label>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="my_twitter_feed" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_twitter_feed" />My Twitter feed
-                                                                    </label>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="my_youtube_channel" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_youtube_channel" />My Youtube channel
-                                                                    </label>
-                                                                </div>
-                                                                <div className="col-md-3">
-                                                                    <label className="radio-inline">
-                                                                        <input type="checkbox" id="my_facebook_page" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_facebook_page" />My Facebook page
-                                                                    </label>
-                                                                </div>
-                                                                <div className="form-group col-md-6">
-                                                                    {touched.refer_friend && errors.refer_friend ? (
-                                                                        <small className="text-danger">{errors.refer_friend}</small>
-                                                                    ) : null}
-                                                                </div>
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </div>
-                                                <div className="avg__form_panel">
-                                                    <legend>2. Please upload a certified copy of your South African ID<span>*</span></legend>
-                                                    <div className="row form-row">
-                                                        <div className="form-group col-md-12">
-                                                            <input type="file" id="certificate" name="certificate" onChange={(e) => { handleChange(e); handleCertificateUpload(e) }} onBlur={handleBlur} />
-                                                        </div>
-                                                        <div className="form-group col-md-6">
-                                                            {touched.certificate && errors.certificate ? (
-                                                                <small className="text-danger">{errors.certificate}</small>
-                                                            ) : null}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="avg__form_panel">
-                                                    <legend>3. Bank Account Information</legend>
+                                                    <legend>1. Bank Account Information</legend>
                                                     <p>Please confirm your banking details.<br /><strong>Account details</strong></p>
                                                     <p>Who do you bank with?<span>*</span></p>
                                                     <div className="row form-row">
@@ -334,7 +288,7 @@ const AmbassadorSubscription = () => {
                                                 </div>
                                                 
                                                 <div className="avg__form_panel">
-                                                    <legend>4. Please upload proof of banking (stamped bank letter / stamped e-statement)</legend>
+                                                    <legend>2. Please upload proof of banking (stamped bank letter / stamped e-statement)</legend>
                                                     <div className="row form-row">
                                                         <div className="form-group col-md-12">
                                                             <input type="file" id="bank_proof" name="bank_proof" onChange={(e) => { handleChange(e); handleBankProofUpload(e) }} onBlur={handleBlur} />
@@ -347,7 +301,19 @@ const AmbassadorSubscription = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+                                                <div className="avg__form_panel">
+                                                    <legend>3. Please upload a certified copy of your South African ID<span>*</span></legend>
+                                                    <div className="row form-row">
+                                                        <div className="form-group col-md-12">
+                                                            <input type="file" id="certificate" name="certificate" onChange={(e) => { handleChange(e); handleCertificateUpload(e) }} onBlur={handleBlur} />
+                                                        </div>
+                                                        <div className="form-group col-md-6">
+                                                            {touched.certificate && errors.certificate ? (
+                                                                <small className="text-danger">{errors.certificate}</small>
+                                                            ) : null}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div className="avg__form_panel">
                                                     <input type="checkbox" id="confirm_details" name="confirm_details" onChange={handleChange} onBlur={handleBlur} value="true" />Please confirm the detail you have provided is correct
                                                     <div className="form-group col-md-6">
@@ -357,7 +323,7 @@ const AmbassadorSubscription = () => {
                                                     </div>
                                                     
                                                 </div>
-                                                <div className="avg__form_panel">
+                                                {/*<div className="avg__form_panel">
                                                     <input type="checkbox" id="terms_n_condition" name="terms_n_condition" onChange={handleChange} onBlur={handleBlur} value="true" />Please accept our terms and conditions
                                                     <div className="form-group col-md-6">
                                                         {touched.terms_n_condition && errors.terms_n_condition ? (
@@ -365,13 +331,64 @@ const AmbassadorSubscription = () => {
                                                         ) : null}
                                                     </div>
                                                     
-                                                </div>
+                                                </div>*/}
                                                 <div className="avg__form_panel">
-                                                    <input type="checkbox" id="update_information" name="update_information" onChange={handleChange} onBlur={handleBlur} value="true" />Please confirm that you will update any infomration provided should it change
+                                                    <input type="checkbox" id="update_information" name="update_information" onChange={handleChange} onBlur={handleBlur} value="true" />Please confirm that you will update any information provided should it change
                                                     <div className="form-group col-md-6">
                                                         {touched.update_information && errors.update_information ? (
                                                             <small className="text-danger">{errors.update_information}</small>
                                                         ) : null}
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div className="avg__form_panel">
+                                                    <div className="form-row">
+                                                        <legend>4. How will you most likely refer people to the High Vista Guild?<span>*</span></legend>
+                                                        <div className="form-group col-md-12">
+                                                            <div className="row">
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="whatsApp" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="whatsApp" />WhatsApp
+                                                                    </label>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="email" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="email" />Email
+                                                                    </label>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="word_of_mouth" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="word_of_mouth" />Word of mouth
+                                                                    </label>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="my_instagram_pages" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_instagram_pages" />My Instagram pages
+                                                                    </label>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="my_twitter_feed" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_twitter_feed" />My Twitter feed
+                                                                    </label>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="my_youtube_channel" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_youtube_channel" />My Youtube channel
+                                                                    </label>
+                                                                </div>
+                                                                <div className="col-md-3">
+                                                                    <label className="radio-inline">
+                                                                        <input type="checkbox" id="my_facebook_page" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_facebook_page" />My Facebook page
+                                                                    </label>
+                                                                </div>
+                                                                <div className="form-group col-md-6">
+                                                                    {touched.refer_friend && errors.refer_friend ? (
+                                                                        <small className="text-danger">{errors.refer_friend}</small>
+                                                                    ) : null}
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     
                                                 </div>
