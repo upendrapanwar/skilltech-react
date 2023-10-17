@@ -63,7 +63,7 @@ const Subscription = () => {
             toast.dismiss();
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
-                    toast.success('Please complete your registation', { position: "top-center",autoClose: 3000 });
+                    toast.success('Please complete your registration', { position: "top-center",autoClose: 3000 });
                 }
                 
                 //navigate('/login');
@@ -71,7 +71,7 @@ const Subscription = () => {
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error('Please complete your registation', { position: "top-center",autoClose: 3000 });
+                toast.error('Please complete your registration', { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {
@@ -417,6 +417,7 @@ const Subscription = () => {
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
                                                             <div className="form-group col-md-12">
+                                                            <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions <Link to={termsConditionPDF}>here</Link>.<span>*</span></p>
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="ecommercePolicy" name="ecommercePolicy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the e-commerce policy.<span>*</span>
                                                                 </label>
@@ -436,7 +437,7 @@ const Subscription = () => {
                                             </div>
                                             <div className="avg__form_panel">
                                                 <div className="row form-row">
-                                                    <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions <Link to={termsConditionPDF}>here</Link>.<span>*</span></p>
+                                                    
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
                                                             <div className="form-group col-md-12">

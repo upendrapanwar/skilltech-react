@@ -9,12 +9,15 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-    const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    const userInfo = JSON.parse(localStorage.getItem("authInfo")) ? JSON.parse(localStorage.getItem("authInfo")) : null ;
     let [loading, setLoading] = useState('false');
-    let [userid, setUserid] = useState(userInfo.id);
+    //let [userid, setUserid] = useState(userInfo.id);
+    const udis = userInfo ? userInfo.id : null;
+    let [userid, setUserid] = useState(udis);
+
     useEffect(() => {
-        console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
-        if(userInfo.isSubscriberRegister === null){
+        //console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
+        if(userInfo && userInfo.isSubscriberRegister === null){
             completeRegistration();
         }
         let authInfo = {
@@ -37,14 +40,14 @@ const Dashboard = () => {
             toast.dismiss();
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
-                    toast.success('Please complete your registation', { autoClose: 3000 });
+                    toast.success('Please complete your registration', { position: "top-center",autoClose: 3000 });
                 }
                 //navigate('/login');
             }
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error('Please complete your registation', { autoClose: 3000 });
+                toast.error('Please complete your registration', { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {

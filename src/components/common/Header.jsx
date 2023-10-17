@@ -14,7 +14,7 @@ const Header = () => {
         localStorage.clear();
         //dispatch(setLoginStatus({isLoggedIn: false}));
         //dispatch(setUserInfo({userInfo: []}));
-        window.location.href = '/login';
+        //window.location.href = '/login';
     }
     /**
      * Handle signup as ambassador
