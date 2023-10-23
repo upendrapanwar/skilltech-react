@@ -13,12 +13,23 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Subscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    const merchantData = {
+        "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+        "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+        'testMode' : true,
+        'amount' : '100.00',
+        'item_name' : 'Order#123'
+    }
+    console.log(process.env);
+    const passPhrase = process.env.REACT_APP_PASSPHRASE;
 
     let [loading, setLoading] = useState('false');
     let [showReferred, setShowReferred] = useState(false);
     let [userid, setUserid] = useState(userInfo.id);
     
     const navigate = useNavigate();
+    // Generate signature (see Custom Integration -> Step 2)
+    
     useEffect(() => {
         console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
         if(userInfo.isSubscriberRegister === null){
@@ -29,6 +40,7 @@ const Subscription = () => {
             isSubscriberRegister: null
         };
         localStorage.setItem('authInfo', JSON.stringify(authInfo));
+        generateSignature();
     }, []);
     toast.configure();
     const txtunderline = {
@@ -60,6 +72,38 @@ const Subscription = () => {
         setLoading(true);
         const dataArray = {'userid':userid};
         axios.post('common/complete-registration', dataArray).then(response => {
+            toast.dismiss();
+            if (response.data.status) {
+                if(response.data.message === "Error while saving.") {
+                    toast.success('Please complete your registation', { position: "top-center",autoClose: 3000 });
+                }
+                
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Please complete your registation', { position: "top-center",autoClose: 3000 });
+            }
+        }).finally(() => {
+            setTimeout(() => {
+                setLoading(false);
+            }, 300);
+        });
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Handle complete regsitration
+     * 
+     */
+    const generateSignature = () => {
+        setLoading(true);
+        const dataArray = {
+            'merchantData':merchantData,
+            'passPhrase':passPhrase
+        };
+        axios.post('common/generate-signature', dataArray).then(response => {
             toast.dismiss();
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
@@ -125,12 +169,46 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    return (
 
+    const dataToString = (dataArray) => {
+        console.log('dataArray',dataArray);
+    // Convert your data array to a string
+        let pfParamString = "";
+        for (let key in dataArray) {
+            if(dataArray.hasOwnProperty(key)){pfParamString +=`${key}=${encodeURIComponent(dataArray[key]).replace(/%20/g, "+")}&`;}
+        }
+        // Remove last ampersand
+        return pfParamString.slice(0, -1);
+    };
+
+    const generatePaymentIdentifier = async (pfParamString) => {
+        console.log('pfParamString=',pfParamString);
+        console.log('sandboxurl=',process.env.REACT_APP_SANDBOX_PAYFAST_URL);
+        const result = await axios.post(process.env.REACT_APP_SANDBOX_PAYFAST_URL, pfParamString)
+            .then((res) => {
+              return res.data.uuid || null;
+            })
+            .catch((error) => {
+              console.error(error)
+            });
+        console.log("res.data", result);
+        return result;
+      };
+    const pfParamString = dataToString(merchantData);
+
+    // Generate payment identifier
+    const identifier = generatePaymentIdentifier(pfParamString);  
+    
+    return (
+        //merchantData["signature"] = generateSignature(myData, passPhrase);
+
+        // Convert the data array to a string
+        
         <>
             {loading === true ? <Loader /> : ''}
 
             <Header />
+            <script src="https://www.payfast.co.za/onsite/engine.js"></script> 
             <section className="regitration-section">
                 <div className="container">
                     <div className="ambeReg-heading text-center mb-4">
