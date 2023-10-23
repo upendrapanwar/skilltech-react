@@ -346,37 +346,37 @@ have certified copies of your South African ID and proof of banking ready
                                                         <legend>4. How will you most likely refer people to the High Vista Guild?<span>*</span></legend>
                                                         <div className="form-group col-md-12">
                                                             <div className="row">
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="whatsApp" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="whatsApp" />WhatsApp
                                                                     </label>
                                                                 </div>
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="email" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="email" />Email
                                                                     </label>
                                                                 </div>
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="word_of_mouth" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="word_of_mouth" />Word of mouth
                                                                     </label>
                                                                 </div>
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="my_instagram_pages" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_instagram_pages" />My Instagram pages
                                                                     </label>
                                                                 </div>
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="my_twitter_feed" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_twitter_feed" />My Twitter feed
                                                                     </label>
                                                                 </div>
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="my_youtube_channel" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_youtube_channel" />My Youtube channel
                                                                     </label>
                                                                 </div>
-                                                                <div className="col-md-3">
+                                                                <div className="col-md-4">
                                                                     <label className="radio-inline">
                                                                         <input type="checkbox" id="my_facebook_page" name="refer_friend" onChange={handleChange} onBlur={handleBlur} value="my_facebook_page" />My Facebook page
                                                                     </label>

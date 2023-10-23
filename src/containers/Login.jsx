@@ -34,7 +34,7 @@ const Login = () => {
         axios.post('common/signin', values).then(response => {
             toast.dismiss();
             if (response.data.status) {
-                toast.success(response.data.message, { autoClose: 3000 });
+                toast.success(response.data.message, { position: "top-center",autoClose: 3000 });
                 let authInfo = {
                     expTime: response.data.data.expTime,
                     id: response.data.data['_id'],
@@ -128,7 +128,7 @@ const Login = () => {
 
                                             email: '',
                                             password: '',
-                                            role: ''
+                                            //role: ''
 
                                         }}
                                         onSubmit={(values, { resetForm }) => {
@@ -162,7 +162,7 @@ const Login = () => {
                                                     ) : null}
                                                 </div>
 
-                                                <div className="form-group">
+                                                {/*<div className="form-group">
                                                     <label htmlFor="exampleFormControlSelect1">Login As</label>
                                                     <select className="form-control" name="role" id="exampleFormControlSelect1" onChange={handleChange} onBlur={handleBlur} value={values.role} >
                                                         <option value="">Select User Type</option>
@@ -174,7 +174,7 @@ const Login = () => {
                                                     {touched.role && errors.role ? (
                                                         <small className="text-danger">{errors.role}</small>
                                                     ) : null}
-                                                </div>
+                                                    </div>*/}
 
                                                 <div className="checkfileds d-flex justify-content-between align-items-center mb-4">
                                                     <div className="form-check">

@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Subscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+<<<<<<< HEAD
     const merchantData = {
         "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
         "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
@@ -23,6 +24,9 @@ const Subscription = () => {
     console.log(process.env);
     const passPhrase = process.env.REACT_APP_PASSPHRASE;
 
+=======
+    console.log('userInfo=',userInfo);
+>>>>>>> 6a810bf3e458205288e422d79dbf02589a9dc5f0
     let [loading, setLoading] = useState('false');
     let [showReferred, setShowReferred] = useState(false);
     let [userid, setUserid] = useState(userInfo.id);
@@ -37,6 +41,7 @@ const Subscription = () => {
             completeRegistration();
         }
         let authInfo = {
+            id: userInfo.id,
             isSubscriberRegister: null
         };
         localStorage.setItem('authInfo', JSON.stringify(authInfo));
@@ -75,7 +80,7 @@ const Subscription = () => {
             toast.dismiss();
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
-                    toast.success('Please complete your registation', { position: "top-center",autoClose: 3000 });
+                    toast.success('Please complete your registration', { position: "top-center",autoClose: 3000 });
                 }
                 
                 //navigate('/login');
@@ -83,7 +88,7 @@ const Subscription = () => {
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error('Please complete your registation', { position: "top-center",autoClose: 3000 });
+                toast.error('Please complete your registration', { position: "top-center",autoClose: 3000 });
             }
         }).finally(() => {
             setTimeout(() => {
@@ -218,7 +223,7 @@ const Subscription = () => {
                     <div className="row">
                         <div className="ambeReg-wrapper col-md-8 mx-auto">
                             <div className="text-left">
-                                <p>Required fields are marked with a " <span style={{ color: "#000" }}>*</span> "</p>
+                                <p>Required fields are marked with a " <span style={{ color: "red" }}>*</span> "</p>
                             </div>
 
                             <div className="form-wrapper mt-4 ">
@@ -495,6 +500,8 @@ const Subscription = () => {
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
                                                             <div className="form-group col-md-12">
+                                                            <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. <Link to={termsConditionPDF}>View our e-commerce policy here<span>*</span> <br/>View our POPI website privacy policy here</Link>.<span>*</span></p>
+                                                                    
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="ecommercePolicy" name="ecommercePolicy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the e-commerce policy.<span>*</span>
                                                                 </label>
@@ -514,12 +521,12 @@ const Subscription = () => {
                                             </div>
                                             <div className="avg__form_panel">
                                                 <div className="row form-row">
-                                                    <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. View our Terms and Conditions <Link to={termsConditionPDF}>here</Link>.<span>*</span></p>
+                                                    
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
                                                             <div className="form-group col-md-12">
                                                                 <label className="radio-inline">
-                                                                    <input type="checkbox" id="yesprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the private policy
+                                                                    <input type="checkbox" id="yesprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the POPI website privacy policy<span>*</span>
                                                                 </label>
                                                             </div>
                                                             {/*<div className="col-md-3">
@@ -537,7 +544,7 @@ const Subscription = () => {
                                             </div>
                                             <div className="avg__form_panel">
                                                 <div className="row form-row">
-                                                    <p style={txtunderline} className="mb-2"> <strong>5. Opt-in for promotional emails,newsletter:</strong></p>
+                                                    <p style={txtunderline} className="mb-2"> <strong>5. Opt-in for our newsletter, exclusive promotions, updates, and webinar notifications:</strong></p>
                                                     
                                                     <p>I'd like to receive the monthly High Vista newsletter<span>*</span></p>
                                                     
@@ -610,7 +617,7 @@ const Subscription = () => {
                                                 </div>
                                             </div>
                                             <div className="avg__form_panel">
-                                                <p>How did you hear abourt High Vista Guild?</p>
+                                                <p>How did you hear about High Vista Guild?</p>
 
                                                 <div className="row form-row">
                                                     <div className="form-group col-md-12">
@@ -653,7 +660,7 @@ const Subscription = () => {
                                                 
                                             </div>
                                             <div className="avg__form_panel">
-                                                <button type="submit" className="btn btn-primary btn-color bt-size mt-4 mb-4" data-id={isSubmitting}>Subscribe now and Pay!<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span>
+                                                <button type="submit" className="btn btn-primary btn-color bt-size mt-4 mb-4" data-id={isSubmitting}>Submit and Access my Courses!<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span>
                                                 </button>
                                             </div>
                                         </form>
