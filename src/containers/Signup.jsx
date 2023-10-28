@@ -50,11 +50,12 @@ const Signup = () => {
      */
     const handleSubmit = (values, { resetForm }) => {
         setLoading(true);
-        console.log("handlesubmit");
+        
+        
         //this.dispatch(setLoading({loading: true}));
         axios.post('common/signup', values).then(response => {
             toast.dismiss();
-            console.log(response.data);
+            //console.log(response.data);
             if (response.data.status) {
                 //toast.success(response.data.message, { autoClose: 3000 });
                 resetForm();
@@ -88,15 +89,15 @@ const Signup = () => {
 
             <Header />
 
-            <div class="hvg__page_banner">
-                <div class="banner-thumnail">
+            <div className="hvg__page_banner">
+                <div className="banner-thumnail">
                     <img src={banner} alt="" />
                 </div>
-                <div class="banner-container">
-                    <div class="container">
-                        <div class="banner-content">
-                            <div class="banner-heading col-md-6">
-                                <div class="row">
+                <div className="banner-container">
+                    <div className="container">
+                        <div className="banner-content">
+                            <div className="banner-heading col-md-6">
+                                <div className="row">
                                     <h1>Sign Up</h1>
                                 </div>
                             </div>

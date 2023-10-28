@@ -8,36 +8,62 @@ import SubscriptionSchema from "../../validation-schemas/SubscriptionSchema";
 import termsConditionPDF from "../../assets/pdf/Skill Tech Solutions - Website Privacy Policy_2023.pdf";
 import { Formik} from 'formik';
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import config from '../../config.json';
+import { Helmet } from 'react-helmet';
 
 
 const Subscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
-<<<<<<< HEAD
-    const merchantData = {
-        "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
-        "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-        'testMode' : true,
-        'amount' : '100.00',
-        'item_name' : 'Order#123'
-    }
-    console.log(process.env);
+    const pfParamString = '';
+    const location = useLocation()
+    //console.log(process.env);
     const passPhrase = process.env.REACT_APP_PASSPHRASE;
 
-=======
     console.log('userInfo=',userInfo);
->>>>>>> 6a810bf3e458205288e422d79dbf02589a9dc5f0
+
     let [loading, setLoading] = useState('false');
     let [showReferred, setShowReferred] = useState(false);
+    let [signature, setSignature] = useState(null);
     let [userid, setUserid] = useState(userInfo.id);
+    let [identifier, setIdentifier] = useState(null);
     
     const navigate = useNavigate();
     // Generate signature (see Custom Integration -> Step 2)
+    /*let merchantData = {
+        "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+        "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+        'return_url' : "https://672c-2405-201-300a-a0dd-2ccd-46be-effb-2da1.ngrok-free.app/learner/subscription/success",
+        'cancel_url' : "https://672c-2405-201-300a-a0dd-2ccd-46be-effb-2da1.ngrok-free.app/learner/subscription/cancel",
+        'notify_url' : "https://672c-2405-201-300a-a0dd-2ccd-46be-effb-2da1.ngrok-free.app/learner/subscription/notify",
+        'name_first' : '',
+        'name_last' : '',
+        'email_address' : 'patcummin@mailinator.com',
+        'm_payment_id' : '',
+        'amount' : '100.00',
+        'item_name' : 'Order#123',
+        
+    }*/
     
     useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
+        script.async = true;
+        document.body.appendChild(script);
+        let tmp = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
+        console.log('pathname=',tmp)
+        if(tmp === "/success"){
+            paymentSuccess()
+        }
+        if(tmp === "/cancel"){
+            cancelPayment()
+        }
+        if(tmp === "/notify"){
+            notifyPayment()
+        }
         console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
+        
         if(userInfo.isSubscriberRegister === null){
-            
             completeRegistration();
         }
         let authInfo = {
@@ -45,14 +71,22 @@ const Subscription = () => {
             isSubscriberRegister: null
         };
         localStorage.setItem('authInfo', JSON.stringify(authInfo));
-        generateSignature();
+        
     }, []);
     toast.configure();
     const txtunderline = {
         "textDecoration": "underline",
         "width": "100%"
     }
-
+    const paymentSuccess = (response) => {
+        console.log('payment success=',response);
+    }
+    const cancelPayment = (response) => {   
+        console.log('cancel payment=',response);
+    }
+    const notifyPayment = (response) => {
+        console.log('notify payment=',response);
+    }
     /**
      * Manages visibility of referred by fields
      * 
@@ -78,6 +112,7 @@ const Subscription = () => {
         const dataArray = {'userid':userid};
         axios.post('common/complete-registration', dataArray).then(response => {
             toast.dismiss();
+
             if (response.data.status) {
                 if(response.data.message === "Error while saving.") {
                     toast.success('Please complete your registration', { position: "top-center",autoClose: 3000 });
@@ -102,19 +137,30 @@ const Subscription = () => {
      * Handle complete regsitration
      * 
      */
-    const generateSignature = () => {
+    const generateSignature = async (merchantData, passPhrase) => {
         setLoading(true);
         const dataArray = {
             'merchantData':merchantData,
-            'passPhrase':passPhrase
+            'passPhrase':passPhrase,
+            'testMode' : true,
         };
-        axios.post('common/generate-signature', dataArray).then(response => {
+        await axios.post('common/generate-signature', dataArray).then(response => {
             toast.dismiss();
+            //console.log('response=',response.data);
+            //console.log('signature=',response.data.data);
+            //merchantData.push({'signature':response.data.data})
+            
+            setSignature(response.data.data);
+            
+            //console.log('signature=',response.data.data);
+            //console.log('merchantData=',merchantData);
+           
+            // Generate payment identifier
+            
             if (response.data.status) {
-                if(response.data.message === "Error while saving.") {
-                    toast.success('Please complete your registation', { position: "top-center",autoClose: 3000 });
-                }
-                
+                //var identifierVar = generatePaymentIdentifier(response.data.data, merchantData);
+                return generatePaymentIdentifier(response.data.data, merchantData);    
+                //setIdentifier(identifierVar);
                 //navigate('/login');
             }
         }).catch(error => {
@@ -158,8 +204,38 @@ const Subscription = () => {
         axios.post('common/subscription', values).then(response => {
             toast.dismiss();
             if (response.data.status) {
+                const passPhrase = process.env.REACT_APP_PASSPHRASE;
                 toast.success(response.data.message, { position: "top-center",autoClose: 3000 });
-                navigate('/login');
+                let merchantData = {
+                    "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+                    "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+                    'return_url' : "https://65fe-2405-201-300a-a0ba-384a-954-e8c5-8aab.ngrok-free.app/learner/subscription/success",
+                    'cancel_url' : "https://65fe-2405-201-300a-a0ba-384a-954-e8c5-8aab.ngrok-free.app/learner/subscription/cancel",
+                    'notify_url' : "https://65fe-2405-201-300a-a0ba-384a-954-e8c5-8aab.ngrok-free.app/learner/subscription/notify",
+                    'name_first' : values['firstname'],
+                    'name_last' : values['surname'],
+                    'email_address' : values['email'],
+                    //'m_payment_id' : '',
+                    'amount' : 5.00,
+                    'item_name' : 'Order#HighVistaSubscription',
+                    
+                }
+                 
+                var identifierData = generateSignature(merchantData,passPhrase);
+                
+                identifierData.then(result => {
+                    
+                    /*window.payfast_do_onsite_payment({"uuid":result.uuid}, function (result) {
+                        if (result === true) {
+                          // Payment Completed
+                        }
+                        else {
+                          // Payment Window Closed
+                        }
+                    }); */
+                })
+                 
+                //navigate('/login');
             }
         }).catch(error => {
             toast.dismiss();
@@ -174,9 +250,12 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-
+    /*
     const dataToString = (dataArray) => {
-        console.log('dataArray',dataArray);
+        dataArray['signature'] = signature;
+        console.log('dataArray=',dataArray)
+        
+        //console.log('dataArray',dataArray);
     // Convert your data array to a string
         let pfParamString = "";
         for (let key in dataArray) {
@@ -184,36 +263,68 @@ const Subscription = () => {
         }
         // Remove last ampersand
         return pfParamString.slice(0, -1);
-    };
+    };*/
 
-    const generatePaymentIdentifier = async (pfParamString) => {
-        console.log('pfParamString=',pfParamString);
-        console.log('sandboxurl=',process.env.REACT_APP_SANDBOX_PAYFAST_URL);
-        const result = await axios.post(process.env.REACT_APP_SANDBOX_PAYFAST_URL, pfParamString)
+    const generatePaymentIdentifier = async (signature, merchantData) => {
+        
+        var pfParamString_updated = '';
+        /*merchantData['subscription_type'] = 1;
+        merchantData['billing_date'] = "2023-10-28";
+        merchantData['recurring_amount'] = 5.00;
+        merchantData['frequency'] = 3;
+        merchantData['cycles'] = 12;
+        merchantData['subscription_notify_email'] = true;
+        merchantData['subscription_notify_webhook'] = true;
+        merchantData['subscription_notify_buyer'] = true;
+        merchantData['payment_method'] = '';*/
+        merchantData['signature'] = signature;
+       
+        console.log('dataArray=',merchantData)
+        var dataArray = merchantData;
+        //console.log('dataArray',dataArray);
+        // Convert your data array to a string
+        let pfParamString = "";
+        for (let key in dataArray) {
+            if(dataArray.hasOwnProperty(key)){pfParamString +=`${key}=${encodeURIComponent(dataArray[key]).replace(/%20/g, "+")}&`;}
+        }
+        // Remove last ampersand
+        pfParamString_updated = pfParamString.slice(0, -1);
+        console.log('pfParamString=',pfParamString_updated);
+        
+        //console.log('sandboxurl=',process.env.REACT_APP_SANDBOX_PAYFAST_URL);
+        //axios.defaults.baseURL = '';
+        const result = await axios.post('https://sandbox.payfast.co.za/onsite/process', pfParamString_updated)
             .then((res) => {
-              return res.data.uuid || null;
+              console.log('uuid=',res.data.uuid);  
+              setIdentifier(res.data.uuid);
+              return res.data || null;
+              
             })
             .catch((error) => {
               console.error(error)
             });
         console.log("res.data", result);
+        //axios.defaults.baseURL = config.apiURI;
         return result;
-      };
-    const pfParamString = dataToString(merchantData);
-
-    // Generate payment identifier
-    const identifier = generatePaymentIdentifier(pfParamString);  
+    };
     
     return (
-        //merchantData["signature"] = generateSignature(myData, passPhrase);
-
-        // Convert the data array to a string
         
         <>
             {loading === true ? <Loader /> : ''}
+            {identifier &&
+            
+            <Helmet>
 
+                <script>{`{
+                    window.payfast_do_onsite_payment({uuid: '${identifier}'})
+                    }`}
+                </script>
+            </Helmet>
+            }
             <Header />
-            <script src="https://www.payfast.co.za/onsite/engine.js"></script> 
+            
+            
             <section className="regitration-section">
                 <div className="container">
                     <div className="ambeReg-heading text-center mb-4">
@@ -659,6 +770,7 @@ const Subscription = () => {
                                                 </div>
                                                 
                                             </div>
+
                                             <div className="avg__form_panel">
                                                 <button type="submit" className="btn btn-primary btn-color bt-size mt-4 mb-4" data-id={isSubmitting}>Submit and Access my Courses!<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span>
                                                 </button>

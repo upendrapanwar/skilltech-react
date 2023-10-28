@@ -27,15 +27,15 @@ const Dashboard = () => {
     return (
         <>
             <Header />
-            <div class="hvg__page_banner">
-                <div class="banner-thumnail">
+            <div className="hvg__page_banner">
+                <div className="banner-thumnail">
                     <img src={banner} alt="" />
                 </div>
-                <div class="banner-container">
-                    <div class="container">
-                        <div class="banner-content">
-                            <div class="banner-heading col-md-6">
-                                <div class="row">
+                <div className="banner-container">
+                    <div className="container">
+                        <div className="banner-content">
+                            <div className="banner-heading col-md-6">
+                                <div className="row">
                                     <h1>Owner Dashboard</h1>
                                 </div>
                             </div>
@@ -44,24 +44,24 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div class="hvg__main_container">
-                <div class="container">
+            <div className="hvg__main_container">
+                <div className="container">
 
-                    <div class="card welcome_user_card mb-4">
-                        <div class="card-body">
-                            <p class="mb-0">
-                                Welcome to, <strong>Smith Moory</strong> <span class="user_icon"><i class="far fa-smile"></i></span>
+                    <div className="card welcome_user_card mb-4">
+                        <div className="card-body">
+                            <p className="mb-0">
+                                Welcome to, <strong>Smith Moory</strong> <span className="user_icon"><i className="far fa-smile"></i></span>
                             </p>
                         </div>
                     </div>
-                    <div class="hvg__card_section mb-4">
-                        <div class="card">
-                            <div class="card-header">
+                    <div className="hvg__card_section mb-4">
+                        <div className="card">
+                            <div className="card-header">
                                 <h4>Payouts due this month</h4>
                             </div>
-                            <div class="card-body">
-                                <div class="table_view_panel table-responsive-sm">
-                                    <table class="table table-striped">
+                            <div className="card-body">
+                                <div className="table_view_panel table-responsive-sm">
+                                    <table className="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th scope="col">First Name</th>
@@ -91,8 +91,8 @@ const Dashboard = () => {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="amb-btn">
-                                        <button type="button" class="btn btn-primary btn-color bt-size">View All Payout Due <span class="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
+                                    <div className="amb-btn">
+                                        <button type="button" className="btn btn-primary btn-color bt-size">View All Payout Due <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
                                     </div>
                                 </div>
                             </div>
@@ -100,33 +100,33 @@ const Dashboard = () => {
 
                     </div>
 
-                    <div class="hvg__card_section mb-4 ">
-                        <div class="row d-flex ">
-                            <div class="col-md-6">
+                    <div className="hvg__card_section mb-4 ">
+                        <div className="row d-flex ">
+                            <div className="col-md-6">
 
-                                <div class="card">
-                                    <div class="card-header">
+                                <div className="card">
+                                    <div className="card-header">
                                         <h4>Total Monthly Payouts (Last 4 months)</h4>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="table-pie-image mt-2">
+                                    <div className="card-body">
+                                        <div className="table-pie-image mt-2">
                                             <img src={barChart} alt="" />
                                         </div>
-                                        <div class="amb-btn mt-4">
-                                            <button type="button" class="btn btn-primary btn-color bt-size">View All  Payouts <span class="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
+                                        <div className="amb-btn mt-4">
+                                            <button type="button" className="btn btn-primary btn-color bt-size">View All  Payouts <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
+                            <div className="col-md-6">
+                                <div className="card">
+                                    <div className="card-header">
                                         <h4>Top selling course packages</h4>
                                     </div>
-                                    <div class="card-body">
-                                        <table class="table table-striped mt-2">
+                                    <div className="card-body">
+                                        <table className="table table-striped mt-2">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">Course Package</th>
@@ -149,9 +149,9 @@ const Dashboard = () => {
                                             </tbody>
                                         </table>
 
-                                        <div class="amb-btn mt-4">
-                                            <h4 class="mb-3">Detailed reports</h4>
-                                            <button type="button" class="btn btn-primary btn-color bt-size">Choose report<span class="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
+                                        <div className="amb-btn mt-4">
+                                            <h4 className="mb-3">Detailed reports</h4>
+                                            <button type="button" className="btn btn-primary btn-color bt-size">Choose report<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
                                         </div>
                                     </div>
                                 </div>

@@ -28,6 +28,9 @@ function App() {
         <Route path='/signup' element={<Signup/>} />
         <Route path='/learner/dashboard' element={<LearnerDashboard/>} />
         <Route path='/learner/subscription' element={<Subscription/>} />
+        <Route path='/learner/subscription/success' element={<Subscription/>} />
+        <Route path='/learner/subscription/cancel' element={<Subscription/>} />
+        <Route path='/learner/subscription/notify' element={<Subscription/>} />
         <Route path='/ambessador/ambassador-subscription' element={<AmbassadorSubscription/>} />
         <Route path='/ambessador/dashboard' element={<AmbassadorDashboard/>} />
         <Route path='/owner/dashboard' element={<Ownerdashboard/>} />
