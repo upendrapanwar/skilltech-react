@@ -29,25 +29,12 @@ const Subscription = () => {
     let [identifier, setIdentifier] = useState(null);
     
     const navigate = useNavigate();
-    // Generate signature (see Custom Integration -> Step 2)
-    /*let merchantData = {
-        "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
-        "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-        'return_url' : "https://672c-2405-201-300a-a0dd-2ccd-46be-effb-2da1.ngrok-free.app/learner/subscription/success",
-        'cancel_url' : "https://672c-2405-201-300a-a0dd-2ccd-46be-effb-2da1.ngrok-free.app/learner/subscription/cancel",
-        'notify_url' : "https://672c-2405-201-300a-a0dd-2ccd-46be-effb-2da1.ngrok-free.app/learner/subscription/notify",
-        'name_first' : '',
-        'name_last' : '',
-        'email_address' : 'patcummin@mailinator.com',
-        'm_payment_id' : '',
-        'amount' : '100.00',
-        'item_name' : 'Order#123',
-        
-    }*/
     
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
+        //script.src = 'https://www.payfast.co.za/onsite/onsite/engine.js'
+        
         script.async = true;
         document.body.appendChild(script);
         let tmp = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
@@ -78,7 +65,24 @@ const Subscription = () => {
         "textDecoration": "underline",
         "width": "100%"
     }
-    const paymentSuccess = (response) => {
+    const paymentSuccess = async (response) => {
+        /*const result = await axios.get(REACT_APP_FETCH_SUBSCRIPTION_API+'/2afa4575-5628-051a-d0ed-4e071b56a7b0/fetch?testing=true',{
+            headers: {
+                'merchant-id': process.env.REACT_APP_MERCHANT_ID,
+                'version' : v1,
+                'timestamp' : '',
+                'signature' : signature
+            }
+            })
+            .then((res) => {
+              console.log('uuid=',res);  
+              
+              return res.data || null;
+              
+            })
+            .catch((error) => {
+              console.error(error)
+            });*/
         console.log('payment success=',response);
     }
     const cancelPayment = (response) => {   
@@ -141,8 +145,9 @@ const Subscription = () => {
         setLoading(true);
         const dataArray = {
             'merchantData':merchantData,
+            //'payment_method': 'cc',
             'passPhrase':passPhrase,
-            'testMode' : true,
+            'testMode' : true
         };
         await axios.post('common/generate-signature', dataArray).then(response => {
             toast.dismiss();
@@ -209,30 +214,30 @@ const Subscription = () => {
                 let merchantData = {
                     "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
                     "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-                    'return_url' : "https://65fe-2405-201-300a-a0ba-384a-954-e8c5-8aab.ngrok-free.app/learner/subscription/success",
-                    'cancel_url' : "https://65fe-2405-201-300a-a0ba-384a-954-e8c5-8aab.ngrok-free.app/learner/subscription/cancel",
-                    'notify_url' : "https://65fe-2405-201-300a-a0ba-384a-954-e8c5-8aab.ngrok-free.app/learner/subscription/notify",
+                    'return_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/success",
+                    'cancel_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/cancel",
+                    'notify_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/notify",
                     'name_first' : values['firstname'],
                     'name_last' : values['surname'],
                     'email_address' : values['email'],
-                    //'m_payment_id' : '',
+                    'cell_number' : values['mobile_number'],
+                    'm_payment_id' : 'Order#HighVistaSubscription',
                     'amount' : 5.00,
                     'item_name' : 'Order#HighVistaSubscription',
-                    
+                    'item_description': 'Order for subscription',    
+                    'email_confirmation': 1,
+                    'confirmation_address': values['email'],
+                    'subscription_type' : 1,
+                    'billing_date' : "2023-10-31",
+                    'recurring_amount' : 5.00,
+                    'frequency' : 3,
+                    'cycles' : 12
                 }
                  
                 var identifierData = generateSignature(merchantData,passPhrase);
                 
                 identifierData.then(result => {
                     
-                    /*window.payfast_do_onsite_payment({"uuid":result.uuid}, function (result) {
-                        if (result === true) {
-                          // Payment Completed
-                        }
-                        else {
-                          // Payment Window Closed
-                        }
-                    }); */
                 })
                  
                 //navigate('/login');
@@ -250,35 +255,15 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    /*
-    const dataToString = (dataArray) => {
-        dataArray['signature'] = signature;
-        console.log('dataArray=',dataArray)
-        
-        //console.log('dataArray',dataArray);
-    // Convert your data array to a string
-        let pfParamString = "";
-        for (let key in dataArray) {
-            if(dataArray.hasOwnProperty(key)){pfParamString +=`${key}=${encodeURIComponent(dataArray[key]).replace(/%20/g, "+")}&`;}
-        }
-        // Remove last ampersand
-        return pfParamString.slice(0, -1);
-    };*/
 
     const generatePaymentIdentifier = async (signature, merchantData) => {
         
         var pfParamString_updated = '';
-        /*merchantData['subscription_type'] = 1;
-        merchantData['billing_date'] = "2023-10-28";
-        merchantData['recurring_amount'] = 5.00;
-        merchantData['frequency'] = 3;
-        merchantData['cycles'] = 12;
+        merchantData['signature'] = signature;
+        //merchantData['subscription_type'] = 2;
         merchantData['subscription_notify_email'] = true;
         merchantData['subscription_notify_webhook'] = true;
         merchantData['subscription_notify_buyer'] = true;
-        merchantData['payment_method'] = '';*/
-        merchantData['signature'] = signature;
-       
         console.log('dataArray=',merchantData)
         var dataArray = merchantData;
         //console.log('dataArray',dataArray);
@@ -294,6 +279,7 @@ const Subscription = () => {
         //console.log('sandboxurl=',process.env.REACT_APP_SANDBOX_PAYFAST_URL);
         //axios.defaults.baseURL = '';
         const result = await axios.post('https://sandbox.payfast.co.za/onsite/process', pfParamString_updated)
+        //const result = await axios.post('https://www.payfast.co.za/onsite/process', pfParamString_updated)
             .then((res) => {
               console.log('uuid=',res.data.uuid);  
               setIdentifier(res.data.uuid);
@@ -315,9 +301,13 @@ const Subscription = () => {
             {identifier &&
             
             <Helmet>
-
                 <script>{`{
-                    window.payfast_do_onsite_payment({uuid: '${identifier}'})
+                    window.payfast_do_onsite_payment({
+                        uuid: '${identifier}',
+                        "return_url":"https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/success",
+                        "cancel_url":"https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/cancel",
+                        'notify_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/notify",
+                    })
                     }`}
                 </script>
             </Helmet>
