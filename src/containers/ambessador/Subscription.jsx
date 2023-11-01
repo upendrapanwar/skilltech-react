@@ -15,10 +15,10 @@ import styles from '../../assets/css/styles.module.css';
 
 
 const AmbassadorSubscription = () => {
-    const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
     let [loading, setLoading] = useState('false');
-    
+    let [referralCodes, setReferralCodes] = useState(null);
     let [userid, setUserid] = useState(userInfo.id);
     let [uploadCertificate, setUploadCertificate] = useState(null);
     let [uploadBankProof, setUploadBankProof] = useState(null);
@@ -27,10 +27,36 @@ const AmbassadorSubscription = () => {
     
     const navigate = useNavigate();
     useEffect(() => {
-
+        generateReferralCode();
     }, []);
     toast.configure();
+    const generateReferralCode = () => {
+        //ex: HG00123
+        var strDate = new Date(); // By default Date empty constructor give you Date.now
+        var shortYear = strDate.getFullYear(); 
+        // Add this line
+        var twoDigitYear = shortYear.toString().substr(-2);
+        let referralCode = twoDigitYear;
+        const dataArray = {
+            'prefix':'HG',
+            'referralCode':referralCode
+        };
+        axios.get('common/get-referral-code').then(response => {
+            toast.dismiss();
 
+            if (response.data.status) {
+                var pad = "000";
+                var n = response.data.data;
+                var result = (pad+n).slice(-pad.length);
+                referralCode = 'HG'+result+twoDigitYear;
+                console.log('response',referralCode);
+                setReferralCodes(referralCode);
+            } 
+        }).catch(error => {
+            console.log('Error',error)    
+            
+        })
+    }
     /**
      * Manages certificate upload
      * 
@@ -71,6 +97,7 @@ const AmbassadorSubscription = () => {
         //console.log("uploadCertificate",uploadCertificate);
         values.certificate = uploadCertificate;
         values.bank_proof = uploadBankProof;
+        values.referralCode = referralCodes;
         console.log("values=", values);
         const config = {
             headers: {
@@ -176,7 +203,7 @@ have certified copies of your South African ID and proof of banking ready
                                         //referredby: '',
                                         //referredby_firstname: '',
                                         //referredby_surname: '',
-                                        //referral_code: '',
+                                        referral_code: '',
                                         //referredby_email: '',
                                         //referredby_mobile_number: '',
                                         refer_friend: [],

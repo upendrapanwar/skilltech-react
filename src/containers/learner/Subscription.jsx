@@ -27,6 +27,7 @@ const Subscription = () => {
     let [signature, setSignature] = useState(null);
     let [userid, setUserid] = useState(userInfo.id);
     let [identifier, setIdentifier] = useState(null);
+    let [allmerchantData, setAllMerchantData] = useState(null);
     
     const navigate = useNavigate();
     
@@ -37,17 +38,7 @@ const Subscription = () => {
         
         script.async = true;
         document.body.appendChild(script);
-        let tmp = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
-        console.log('pathname=',tmp)
-        if(tmp === "/success"){
-            paymentSuccess()
-        }
-        if(tmp === "/cancel"){
-            cancelPayment()
-        }
-        if(tmp === "/notify"){
-            notifyPayment()
-        }
+        
         console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
         
         if(userInfo.isSubscriberRegister === null){
@@ -65,32 +56,33 @@ const Subscription = () => {
         "textDecoration": "underline",
         "width": "100%"
     }
-    const paymentSuccess = async (response) => {
-        /*const result = await axios.get(REACT_APP_FETCH_SUBSCRIPTION_API+'/2afa4575-5628-051a-d0ed-4e071b56a7b0/fetch?testing=true',{
+    /**
+     * Ping the payfast api to get data
+     */
+    const pingFast = async(signatureData) => {
+        let timestamp = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
+        await axios.post('https://api.payfast.co.za/ping?testing=true', {
             headers: {
                 'merchant-id': process.env.REACT_APP_MERCHANT_ID,
-                'version' : v1,
-                'timestamp' : '',
-                'signature' : signature
+                'version': 'v1',
+                'timestamp': timestamp,
+                'signature': signatureData
             }
-            })
-            .then((res) => {
-              console.log('uuid=',res);  
-              
-              return res.data || null;
-              
-            })
-            .catch((error) => {
-              console.error(error)
-            });*/
-        console.log('payment success=',response);
+        }).then(response => {
+            if (response) {
+                console.log('response=',response);                
+            }
+        }).catch(error => {
+            
+            if (error) {
+                console.log('Error=',error);
+                
+            }
+        })
     }
-    const cancelPayment = (response) => {   
-        console.log('cancel payment=',response);
-    }
-    const notifyPayment = (response) => {
-        console.log('notify payment=',response);
-    }
+    /***********************************************************************/
+    /***********************************************************************/
+    
     /**
      * Manages visibility of referred by fields
      * 
@@ -214,9 +206,9 @@ const Subscription = () => {
                 let merchantData = {
                     "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
                     "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-                    'return_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/success",
-                    'cancel_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/cancel",
-                    'notify_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/notify",
+                    'return_url' : process.env.REACT_APP_NGROK_URL+"/login/success",
+                    'cancel_url' : process.env.REACT_APP_NGROK_URL+"/login/cancel",
+                    'notify_url' : process.env.REACT_APP_NGROK_URL+"/login/notify",
                     'name_first' : values['firstname'],
                     'name_last' : values['surname'],
                     'email_address' : values['email'],
@@ -228,14 +220,14 @@ const Subscription = () => {
                     'email_confirmation': 1,
                     'confirmation_address': values['email'],
                     'subscription_type' : 1,
-                    'billing_date' : "2023-10-31",
+                    'billing_date' : new Date().toISOString().slice(0, 10),
                     'recurring_amount' : 5.00,
                     'frequency' : 3,
                     'cycles' : 12
                 }
                  
                 var identifierData = generateSignature(merchantData,passPhrase);
-                
+                //pingFast(merchantData['signature']);
                 identifierData.then(result => {
                     
                 })
@@ -260,11 +252,13 @@ const Subscription = () => {
         
         var pfParamString_updated = '';
         merchantData['signature'] = signature;
+        
         //merchantData['subscription_type'] = 2;
         merchantData['subscription_notify_email'] = true;
         merchantData['subscription_notify_webhook'] = true;
         merchantData['subscription_notify_buyer'] = true;
-        console.log('dataArray=',merchantData)
+        console.log('dataArray=',merchantData);
+        
         var dataArray = merchantData;
         //console.log('dataArray',dataArray);
         // Convert your data array to a string
@@ -281,7 +275,9 @@ const Subscription = () => {
         const result = await axios.post('https://sandbox.payfast.co.za/onsite/process', pfParamString_updated)
         //const result = await axios.post('https://www.payfast.co.za/onsite/process', pfParamString_updated)
             .then((res) => {
-              console.log('uuid=',res.data.uuid);  
+              console.log('uuid=',res.data.uuid);
+              localStorage.setItem('merchantData', JSON.stringify(merchantData));
+              console.log('jsonmerchant=',JSON.stringify(merchantData));  
               setIdentifier(res.data.uuid);
               return res.data || null;
               
@@ -304,9 +300,9 @@ const Subscription = () => {
                 <script>{`{
                     window.payfast_do_onsite_payment({
                         uuid: '${identifier}',
-                        "return_url":"https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/success",
-                        "cancel_url":"https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/cancel",
-                        'notify_url' : "https://812f-2405-201-300a-a0bd-d1e9-e20e-f29b-9ec9.ngrok-free.app/learner/subscription/notify",
+                        "return_url": '${process.env.REACT_APP_NGROK_URL}'+"/login/success",
+                        "cancel_url": '${process.env.REACT_APP_NGROK_URL}'+"/login/cancel",
+                        'notify_url' : '${process.env.REACT_APP_NGROK_URL}'+"/login/notify",
                     })
                     }`}
                 </script>

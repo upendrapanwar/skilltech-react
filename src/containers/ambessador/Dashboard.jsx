@@ -1,21 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import banner from '../../assets/images/Banner.png';
 import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
 import barChart from '../../assets/images/The-bar-chart-showing-the-monthly-refractivity-for-Abia-state1.svg';
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import { toast } from 'react-toastify';
+import axios from "axios";
 
 const Dashboard = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    let [referralCode, setReferralCode] = useState(false);
     useEffect(() => {
-
+        getReferralCode();
     }, []);
     toast.configure();
 
     /***********************************************************************/
     /***********************************************************************/
+    const getReferralCode = () => {
+        //ex: HG00123
+        const dataArray = {
+            'userid':userInfo.id
+        };
+        axios.post('common/fetch-ambassador-code',dataArray).then(response => {
+            toast.dismiss();
 
+            if (response.data.status) {
+                console.log('referral_code=',response.data.data.referral_code);
+                //referralCode
+                setReferralCode(response.data.data.referral_code);
+            } 
+        }).catch(error => {
+            console.log('Error',error)    
+            
+        })
+        
+    }
     return (
         <>
             <Header />
@@ -45,6 +65,14 @@ const Dashboard = () => {
                             <p className="mb-0">
                                 Welcome to, <strong>{userInfo.name}</strong> <span className="user_icon"><i
                                     className="far fa-smile"></i></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="card welcome_user_card mb-4">
+                        <div className="card-body">
+                            <p className="mb-0">
+                                Referral Code: <strong>{referralCode}</strong>
                             </p>
                         </div>
                     </div>

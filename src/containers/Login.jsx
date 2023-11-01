@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import banner from '../assets/images/Banner.png';
 import solarArrowUpBroken from '../assets/images/solar_arrow-up-broken.svg';
 import solarArrowUpBrokenBlu from '../assets/images/solar_arrow-up-broken-blu.svg';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import LoginSchema from '../validation-schemas/LoginSchema';
@@ -12,17 +12,97 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 
 const Login = () => {
+    const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    
+    const location = useLocation();
+    console.log('userInfo=',userInfo);
     let [loading, setLoading] = useState('false');
+    let [userid, setUserid] = useState(userInfo ? userInfo.id : null);
     const navigate = useNavigate();
-
+    
+    console.log('userInfo=',userInfo);
     useEffect(() => {
-
+        let tmp = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
+        console.log('pathname=',tmp)
+        if(tmp === "/success"){
+            paymentSuccess()
+        }
+        if(tmp === "/cancel"){
+            cancelPayment()
+        }
+        if(tmp === "/notify"){
+            notifyPayment()
+        }
     }, []);
     toast.configure();
 
     /***********************************************************************/
     /***********************************************************************/
+     /**
+     * Handle payment success from payfast
+     * 
+     */
+    const paymentSuccess = async (response) => {
+        let merchantData = localStorage.getItem("merchantData");
+        const dataArray = {
+            'merchantData' : JSON.parse(merchantData),
+            'userid' : userInfo.id,
+            'payment_status': 'success',
+            'is_recurring' : 'yes',
+            'is_active' : 'true'
+        }
+        
+        axios.post('common/save-subscription', dataArray).then(response => {
 
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Successful!', { position: "top-center",autoClose: 3000 });
+                //}
+                
+                //navigate('/login');
+            }
+            localStorage.setItem('merchantData', '');
+        }).catch(error => {
+            toast.dismiss();
+            localStorage.setItem('merchantData', '');
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+
+    const cancelPayment = (response) => {   
+        console.log('cancel payment=',response);
+        let merchantData = JSON.parse(localStorage.getItem("allmerchantData"));
+        const dataArray = {
+            'merchantData' : merchantData,
+            'userid' : userInfo.id,
+            'paymentStatus': 'cancel'
+        }
+        //allMerchantData
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Unsuccessful!', { position: "top-center",autoClose: 3000 });
+                //}
+                
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+    }
+    const notifyPayment = (response) => {
+        console.log('notify payment=',response);
+        
+    }
     /**
      * Handle after form submission
      * 
@@ -41,6 +121,7 @@ const Login = () => {
                     token: response.data.data.token,
                 };
                 let userInfo = {
+                    id: response.data.data['_id'],
                     name: response.data.data.firstname +' '+response.data.data.surname ,
                     email: response.data.data.email,
                     role: response.data.data.role,
