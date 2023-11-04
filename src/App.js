@@ -18,6 +18,7 @@ import Subscription from './containers/learner/Subscription';
 import AmbassadorSubscription from './containers/ambessador/Subscription';
 import PrivacyPolicy from './containers/Privacy-policy';
 import TermsOfService from './containers/Terms-of-service';
+import Courses from './containers/store/Courses';
 
 function App() {
   return (
@@ -37,6 +38,8 @@ function App() {
         <Route path='/owner/dashboard' element={<Ownerdashboard/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
         <Route path='/terms-of-service' element={<TermsOfService/>} />
+        
+        <Route path='/browse-courses' element={<Courses/>} />
      </Routes>
     </>
   );

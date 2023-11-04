@@ -57,7 +57,7 @@ const Header = () => {
                                             <Link className="nav-link" to="/">Home <span className="sr-only">(current)</span></Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link className="nav-link" to="#">Browse Courses</Link>
+                                            <Link className="nav-link" to="/browse-courses">Browse Courses</Link>
                                         </li>
                                         <li className="nav-item dropdown">
                                             <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
