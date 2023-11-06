@@ -2,6 +2,7 @@ import React from 'react'
 
 
 const Pagination = ({ postsPerPage, totalPosts, paginate}) => {
+  
   const pageNumbers = [];
 
   for(let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
@@ -9,15 +10,15 @@ const Pagination = ({ postsPerPage, totalPosts, paginate}) => {
   } 
 
   return (
-    <div className = "pagination">
-    <ul>
-    {pageNumbers.map(number => (
-      <li key = {number}>
-        <a onClick = {() => paginate(number)} href = "!#">{number}</a>
-      </li>
-    ))}
-    </ul>
-    </div>
+    <nav aria-label="...">
+      <ul className="pagination">
+        {pageNumbers.map(number => (
+          <li key = {number} className="page-item">
+            <a className="page-link mr-2" onClick = {() => paginate(number)} href = "javascript:void(0)">{number}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   )
 }
 
