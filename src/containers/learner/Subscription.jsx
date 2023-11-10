@@ -10,15 +10,15 @@ import { Formik} from 'formik';
 import axios from "axios";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import config from '../../config.json';
-import { Helmet } from 'react-helmet';
-
+//import { Helmet } from 'react-helmet';
+//import { useSelector } from 'react-redux'
 
 const Subscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
     const pfParamString = '';
     const location = useLocation()
     //console.log(process.env);
-    const passPhrase = process.env.REACT_APP_PASSPHRASE;
+    //const passPhrase = process.env.REACT_APP_PASSPHRASE;
 
     console.log('userInfo=',userInfo);
 
@@ -26,18 +26,21 @@ const Subscription = () => {
     let [showReferred, setShowReferred] = useState(false);
     let [signature, setSignature] = useState(null);
     let [userid, setUserid] = useState(userInfo.id);
-    let [identifier, setIdentifier] = useState(null);
+    //let [identifier, setIdentifier] = useState(null);
     let [allmerchantData, setAllMerchantData] = useState(null);
     
     const navigate = useNavigate();
-    
+    //const cart = useSelector((state) => state.cart)
+
+    //console.log('carts=',cart)
     useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
+        
+        //const script = document.createElement('script');
+        //script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
         //script.src = 'https://www.payfast.co.za/onsite/onsite/engine.js'
         
-        script.async = true;
-        document.body.appendChild(script);
+        //script.async = true;
+        //document.body.appendChild(script);
         
         console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
         
@@ -56,9 +59,11 @@ const Subscription = () => {
         "textDecoration": "underline",
         "width": "100%"
     }
+    
     /**
      * Ping the payfast api to get data
      */
+    {/*
     const pingFast = async(signatureData) => {
         let timestamp = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
         await axios.post('https://api.payfast.co.za/ping?testing=true', {
@@ -79,14 +84,14 @@ const Subscription = () => {
                 
             }
         })
-    }
+    }*/}
     /***********************************************************************/
     /***********************************************************************/
     
     /**
      * Manages visibility of referred by fields
      * 
-     * @param {*} e 
+     * @param {*} event 
      * 
      */
     const handleRefferedBy = (e) => {
@@ -133,6 +138,7 @@ const Subscription = () => {
      * Handle complete regsitration
      * 
      */
+    {/*
     const generateSignature = async (merchantData, passPhrase) => {
         setLoading(true);
         const dataArray = {
@@ -170,7 +176,7 @@ const Subscription = () => {
                 setLoading(false);
             }, 300);
         });
-    }
+    }*/}
     /***********************************************************************/
     /***********************************************************************/
     /**
@@ -201,36 +207,64 @@ const Subscription = () => {
         axios.post('common/subscription', values).then(response => {
             toast.dismiss();
             if (response.data.status) {
-                const passPhrase = process.env.REACT_APP_PASSPHRASE;
+                //let merchantData = '';
+                //let paymentType = '';
+                //let orderItemName = 'Order#';
+                //const passPhrase = process.env.REACT_APP_PASSPHRASE;
                 toast.success(response.data.message, { position: "top-center",autoClose: 3000 });
-                let merchantData = {
-                    "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
-                    "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-                    'return_url' : process.env.REACT_APP_NGROK_URL+"/login/success",
-                    'cancel_url' : process.env.REACT_APP_NGROK_URL+"/login/cancel",
-                    'notify_url' : process.env.REACT_APP_NGROK_URL+"/login/notify",
-                    'name_first' : values['firstname'],
-                    'name_last' : values['surname'],
-                    'email_address' : values['email'],
-                    'cell_number' : values['mobile_number'],
-                    'm_payment_id' : 'Order#HighVistaSubscription',
-                    'amount' : 5.00,
-                    'item_name' : 'Order#HighVistaSubscription',
-                    'item_description': 'Order for subscription',    
-                    'email_confirmation': 1,
-                    'confirmation_address': values['email'],
-                    'subscription_type' : 1,
-                    'billing_date' : new Date().toISOString().slice(0, 10),
-                    'recurring_amount' : 5.00,
-                    'frequency' : 3,
-                    'cycles' : 12
+                {/*cart.forEach(item => {
+                    paymentType = item.paymentType
+                    orderItemName = orderItemName + item.title
+                })
+                if(paymentType === 'subscription') {
+                    merchantData = {
+                        "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+                        "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+                        'return_url' : process.env.REACT_APP_NGROK_URL+"/login/success",
+                        'cancel_url' : process.env.REACT_APP_NGROK_URL+"/login/cancel",
+                        'notify_url' : process.env.REACT_APP_NGROK_URL+"/login/notify",
+                        'name_first' : values['firstname'],
+                        'name_last' : values['surname'],
+                        'email_address' : values['email'],
+                        'cell_number' : values['mobile_number'],
+                        'm_payment_id' : orderItemName,
+                        'amount' : getTotal().totalPrice,
+                        'item_name' : orderItemName,
+                        'item_description': 'Order for Hign Vista Subscription',    
+                        'email_confirmation': 1,
+                        'confirmation_address': values['email'],
+                        'subscription_type' : 1,
+                        'billing_date' : new Date().toISOString().slice(0, 10),
+                        'recurring_amount' : getTotal().totalPrice,
+                        'frequency' : 3,
+                        'cycles' : 12
+                    }
+                } else {
+                    merchantData = {
+                        "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+                        "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+                        'return_url' : process.env.REACT_APP_NGROK_URL+"/login/success",
+                        'cancel_url' : process.env.REACT_APP_NGROK_URL+"/login/cancel",
+                        'notify_url' : process.env.REACT_APP_NGROK_URL+"/login/notify",
+                        'name_first' : values['firstname'],
+                        'name_last' : values['surname'],
+                        'email_address' : values['email'],
+                        'cell_number' : values['mobile_number'],
+                        'm_payment_id' : orderItemName,
+                        'amount' : getTotal().totalPrice,
+                        'item_name' : orderItemName,
+                        'item_description': 'Order for one off payment',    
+                        'email_confirmation': 1,
+                        'confirmation_address': values['email']
+                    }
                 }
+                
                  
                 var identifierData = generateSignature(merchantData,passPhrase);
                 //pingFast(merchantData['signature']);
                 identifierData.then(result => {
                     
-                })
+                })*/}
                  
                 //navigate('/login');
             }
@@ -247,7 +281,7 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-
+    {/*
     const generatePaymentIdentifier = async (signature, merchantData) => {
         
         var pfParamString_updated = '';
@@ -288,13 +322,13 @@ const Subscription = () => {
         console.log("res.data", result);
         //axios.defaults.baseURL = config.apiURI;
         return result;
-    };
+    };*/}
     
     return (
         
         <>
             {loading === true ? <Loader /> : ''}
-            {identifier &&
+            {/*{identifier &&
             
             <Helmet>
                 <script>{`{
@@ -307,7 +341,7 @@ const Subscription = () => {
                     }`}
                 </script>
             </Helmet>
-            }
+            }*/}
             <Header />
             
             
@@ -758,7 +792,7 @@ const Subscription = () => {
                                             </div>
 
                                             <div className="avg__form_panel">
-                                                <button type="submit" className="btn btn-primary btn-color bt-size mt-4 mb-4" data-id={isSubmitting}>Submit and Access my Courses!<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span>
+                                                <button type="submit" className="btn btn-primary btn-color bt-size mt-4 mb-4" data-id={isSubmitting}>Go to Cart and Pay!<span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span>
                                                 </button>
                                             </div>
                                         </form>

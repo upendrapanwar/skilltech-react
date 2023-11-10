@@ -6,29 +6,192 @@ import Footer from "../../components/common/Footer";
 import Loader from "../../components/common/Loader";
 import axios from "axios";
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { clearCart } from '../../redux/cartSlice';
+import { useSelector, useDispatch } from 'react-redux'
 
 const Dashboard = () => {
-    const userInfo = JSON.parse(localStorage.getItem("authInfo")) ? JSON.parse(localStorage.getItem("authInfo")) : null ;
+    const userInfo = JSON.parse(localStorage.getItem("authInfo")) ? JSON.parse(localStorage.getItem("authInfo")) : null;
     let [loading, setLoading] = useState('false');
+    let [myCourses, setMyCourses] = useState('');
+    const dispatch = useDispatch();
     //let [userid, setUserid] = useState(userInfo.id);
     const udis = userInfo ? userInfo.id : null;
     let [userid, setUserid] = useState(udis);
-
+    const location = useLocation();
+    const userData = JSON.parse(localStorage.getItem("userInfo"));
+    
     useEffect(() => {
         //console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
         if(userInfo && userInfo.isSubscriberRegister === null){
-            completeRegistration();
+            //completeRegistration();
         }
         let authInfo = {
             isSubscriberRegister: null
         };
         localStorage.setItem('authInfo', JSON.stringify(authInfo));
+        let tmp = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
+        console.log('pathname=',tmp)
+        if(tmp === "/success"){
+            paymentSuccess()
+        }
+        if(tmp === "/cancel"){
+            cancelPayment()
+        }
+        if(tmp === "/notify"){
+            notifyPayment()
+        }
+        
+        getMyCourses();
+        
     }, []);
     toast.configure();
     const navigate = useNavigate();
     /***********************************************************************/
     /***********************************************************************/
+    /**
+     * Handle payment success from payfast
+     * 
+     */
+    const paymentSuccess = async (response) => {
+        let merchantData = localStorage.getItem("merchantData");
+        let merchantDataResult = JSON.parse(merchantData);
+        let is_recurring = '';
+        if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
+            is_recurring = 'yes'
+        }
+        if(merchantDataResult['item_description'] == "Order for one off payment") {
+            is_recurring = 'no'
+        }
+        const dataArray = {
+            'merchantData' : merchantDataResult,
+            'userid' : userData.id,
+            'payment_status': 'success',
+            'is_recurring' : is_recurring,
+            'is_active' : 'true'
+        }
+        
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Successful!', { position: "top-center",autoClose: 3000 });
+                    dispatch(clearCart());
+                //}
+                
+                //navigate('/login');
+            }
+            localStorage.setItem('merchantData', '');
+        }).catch(error => {
+            toast.dismiss();
+            localStorage.setItem('merchantData', '');
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        getMyCourses();
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+
+    const cancelPayment = (response) => {   
+        console.log('cancel payment=',response);
+        let merchantData = localStorage.getItem("merchantData");
+        let merchantDataResult = JSON.parse(merchantData);
+        let is_recurring = '';
+        if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
+            is_recurring = 'yes'
+        }
+        if(merchantDataResult['item_description'] == "Order for one off payment") {
+            is_recurring = 'no'
+        }
+        const dataArray = {
+            'merchantData' : merchantData,
+            'userid' : userData.id,
+            'paymentStatus': 'cancel',
+            'is_recurring' : is_recurring,
+            'is_active' : 'false'
+        }
+        //allMerchantData
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Unsuccessful!', { position: "top-center",autoClose: 3000 });
+                    dispatch(clearCart());
+                //}
+                
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        getMyCourses();
+    }
+    const notifyPayment = (response) => {
+        console.log('notify payment=',response);
+        let merchantData = localStorage.getItem("merchantData");
+        let merchantDataResult = JSON.parse(merchantData);
+        let is_recurring = '';
+        if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
+            is_recurring = 'yes'
+        }
+        if(merchantDataResult['item_description'] == "Order for one off payment") {
+            is_recurring = 'no'
+        }
+        const dataArray = {
+            'merchantData' : merchantDataResult,
+            'userid' : userData.id,
+            'payment_status': 'success',
+            'is_recurring' : is_recurring,
+            'is_active' : 'true'
+        }
+        
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Successful!', { position: "top-center",autoClose: 3000 });
+                    dispatch(clearCart());
+                //}
+                
+                //navigate('/login');
+            }
+            localStorage.setItem('merchantData', '');
+        }).catch(error => {
+            toast.dismiss();
+            localStorage.setItem('merchantData', '');
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        getMyCourses();
+    }
+    const getMyCourses = () => {
+        axios.get('common/get-my-courses/'+ userData.id).then(response => {
+                toast.dismiss();
+    
+                if (response.data) {
+                    
+                    if(response.data.status) {
+                        setMyCourses(response.data.data);
+                        console.log(response.data)
+                    }
+                    
+                }
+            }).catch(error => {
+                toast.dismiss();
+                if (error.response) {
+                    toast.error('Code is not available', { position: "top-center",autoClose: 3000 });
+                }
+            });
+        
+      }
+      /***********************************************************************/
+      /***********************************************************************/
     /**
      * Handle complete regsitration
      * 
@@ -68,6 +231,7 @@ const Dashboard = () => {
     /***********************************************************************/
 
     return (
+        
         <>
             <Header />
             <div className="hvg__page_banner">
@@ -120,26 +284,13 @@ const Dashboard = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <th scope="row">Skilful selling</th>
-                                                        <td>Mark</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Assertiveness</th>
-                                                        <td>Jacob</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Skilful selling</th>
-                                                        <td>Larry</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Skilful selling</th>
-                                                        <td>Mark</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Assertiveness</th>
-                                                        <td>Jacob</td>
-                                                    </tr>
+                                                    {console.log('myCourses',myCourses)}
+                                                {myCourses.length > 0 ? myCourses.map((item,i) =>
+                                                    (<tr>
+                                                        <th scope="row">{item.plan_name}</th>
+                                                        <td>{item.createdAt}</td>
+                                                    </tr>)  
+                                                    ): <tr></tr>} 
                                                 </tbody>
                                             </table>
                                         </div>

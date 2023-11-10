@@ -1,21 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/high-vista-guild.svg';
+import { ShoppingCart } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
     const [toggle, setToggle] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
+    const cart = useSelector((state) => state.cart);
+
     useEffect(() => {
 
     }, []);
-    
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Manages total quantity
+     * 
+     */
+    const getTotalQuantity = () => {
+        let total = 0
+        cart.forEach(item => {
+        total += item.quantity
+        })
+        return total
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Handles logout
+     * 
+     */
     const logout = (e) => {
         localStorage.clear();
         //dispatch(setLoginStatus({isLoggedIn: false}));
         //dispatch(setUserInfo({userInfo: []}));
         window.location.href = '/login';
     }
+    /***********************************************************************/
+    /***********************************************************************/
     /**
      * Handle signup as ambassador
      * 
@@ -98,7 +122,13 @@ const Header = () => {
                                                 
                                                 </>
                                             )}
-
+                                                    
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/cart">
+                                                <ShoppingCart id='cartIcon'/>
+                                                <span>{getTotalQuantity() || 0}</span>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>

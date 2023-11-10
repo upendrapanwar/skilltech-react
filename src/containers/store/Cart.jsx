@@ -1,0 +1,383 @@
+import React , { useEffect, useState } from 'react';
+import '../../assets/css/store/cart.css'
+import Total from '../../components/cart/Total'
+import CartItem from '../../components/cart/CartItem'
+import { useSelector, useDispatch } from 'react-redux'
+import Header from "../../components/common/Header";
+import Footer from "../../components/common/Footer";
+import banner from '../../assets/images/Banner.png';
+import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import axios from "axios";
+import { getDiscount } from '../../redux/cartSlice';
+import { toast } from 'react-toastify';
+
+const Cart = () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const passPhrase = process.env.REACT_APP_PASSPHRASE;
+  let [signature, setSignature] = useState(null);
+  let [referralCode, setReferralCode] = useState(null);
+  let [identifier, setIdentifier] = useState(null);
+  const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart)
+  const cartState = useSelector((state) => state)
+  console.log('cart=',cart);
+  console.log('userInfo=',userInfo);
+  localStorage.setItem("discount_percent",0);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    
+    const script = document.createElement('script');
+        script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
+        //script.src = 'https://www.payfast.co.za/onsite/onsite/engine.js'
+        
+        script.async = true;
+        document.body.appendChild(script);
+        let isSubscription = '';
+        cart.forEach(item => {
+          isSubscription = item.paymentType
+        })
+        console.log('isSubscription=',isSubscription);
+        if(isSubscription == 'subscription') {
+          dispatch(getDiscount(5));
+        }
+  }, []);
+
+  const handleBackToBrowse = () => {
+    navigate('/browse-courses');
+  }
+  
+  /**
+  * Handle referral code
+  * 
+  */
+  const handleCode = (event) => {
+    setReferralCode(event.target.value);
+  }
+  const handleReferralCode = (event) => {
+    axios.get('common/check-referral-code/'+ referralCode).then(response => {
+            toast.dismiss();
+
+            if (response.data) {
+                if(response.status) {
+                  localStorage.setItem("discount_percent",5);
+                  let isSubscription = '';
+                  cart.forEach(item => {
+                    isSubscription = item.paymentType
+                  })
+                  
+                  if(isSubscription == 'subscription') {
+                    dispatch(getDiscount(10));
+                  } else {
+                    dispatch(getDiscount(5));
+                  }
+                  
+                  toast.success('Code applied Sucessfully', { position: "top-center",autoClose: 3000 });
+                }
+                
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Code is not available', { position: "top-center",autoClose: 3000 });
+            }
+        });
+    
+  }
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
+  * Handle subscribe now
+  * 
+  */
+  const handleSubscribeNow = () => {
+    
+    let merchantData = '';
+    let paymentType = '';
+    let orderItemName = 'Order#';
+    let userName = userInfo.name;
+    let userArray = userName.split(" ");
+    let firstName = userArray[0];
+    let lastName = userArray[1];
+    const passPhrase = process.env.REACT_APP_PASSPHRASE;
+    cart.forEach(item => {
+      paymentType = item.paymentType
+      orderItemName = orderItemName + item.title
+    })
+    console.log('paymentType=',paymentType);
+    
+    if(paymentType === 'subscription') {
+      merchantData = {
+          "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+          "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+          'return_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/success",
+          'cancel_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/cancel",
+          'notify_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/notify",
+          'name_first' : firstName,
+          'name_last' : lastName,
+          'email_address' : userInfo.email,
+          'cell_number' : '0765434543',
+          'm_payment_id' : orderItemName,
+          'amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          'item_name' : orderItemName,
+          'item_description': 'Order for Hign Vista Subscription',    
+          'email_confirmation': 1,
+          'confirmation_address': userInfo.email,
+          'subscription_type' : 1,
+          'billing_date' : new Date().toISOString().slice(0, 10),
+          'recurring_amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          'frequency' : 3,
+          'cycles' : 12
+      }
+  } else {
+      merchantData = {
+          "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
+          "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
+          'return_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/success",
+          'cancel_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/cancel",
+          'notify_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/notify",
+          'name_first' : firstName,
+          'name_last' : lastName,
+          'email_address' : userInfo.email,
+          'cell_number' : '0765434543',
+          'm_payment_id' : orderItemName,
+          'amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          'item_name' : orderItemName,
+          'item_description': 'Order for one off payment',    
+          'email_confirmation': 1,
+          'confirmation_address': userInfo.email
+      }
+      console.log('called');
+      
+  }
+  var identifierData = generateSignature(merchantData,passPhrase);
+      //pingFast(merchantData['signature']);
+      identifierData.then(result => {
+                    
+      })
+    //navigate('/learner/subscription');
+  }
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
+    * Get the total of the cart
+    * 
+  */
+  const getTotal = () => {
+    let totalQuantity = 0
+    let totalPrice = 0
+    cart.forEach(item => {
+      totalQuantity += item.quantity
+      totalPrice += item.price * item.quantity
+      
+    })
+    
+    return {totalPrice, totalQuantity}
+  }
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
+   * Ping the payfast api to get data
+   * 
+  */
+  const pingFast = async(signatureData) => {
+    let timestamp = new Date(new Date().toString().split('GMT')[0]+' UTC').toISOString().split('.')[0];
+    await axios.post('https://api.payfast.co.za/ping?testing=true', {
+        headers: {
+            'merchant-id': process.env.REACT_APP_MERCHANT_ID,
+            'version': 'v1',
+            'timestamp': timestamp,
+            'signature': signatureData
+        }
+    }).then(response => {
+        if (response) {
+            console.log('response=',response);                
+        }
+    }).catch(error => {
+        
+        if (error) {
+            console.log('Error=',error);
+            
+        }
+    })
+}
+/***********************************************************************/
+/***********************************************************************/
+/**
+  * Handle complete regsitration
+  * 
+*/
+const generateSignature = async (merchantData, passPhrase) => {
+  //setLoading(true);
+  const dataArray = {
+      'merchantData':merchantData,
+      //'payment_method': 'cc',
+      'passPhrase':passPhrase,
+      'testMode' : true
+  };
+  await axios.post('common/generate-signature', dataArray).then(response => {
+      toast.dismiss();
+      //console.log('response=',response.data);
+      //console.log('signature=',response.data.data);
+      //merchantData.push({'signature':response.data.data})
+      
+      setSignature(response.data.data);
+      
+      //console.log('signature=',response.data.data);
+      //console.log('merchantData=',merchantData);
+     
+      // Generate payment identifier
+      
+      if (response.data.status) {
+          //var identifierVar = generatePaymentIdentifier(response.data.data, merchantData);
+          return generatePaymentIdentifier(response.data.data, merchantData);    
+          //setIdentifier(identifierVar);
+          //navigate('/login');
+      }
+  }).catch(error => {
+      toast.dismiss();
+      if (error.response) {
+          toast.error('Please complete your registation', { position: "top-center",autoClose: 3000 });
+      }
+  }).finally(() => {
+      setTimeout(() => {
+          //setLoading(false);
+      }, 300);
+  });
+}
+/***********************************************************************/
+/***********************************************************************/
+const generatePaymentIdentifier = async (signature, merchantData) => {
+        
+  var pfParamString_updated = '';
+  merchantData['signature'] = signature;
+  
+  //merchantData['subscription_type'] = 2;
+  merchantData['subscription_notify_email'] = true;
+  merchantData['subscription_notify_webhook'] = true;
+  merchantData['subscription_notify_buyer'] = true;
+  console.log('dataArray=',merchantData);
+  
+  var dataArray = merchantData;
+  //console.log('dataArray',dataArray);
+  // Convert your data array to a string
+  let pfParamString = "";
+  for (let key in dataArray) {
+      if(dataArray.hasOwnProperty(key)){pfParamString +=`${key}=${encodeURIComponent(dataArray[key]).replace(/%20/g, "+")}&`;}
+  }
+  // Remove last ampersand
+  pfParamString_updated = pfParamString.slice(0, -1);
+  console.log('pfParamString=',pfParamString_updated);
+  
+  //console.log('sandboxurl=',process.env.REACT_APP_SANDBOX_PAYFAST_URL);
+  //axios.defaults.baseURL = '';
+  const result = await axios.post('https://sandbox.payfast.co.za/onsite/process', pfParamString_updated)
+  //const result = await axios.post('https://www.payfast.co.za/onsite/process', pfParamString_updated)
+      .then((res) => {
+        console.log('uuid=',res.data.uuid);
+        localStorage.setItem('merchantData', JSON.stringify(merchantData));
+        console.log('jsonmerchant=',JSON.stringify(merchantData));  
+        setIdentifier(res.data.uuid);
+        return res.data || null;
+        
+      })
+      .catch((error) => {
+        console.error(error)
+      });
+  console.log("res.data", result);
+  //axios.defaults.baseURL = config.apiURI;
+  return result;
+};
+/***********************************************************************/
+/***********************************************************************/
+  return (
+    <>
+    {identifier &&
+            
+            <Helmet>
+                <script>{`{
+                    window.payfast_do_onsite_payment({
+                        uuid: '${identifier}',
+                        "return_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/success",
+                        "cancel_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/cancel",
+                        'notify_url' : '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/notify",
+                    })
+                    }`}
+                </script>
+            </Helmet>
+    }
+    <Header />
+    <div className="hvg__page_banner">
+                <div className="banner-thumnail">
+                    <img src={banner} alt=""/>
+                </div>
+                <div className="banner-container">
+                    <div className="container">
+                        <div className="banner-content">
+                            <div className="banner-heading col-md-6">
+                                <div className="row">
+                                    <h1>Cart</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div className="cart">
+          <div className="cart__left">
+            <div>
+              <h3>Shopping Cart</h3>
+              <span className="amb-btn mt-4">
+                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleBackToBrowse}>Back to browse
+                  <span className="arrow-btn">
+                    <img src ={solarArrowUpBroken} alt=""/>
+                  </span>
+                </button>
+              </span>
+              {cart?.map((item) => (
+                <CartItem
+                  key={item.id}
+                  id={item.id}
+                  image={item.image}
+                  title={item.title}
+                  price={item.price} 
+                  quantity={item.quantity}
+                  paymentType={item.paymentType}
+                />
+              ))}
+              <div className="row  form-row">
+                <div className="form-group col-md-6">
+                  <label htmlFor="id_number">Referral Code<span></span></label>
+                  <input type="text" className="form-control" name="referral_code" id="referral_code" placeholder="" aria-describedby="referral_codeHelp" onChange={handleCode}/>
+                  <span className="amb-btn mt-4">
+                    <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleReferralCode}>Apply<br/>
+                  <span className="arrow-btn">
+                    <img src ={solarArrowUpBroken} alt=""/>
+                  </span>
+                </button>
+              </span>
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="cart__right">
+            <Total/>
+            <span className="amb-btn mt-4">
+              <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleSubscribeNow}>Subscribe now
+                <span className="arrow-btn">
+                  <img src ={solarArrowUpBroken} alt=""/>
+                </span>
+              </button>
+            </span>
+          </div>
+
+        </div>
+      <Footer />
+    </>
+  )
+}
+
+export default Cart

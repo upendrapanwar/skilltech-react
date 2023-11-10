@@ -19,6 +19,8 @@ import AmbassadorSubscription from './containers/ambessador/Subscription';
 import PrivacyPolicy from './containers/Privacy-policy';
 import TermsOfService from './containers/Terms-of-service';
 import Courses from './containers/store/Courses';
+import CoursesDetails from './containers/store/CoursesDetails';
+import Cart from './containers/store/Cart';
 
 function App() {
   return (
@@ -26,9 +28,9 @@ function App() {
       <Routes>
         <Route exact path='/' element={<Home/>} />
         <Route path='/login' element={<Login/>} />
-        <Route path='/login/success' element={<Login/>} />
-        <Route path='/login/cancel' element={<Login/>} />
-        <Route path='/login/notify' element={<Login/>} />
+        <Route path='/learner/dashboard/success' element={<LearnerDashboard/>} />
+        <Route path='/learner/dashboard/cancel' element={<LearnerDashboard/>} />
+        <Route path='/learner/dashboard/notify' element={<LearnerDashboard/>} />
         <Route path='/signup' element={<Signup/>} />
         <Route path='/learner/dashboard' element={<LearnerDashboard/>} />
         <Route path='/learner/subscription' element={<Subscription/>} />
@@ -40,6 +42,8 @@ function App() {
         <Route path='/terms-of-service' element={<TermsOfService/>} />
         
         <Route path='/browse-courses' element={<Courses/>} />
+        <Route path='/courses-details' element={<CoursesDetails/>} />
+        <Route path='/cart' element={<Cart/>} />
      </Routes>
     </>
   );

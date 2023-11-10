@@ -5,14 +5,18 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import config from './config.json';
-
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const root = createRoot(document.getElementById('root'));
 axios.defaults.baseURL = config.apiURI;
 
 root.render(
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
+    
   </BrowserRouter>
 );
 
