@@ -17,6 +17,7 @@
   .cartItem__info > button{
     border: unset;
     margin-top: 10px;
+    margin-left: 20px;
     border-radius: 5px;
     background-color: transparent;
   }
@@ -40,11 +41,11 @@
   .cartItem__incrDec{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
     width: 100px;
   }
-  
+  .cartItem__incrDec p {
+    margin: 0px;
+  }
   .cartItem__incrDec button{
     width: 25px;
     height: 25px;

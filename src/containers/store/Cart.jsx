@@ -17,6 +17,7 @@ const Cart = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const passPhrase = process.env.REACT_APP_PASSPHRASE;
   let [signature, setSignature] = useState(null);
+  let [showReferral, setShowReferral] = useState(false);
   let [referralCode, setReferralCode] = useState(null);
   let [identifier, setIdentifier] = useState(null);
   const navigate = useNavigate();
@@ -41,6 +42,9 @@ const Cart = () => {
         console.log('isSubscription=',isSubscription);
         if(isSubscription == 'subscription') {
           dispatch(getDiscount(5));
+        }
+        if(cart.length > 0) {
+          setShowReferral(true);
         }
   }, []);
 
@@ -68,10 +72,8 @@ const Cart = () => {
                   })
                   
                   if(isSubscription == 'subscription') {
-                    dispatch(getDiscount(10));
-                  } else {
-                    dispatch(getDiscount(5));
-                  }
+                    //dispatch(getDiscount(5));
+                  } 
                   
                   toast.success('Code applied Sucessfully', { position: "top-center",autoClose: 3000 });
                 }
@@ -347,19 +349,26 @@ const generatePaymentIdentifier = async (signature, merchantData) => {
                   paymentType={item.paymentType}
                 />
               ))}
-              <div className="row  form-row">
-                <div className="form-group col-md-6">
-                  <label htmlFor="id_number">Referral Code<span></span></label>
-                  <input type="text" className="form-control" name="referral_code" id="referral_code" placeholder="" aria-describedby="referral_codeHelp" onChange={handleCode}/>
-                  <span className="amb-btn mt-4">
-                    <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleReferralCode}>Apply<br/>
-                  <span className="arrow-btn">
-                    <img src ={solarArrowUpBroken} alt=""/>
-                  </span>
-                </button>
-              </span>
-              </div>
-              </div>
+              {setShowReferral &&
+              <>
+                <div className='row form-now'>
+                  <p><strong>If you have you been referred by a High Vista Guild Ambassador, please enter the Ambassador’s referral code and click on Apply Referral Code. Please contact your Ambassador to get the referral code if you haven’t received it</strong></p>
+                </div>
+                <div className="row  form-row">
+                  <div className="form-group col-md-6">
+                    <label htmlFor="id_number">Referral Code<span></span></label>
+                    <input type="text" className="form-control" name="referral_code" id="referral_code" placeholder="" aria-describedby="referral_codeHelp" onChange={handleCode}/>
+                    <span className="amb-btn mt-4">
+                      <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleReferralCode}>Apply Referral Code<br/>
+                      <span className="arrow-btn">
+                        <img src ={solarArrowUpBroken} alt=""/>
+                      </span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </>
+              }
             </div>
           </div>
 

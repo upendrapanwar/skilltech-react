@@ -26,8 +26,8 @@ const Total = () => {
     <div className="total">
       <h2>ORDER SUMMARY</h2>
       <div>
-      <div className="total__p">Shipping : <strong>0</strong></div>
-      <div className="total__p">Discount : <strong>{(state.discount != null) ? state.discount : 0}</strong></div>
+      {/*<div className="total__p">Shipping : <strong>0</strong></div>
+      <div className="total__p">Discount : <strong>{(state.discount != null) ? state.discount : 0}</strong></div>*/}
         <p className="total__p">
           total ({getTotal().totalQuantity} items) 
           : <strong>R{(state.totalPrice != 0) ? state.totalPrice : getTotal().totalPrice}</strong>

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -9,8 +10,9 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       
       const itemInCart = state.cart.find((item) => item.id === action.payload.id);
-      
+      toast.success("Added to cart!", { position: "top-center",autoClose: 3000 });
       if (itemInCart) {
+
         itemInCart.quantity++;
       } else {
         
@@ -30,9 +32,9 @@ const cartSlice = createSlice({
         totalPrice += item.price * item.quantity
       })
       
-      discount = (totalPrice * (percent/100));
-      state.discount = discount;
-      state.totalPrice = totalPrice - discount;
+      //discount = (totalPrice * (percent/100));
+      //state.discount = discount;
+      //state.totalPrice = totalPrice - discount;
     },
     decrementQuantity: (state, action) => {
       const item = state.cart.find((item) => item.id === action.payload);
@@ -50,9 +52,9 @@ const cartSlice = createSlice({
         totalPrice += item.price * item.quantity
       })
       
-      discount = (totalPrice * (percent/100));
-      state.discount = discount;
-      state.totalPrice = totalPrice - discount;
+      //discount = (totalPrice * (percent/100));
+      //state.discount = discount;
+      //state.totalPrice = totalPrice - discount;
     },
     removeItem: (state, action) => {
       const removeItem = state.cart.filter((item) => item.id !== action.payload);
@@ -65,10 +67,10 @@ const cartSlice = createSlice({
         totalQuantity += item.quantity
         totalPrice += item.price * item.quantity
       })
-      
-      discount = (totalPrice * (percent/100));
-      state.discount = discount;
-      state.totalPrice = totalPrice - discount;
+      toast.error("Removed From Cart!", { position: "top-center",autoClose: 3000 });
+      //discount = (totalPrice * (percent/100));
+      //state.discount = discount;
+      //state.totalPrice = totalPrice - discount;
       if (removeItem.quantity === 0) {
         state.percent = 0;
         state.discount = 0;
@@ -91,7 +93,7 @@ const cartSlice = createSlice({
         totalPrice += item.price * item.quantity
       })
       
-      discount = (totalPrice * (percent/100));
+      //discount = (totalPrice * (percent/100));
       state.discount = discount;
       state.percent = percent;
       state.totalPrice = totalPrice - discount;

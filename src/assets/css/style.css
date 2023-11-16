@@ -771,8 +771,15 @@ footer .footer-content ul li a {
     padding: 0;
     margin-bottom: 40px;
     width: 31.3%;
+    min-height: 380px;
+    margin-right:20px;
 }
-
+.course-details h4 {
+    min-height: 50px;
+}
+#referral_code {
+    margin-bottom: 10px;
+}
 .courseCat-grid-section .courseCat-grid-row .course_item .figure {
     margin-bottom: 0px;
 }

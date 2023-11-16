@@ -98,6 +98,7 @@ const Dashboard = () => {
         console.log('cancel payment=',response);
         let merchantData = localStorage.getItem("merchantData");
         let merchantDataResult = JSON.parse(merchantData);
+        console.log('merchantDataResult=',merchantDataResult);
         let is_recurring = '';
         if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
@@ -106,18 +107,19 @@ const Dashboard = () => {
             is_recurring = 'no'
         }
         const dataArray = {
-            'merchantData' : merchantData,
+            'merchantData' : merchantDataResult,
             'userid' : userData.id,
-            'paymentStatus': 'cancel',
+            'payment_status': 'cancel',
             'is_recurring' : is_recurring,
             'is_active' : 'false'
         }
+        
         //allMerchantData
         axios.post('common/save-subscription', dataArray).then(response => {
 
             if (response) {
                 //if(response.data.message === "Error while saving.") {
-                    toast.success('Registration Unsuccessful!', { position: "top-center",autoClose: 3000 });
+                    toast.success('Registration Cancelled!', { position: "top-center",autoClose: 3000 });
                     dispatch(clearCart());
                 //}
                 

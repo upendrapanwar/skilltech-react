@@ -273,7 +273,7 @@ const Courses = () => {
                                             <div className="table-heading">
                                             <h3>The High Vista Course Package</h3>
                                             <p className="pb-2">Subscribe now and get access to 10 awesome courses. Our courses are designed to help you unlock your potential - whether in the boardroom, dealing with potential customers or working in a team.</p>
-                                            <p className="priceperMonth"><span>R500 /</span> per month (5% discount)</p>
+                                            <p className="priceperMonth"><span>R500 /</span> per month</p>
                                             </div>
                                             <div className="amb-btn mt-4">
                                                 <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleVistaDetails}>Learn More<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
@@ -298,7 +298,7 @@ const Courses = () => {
                         <div className="table-heading text-center mb-4 pb-2">
                             <h3>Our Premium Courses</h3>
                         </div>
-                        <div className="courseCat-grid-row d-flex justify-content-between align-items-center flex-wrap">
+                        <div className="courseCat-grid-row d-flex align-items-center flex-wrap">
                         {coursedData && coursedData.map((item,i) => {
                             let price = 0;
                             let id = item.id;
