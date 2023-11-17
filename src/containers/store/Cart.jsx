@@ -19,12 +19,18 @@ const Cart = () => {
   let userInfo = '';
   console.log('authInfo=',authInfo);
   console.log('tmp_userInfo=',tmp_userInfo);
-  if(typeof authInfo.id != 'undefined') {
-    userInfo = authInfo; 
+  if(authInfo != null) {
+    if(typeof authInfo.id != 'undefined') {
+      userInfo = authInfo; 
+    }
+    
   }
-  if(typeof tmp_userInfo.id != 'undefined') {
-    userInfo = tmp_userInfo; 
+  if(tmp_userInfo != null) {
+    if(typeof tmp_userInfo.id != 'undefined') {
+      userInfo = tmp_userInfo; 
+    }
   }
+  
   const passPhrase = process.env.REACT_APP_PASSPHRASE;
   let [signature, setSignature] = useState(null);
   let [showReferral, setShowReferral] = useState(false);
