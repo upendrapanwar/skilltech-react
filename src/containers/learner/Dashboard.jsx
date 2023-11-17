@@ -57,10 +57,10 @@ const Dashboard = () => {
         let merchantData = localStorage.getItem("merchantData");
         let merchantDataResult = JSON.parse(merchantData);
         let is_recurring = '';
-        if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
+        if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
         }
-        if(merchantDataResult['item_description'] == "Order for one off payment") {
+        if(merchantDataResult['item_description'] === "Order for one off payment") {
             is_recurring = 'no'
         }
         const dataArray = {
@@ -100,10 +100,10 @@ const Dashboard = () => {
         let merchantDataResult = JSON.parse(merchantData);
         console.log('merchantDataResult=',merchantDataResult);
         let is_recurring = '';
-        if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
+        if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
         }
-        if(merchantDataResult['item_description'] == "Order for one off payment") {
+        if(merchantDataResult['item_description'] === "Order for one off payment") {
             is_recurring = 'no'
         }
         const dataArray = {
@@ -138,10 +138,10 @@ const Dashboard = () => {
         let merchantData = localStorage.getItem("merchantData");
         let merchantDataResult = JSON.parse(merchantData);
         let is_recurring = '';
-        if(merchantDataResult['item_description'] == "Order for Hign Vista Subscription") {
+        if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
         }
-        if(merchantDataResult['item_description'] == "Order for one off payment") {
+        if(merchantDataResult['item_description'] === "Order for one off payment") {
             is_recurring = 'no'
         }
         const dataArray = {

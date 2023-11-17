@@ -1,8 +1,8 @@
 import React , { useEffect, useState } from 'react';
-import '../../assets/css/store/cart.css'
-import Total from '../../components/cart/Total'
-import CartItem from '../../components/cart/CartItem'
-import { useSelector, useDispatch } from 'react-redux'
+import '../../assets/css/store/cart.css';
+import Total from '../../components/cart/Total';
+import CartItem from '../../components/cart/CartItem';
+import { useSelector, useDispatch } from 'react-redux';
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import banner from '../../assets/images/Banner.png';
@@ -14,12 +14,23 @@ import { getDiscount } from '../../redux/cartSlice';
 import { toast } from 'react-toastify';
 
 const Cart = () => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let authInfo = JSON.parse(localStorage.getItem("authInfo"));
+  let tmp_userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let userInfo = '';
+  console.log('authInfo=',authInfo);
+  console.log('tmp_userInfo=',tmp_userInfo);
+  if(typeof authInfo.id != 'undefined') {
+    userInfo = authInfo; 
+  }
+  if(typeof tmp_userInfo.id != 'undefined') {
+    userInfo = tmp_userInfo; 
+  }
   const passPhrase = process.env.REACT_APP_PASSPHRASE;
   let [signature, setSignature] = useState(null);
   let [showReferral, setShowReferral] = useState(false);
   let [referralCode, setReferralCode] = useState(null);
   let [identifier, setIdentifier] = useState(null);
+  let [userid, setUserid] = useState((userInfo) ? userInfo.id : null);
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart)
   const cartState = useSelector((state) => state)
@@ -28,30 +39,34 @@ const Cart = () => {
   localStorage.setItem("discount_percent",0);
   const dispatch = useDispatch();
   useEffect(() => {
-    
     const script = document.createElement('script');
-        script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
-        //script.src = 'https://www.payfast.co.za/onsite/onsite/engine.js'
+    script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
+    //script.src = 'https://www.payfast.co.za/onsite/onsite/engine.js'
+    script.async = true;
+    document.body.appendChild(script);
+    let isSubscription = '';
+    cart.forEach(item => {
+      isSubscription = item.paymentType
+    })
+    console.log('isSubscription=',isSubscription);
+    if(isSubscription == 'subscription') {
+      dispatch(getDiscount(5));
+    }
         
-        script.async = true;
-        document.body.appendChild(script);
-        let isSubscription = '';
-        cart.forEach(item => {
-          isSubscription = item.paymentType
-        })
-        console.log('isSubscription=',isSubscription);
-        if(isSubscription == 'subscription') {
-          dispatch(getDiscount(5));
-        }
-        if(cart.length > 0) {
-          setShowReferral(true);
-        }
+    if(cart.length > 0) {
+      setShowReferral(true);
+    }
   }, []);
-
+  
+  /**
+  * Handle back to browse
+  * 
+  */
   const handleBackToBrowse = () => {
     navigate('/browse-courses');
   }
-  
+  /***********************************************************************/
+  /***********************************************************************/
   /**
   * Handle referral code
   * 
@@ -59,6 +74,39 @@ const Cart = () => {
   const handleCode = (event) => {
     setReferralCode(event.target.value);
   }
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
+    * Handle complete regsitration
+    * 
+  */
+  const completeRegistration = () => {
+    //setLoading(true);
+    const dataArray = {'userid':userid};
+    axios.post('common/complete-registration', dataArray).then(response => {
+        toast.dismiss();
+
+        if (response.data.status) {
+            //if(response.data.message === "Error while saving.") {
+                toast.success('Please complete your registration', { position: "top-center",autoClose: 3000 });
+            //}
+            //setTimeout(() => {
+            //  navigate('/learner/subscription');
+            //}, 2000);
+            
+        }
+        return false;
+    }).catch(error => {
+        toast.dismiss();
+        if (error.response) {
+            //toast.error('Please complete your registration', { position: "top-center",autoClose: 3000 });
+            
+        }
+        return true;
+    });
+  }
+  /***********************************************************************/
+  /***********************************************************************/
   const handleReferralCode = (event) => {
     axios.get('common/check-referral-code/'+ referralCode).then(response => {
             toast.dismiss();
@@ -94,7 +142,23 @@ const Cart = () => {
   * Handle subscribe now
   * 
   */
-  const handleSubscribeNow = () => {
+  const handleSubscribeNow = (redirect) => {
+    if(redirect === 'signin_pay') {
+      navigate('/login');
+      return true;
+    } 
+    if(redirect === 'create_account_pay') {
+      navigate('/signup');
+      return true;
+    }
+    if(redirect === 'pay_now') {
+      var returnVal = completeRegistration();
+      if(typeof returnVal === 'undefined') {
+        console.log('returnVal=',returnVal);
+        navigate('/learner/subscription');
+        return true;
+      }
+    }
     
     let merchantData = '';
     let paymentType = '';
@@ -374,13 +438,35 @@ const generatePaymentIdentifier = async (signature, merchantData) => {
 
           <div className="cart__right">
             <Total/>
+
+            {userid ?
+            <>
             <span className="amb-btn mt-4">
-              <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleSubscribeNow}>Subscribe now
+              <button type="button" className="btn btn-primary btn-color bt-size signbtn" onClick={() => handleSubscribeNow('pay_now')}>Subscribe and Pay
                 <span className="arrow-btn">
                   <img src ={solarArrowUpBroken} alt=""/>
                 </span>
               </button>
             </span>
+            </>
+             :
+            <>
+            <span className="amb-btn mt-4">
+              <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => handleSubscribeNow('create_account_pay')}>Create account and Pay
+                <span className="arrow-btn">
+                  <img src ={solarArrowUpBroken} alt=""/>
+                </span>
+              </button>
+            </span>
+            <span className="amb-btn mt-4">
+              <button type="button" className="btn btn-primary btn-color bt-size signbtn" onClick={() => handleSubscribeNow('signin_pay')}>Sign in and Pay
+                <span className="arrow-btn">
+                  <img src ={solarArrowUpBroken} alt=""/>
+                </span>
+              </button>
+            </span>
+            </>
+          } 
           </div>
 
         </div>

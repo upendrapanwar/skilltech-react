@@ -777,6 +777,9 @@ footer .footer-content ul li a {
 .course-details h4 {
     min-height: 50px;
 }
+.signbtn {
+    min-width: 220px;
+}
 #referral_code {
     margin-bottom: 10px;
 }

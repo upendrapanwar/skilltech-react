@@ -15,6 +15,8 @@ import config from '../../config.json';
 
 const Subscription = () => {
     const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    //const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    //userInfo = (userInfo === null) ? JSON.parse(localStorage.getItem("authInfo")) : '';  
     const pfParamString = '';
     const location = useLocation()
     //console.log(process.env);
@@ -212,6 +214,7 @@ const Subscription = () => {
                 //let orderItemName = 'Order#';
                 //const passPhrase = process.env.REACT_APP_PASSPHRASE;
                 toast.success(response.data.message, { position: "top-center",autoClose: 3000 });
+                navigate('/cart');
                 {/*cart.forEach(item => {
                     paymentType = item.paymentType
                     orderItemName = orderItemName + item.title
