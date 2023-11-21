@@ -3,6 +3,15 @@ import banner from '../../assets/images/Banner.png';
 import highVista from '../../assets/images/4-410x260_1.svg';
 import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
 import grid1 from '../../assets/images/grid1.svg';
+import CHATGPT_WIZARDRY_NAVIGATING_THE_REALM_OF_AI_CONVERSATIONS from '../../assets/images/course_images/CHATGPT_WIZARDRY_NAVIGATING_THE_REALM_OF_AI_CONVERSATIONS.png';
+import CLICK_SWIPE_ZOOM_BECOMING_A_COMPUTER_NAVIGATION_WIZ from '../../assets/images/course_images/CLICK_SWIPE_ZOOM BECOMING A COMPUTER NAVIGATION WIZ.png';
+import CRAFTING_A_JOB_WINNING_CV from '../../assets/images/course_images/CRAFTING_A_JOB_WINNING_CV.png';
+import ENTREPRENEURSHIP_UNLEASHED_FROM_VISION_TO_VENTURE from '../../assets/images/course_images/ENTREPRENEURSHIP_UNLEASHED_FROM_VISION_TO_VENTURE.png';
+import FROM_FOLLOWERS_TO_FUNDS_UNLEASH_THE_POWER_OF_SOCIAL_MEDIA from '../../assets/images/course_images/FROM_FOLLOWERS_TO_FUNDS_UNLEASH_THE_POWER_OF_SOCIAL_MEDIA.png';
+import LEARN_TO_THRIVE_THE_ULTIMATE_COURSE_ON_EFFECTIVE_LEARNING_STRATEGIES from '../../assets/images/course_images/LEARN_TO_THRIVE_THE_ULTIMATE_COURSE_ON_EFFECTIVE_LEARNING_STRATEGIES.png';
+import MASTERING_THE_ART_OF_BLOGGING_FROM_NOVICE_TO_NOTEWORTHY from '../../assets/images/course_images/MASTERING_THE_ART_OF_BLOGGING_FROM_NOVICE_TO_NOTEWORTHY.png';
+import PATHWAY_TO_PURPOSE_CRAFTING_YOUR_IDEAL_CAREER_JOURNEY from '../../assets/images/course_images/PATHWAY_TO_PURPOSE_CRAFTING_YOUR_IDEAL_CAREER_JOURNEY.png';
+import PODCASTING_101_FROM_IDEA_TO_EARBUDS_START_YOUR_SHOW from '../../assets/images/course_images/PODCASTING_101_FROM_IDEA_TO_EARBUDS_START_YOUR_SHOW.png';
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import { toast } from 'react-toastify';
@@ -69,7 +78,90 @@ const CoursesDetails = () => {
                 <div key={idx} className="course_item">
                             <a href="#" className="course-grid">
                                 <figure className="figure">
-                                    <img src={grid1} className="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."/>
+                                   {
+                                    (() => {
+                                        switch(item.id) {
+                                            case 60: 
+                                            {   
+                                                return (
+                                                    <img src={CRAFTING_A_JOB_WINNING_CV} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 61: 
+                                            {   
+                                                return (
+                                                    <img src={PATHWAY_TO_PURPOSE_CRAFTING_YOUR_IDEAL_CAREER_JOURNEY} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 62: 
+                                            {   
+                                                return (
+                                                    <img src={ENTREPRENEURSHIP_UNLEASHED_FROM_VISION_TO_VENTURE} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 63: 
+                                            {   
+                                                return (
+                                                    <img src={CLICK_SWIPE_ZOOM_BECOMING_A_COMPUTER_NAVIGATION_WIZ} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 64: 
+                                            {   
+                                                return (
+                                                    <img src={FROM_FOLLOWERS_TO_FUNDS_UNLEASH_THE_POWER_OF_SOCIAL_MEDIA} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 65: 
+                                            {   
+                                                return (
+                                                    <img src={grid1} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 66: 
+                                            {   
+                                                return (
+                                                    <img src={LEARN_TO_THRIVE_THE_ULTIMATE_COURSE_ON_EFFECTIVE_LEARNING_STRATEGIES} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 67: 
+                                            {   
+                                                return (
+                                                    <img src={MASTERING_THE_ART_OF_BLOGGING_FROM_NOVICE_TO_NOTEWORTHY} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 68: 
+                                            {   
+                                                return (
+                                                    <img src={CHATGPT_WIZARDRY_NAVIGATING_THE_REALM_OF_AI_CONVERSATIONS} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            case 69: 
+                                            {   
+                                                return (
+                                                    <img src={PODCASTING_101_FROM_IDEA_TO_EARBUDS_START_YOUR_SHOW} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                            default: {
+                                                return (
+                                                    <img src={grid1} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                                                )
+                                            }
+                                            
+                                        }
+                                        
+                                    })()
+                                   }
+                                    
                                 </figure>
                                 <div className="course-details">
                                     <h4>{item.fullname}</h4>

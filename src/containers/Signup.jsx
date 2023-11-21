@@ -7,20 +7,20 @@ import Footer from "../components/common/Footer";
 import Loader from "../components/common/Loader";
 import { toast } from 'react-toastify';
 import SignupSchema from "../validation-schemas/SignupSchema";
-import FacebookLogin from "react-facebook-login";
-import {GoogleLogin} from "react-google-login";
+//import FacebookLogin from "react-facebook-login";
+//import {GoogleLogin} from "react-google-login";
 import { Formik } from 'formik';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-    const clientId = "598585225797-ghhnu1br04uep4s544mdn67kmq46v2tt.apps.googleusercontent.com";
+    //const clientId = "598585225797-ghhnu1br04uep4s544mdn67kmq46v2tt.apps.googleusercontent.com";
     let [loading, setLoading] = useState('false');
     const navigate = useNavigate();
     useEffect(() => {
 
     }, []);
-
+    /*
     const onSuccess = (res) => {
         console.log('Login Success: currentUser:', res.profileObj);
         alert(`Logged in successfully welcome ${res.profileObj.name}`);
@@ -29,7 +29,7 @@ const Signup = () => {
     const onFailure = (res) => {
         console.log('Login failed: res:', res);
         //alert(`Failed to login.`);
-    };
+    };*/
     toast.configure();
 
 
@@ -61,7 +61,7 @@ const Signup = () => {
                 resetForm();
                 let authInfo = {
                     id: response.data.data['_id'],
-                    isSubscriberRegister: 'yes'
+                    isSubscriberRegister: ''
                 };
                 localStorage.setItem('authInfo', JSON.stringify(authInfo));
                 navigate('/learner/subscription');
@@ -80,9 +80,9 @@ const Signup = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    const responseFacebook = (response) => {
+    /*const responseFacebook = (response) => {
         console.log(response);
-    }
+    }*/
     return (
         <>
             {loading === true ? <Loader /> : ''}

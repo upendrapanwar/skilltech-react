@@ -3,6 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/high-vista-guild.svg';
 import { ShoppingCart } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import '@fortawesome/react-fontawesome';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import '../../assets/css/style.css';
+import '../../assets/css/all.css';
 
 const Header = () => {
     const [toggle, setToggle] = useState(false)

@@ -165,7 +165,7 @@ maximise your rewards.
                                 <strong>Please note:</strong></div>
                             <div>
                             You’ll need to upload some important documents to complete the Ambassador sign-up. Please
-have certified copies of your South African ID and proof of banking ready
+have certified copies of your South African ID and proof of banking ready.
                             </div>
                             {/*<div className="text-left">
                                 <div className="allField_required">

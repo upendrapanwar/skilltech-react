@@ -19,6 +19,9 @@ const Home = () => {
     useEffect(() => {
 
     }, []);
+    const handleBrowseCourse = () => {
+        navigate('/browse-courses');
+    }
     return (
         <>
             <Header />
@@ -199,7 +202,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="section_footer text-center">
-                        <button className="login-btn btn btn-warning bt-size">Browse Course
+                        <button className="login-btn btn btn-warning bt-size" onClick={()=> handleBrowseCourse()}>Browse Course
                             <span className="arrow-btn">
                                 <img src={brokenBlu} alt="My Happy SVG" />
                             </span>

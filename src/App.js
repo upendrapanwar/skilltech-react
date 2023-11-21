@@ -1,12 +1,8 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
-import '@fortawesome/react-fontawesome';
 //import 'get-google-fonts';
-import './assets/css/style.css';
-import './assets/css/all.css';
 import 'react-toastify/dist/ReactToastify.css';
-import React from 'react';
+import React, { lazy,useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { themeChange } from 'theme-change';
 
 import Home from './containers/Home';
 import Login from './containers/Login';
@@ -22,7 +18,14 @@ import Courses from './containers/store/Courses';
 import CoursesDetails from './containers/store/CoursesDetails';
 import Cart from './containers/store/Cart';
 
+const AdminLogin = lazy(() => import('./containers/admin/Login'));
+const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
+
 function App() {
+  useEffect(() => {
+    // 👆 daisy UI themes initialization
+    themeChange(false)
+  }, [])
   return (
     <>
       <Routes>
@@ -44,6 +47,9 @@ function App() {
         <Route path='/browse-courses' element={<Courses/>} />
         <Route path='/courses-details' element={<CoursesDetails/>} />
         <Route path='/cart' element={<Cart/>} />
+
+        <Route path='/admin/login' element={<AdminLogin/>} />
+        <Route path='/admin/admin-dashboard' element={<AdminDashboard/>} />
      </Routes>
     </>
   );

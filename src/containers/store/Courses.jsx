@@ -124,33 +124,38 @@ const Courses = () => {
     };
     /***********************************************************************/
     /***********************************************************************/
+    /**
+     * Get all the courses from moodle web services
+     * 
+     */
     const renderData = data => {
         
         return data.map((item, idx) => 
             (
                 <div key={idx} className="course_item">
-                            <a href="#" className="course-grid">
-                                <figure className="figure">
-                                    <img src={grid1} className="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."/>
-                                </figure>
-                                <div className="course-details">
-                                    <h4>{item.fullname}</h4>
-                                    <div className="course_footer d-flex justify-content-between align-items-center">
-                                        <span className="amb-btn mt-4">
-                                            <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW
-                                                <span className="arrow-btn">
-                                                    <img src ={solarArrowUpBroken} alt=""/>
-                                                </span>
-                                            </button>
+                    <a href="/" className="course-grid">
+                        <figure className="figure">
+                            <img src={grid1} className="figure-img img-fluid rounded" alt={item.fullname}/>
+                        </figure>
+                        <div className="course-details">
+                            <h4>{item.fullname}</h4>
+                            <div className="course_footer d-flex justify-content-between align-items-center">
+                                <span className="amb-btn mt-4">
+                                    <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW
+                                        <span className="arrow-btn">
+                                            <img src ={solarArrowUpBroken} alt=""/>
                                         </span>
-                                        <span className="mt-4">R500</span>
-                                    </div>
-                                </div>
-                            </a>
+                                    </button>
+                                </span>
+                                <span className="mt-4">R500</span>
+                            </div>
                         </div>
-              
+                    </a>
+                </div>
             ));
     };
+    /***********************************************************************/
+    /***********************************************************************/
     /**
      * Get all the courses from moodle web services
      * 
@@ -207,12 +212,21 @@ const Courses = () => {
     const indexOfLastPost = currentPage * postsPerPage; 
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = myApi?.slice(indexOfFirstPost, indexOfLastPost);
+
+    /**
+     * Redirects to course details page
+     * 
+     */
     const handleVistaDetails = () => {
         navigate('/courses-details');
     }
+    /***********************************************************************/
+    /***********************************************************************/
     const handleSubscribeNow = () => {
         navigate('/learner/subscription');
     }
+    /***********************************************************************/
+    /***********************************************************************/
     // search users by user input
     const handleSearchInput = event => {
         setSearchUser(event.target.value);
@@ -227,7 +241,8 @@ const Courses = () => {
         setMyApi(newData); // and set it to state
         console.log('api length', coursedData.length)
     };
-    
+    /***********************************************************************/
+    /***********************************************************************/
     const paginate = pageNumber => setCurrentPage(pageNumber);
     
     return (
@@ -307,6 +322,7 @@ const Courses = () => {
                             let paymentType = 'one_off';
                             if(item.id === 4 ) {
                                 price = 1700;
+                                
                             }
                             if(item.id === 8 ) {
                                 price = 450;
@@ -324,7 +340,7 @@ const Courses = () => {
                             return (<div className="course_item">
                                 <a href="#" className="course-grid">
                                     <figure className="figure">
-                                        <img src={grid1} className="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."/>
+                                        <img src={grid1} className="figure-img img-fluid rounded" alt={title}/>
                                     </figure>
                                     <div className="course-details">
                                         <h4>{title}</h4>

@@ -16,9 +16,11 @@ import { toast } from 'react-toastify';
 const Cart = () => {
   let authInfo = JSON.parse(localStorage.getItem("authInfo"));
   let tmp_userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let isLoggedIn = localStorage.getItem('isLoggedIn');
   let userInfo = '';
   console.log('authInfo=',authInfo);
   console.log('tmp_userInfo=',tmp_userInfo);
+  console.log('isLoggedIn=',isLoggedIn);
   if(authInfo != null) {
     if(typeof authInfo.id != 'undefined') {
       userInfo = authInfo; 
@@ -179,6 +181,7 @@ const Cart = () => {
       orderItemName = orderItemName + item.title
     })
     console.log('paymentType=',paymentType);
+    console.log('cartState=',cartState);
     
     if(paymentType === 'subscription') {
       merchantData = {
@@ -367,103 +370,83 @@ const generatePaymentIdentifier = async (signature, merchantData) => {
   return (
     <>
     {identifier &&
-            
-            <Helmet>
-                <script>{`{
-                    window.payfast_do_onsite_payment({
-                        uuid: '${identifier}',
-                        "return_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/success",
-                        "cancel_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/cancel",
-                        'notify_url' : '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/notify",
-                    })
-                    }`}
-                </script>
-            </Helmet>
+      <Helmet>
+        <script>{`{
+            window.payfast_do_onsite_payment({
+              uuid: '${identifier}',
+              "return_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/success",
+              "cancel_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/cancel",
+              'notify_url' : '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/notify",
+            })
+          }`}
+        </script>
+      </Helmet>
     }
     <Header />
     <div className="hvg__page_banner">
-                <div className="banner-thumnail">
-                    <img src={banner} alt=""/>
-                </div>
-                <div className="banner-container">
-                    <div className="container">
-                        <div className="banner-content">
-                            <div className="banner-heading col-md-6">
-                                <div className="row">
-                                    <h1>Cart</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <div className="cart">
-          <div className="cart__left">
-            <div>
-              <h3>Shopping Cart</h3>
-              <span className="amb-btn mt-4">
-                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleBackToBrowse}>Back to browse
-                  <span className="arrow-btn">
-                    <img src ={solarArrowUpBroken} alt=""/>
-                  </span>
-                </button>
-              </span>
-              {cart?.map((item) => (
-                <CartItem
-                  key={item.id}
-                  id={item.id}
-                  image={item.image}
-                  title={item.title}
-                  price={item.price} 
-                  quantity={item.quantity}
-                  paymentType={item.paymentType}
-                />
-              ))}
-              {setShowReferral &&
-              <>
-                <div className='row form-now'>
-                  <p><strong>If you have you been referred by a High Vista Guild Ambassador, please enter the Ambassador’s referral code and click on Apply Referral Code. Please contact your Ambassador to get the referral code if you haven’t received it</strong></p>
-                </div>
-                <div className="row  form-row">
-                  <div className="form-group col-md-6">
-                    <label htmlFor="id_number">Referral Code<span></span></label>
-                    <input type="text" className="form-control" name="referral_code" id="referral_code" placeholder="" aria-describedby="referral_codeHelp" onChange={handleCode}/>
-                    <span className="amb-btn mt-4">
-                      <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleReferralCode}>Apply Referral Code<br/>
-                      <span className="arrow-btn">
-                        <img src ={solarArrowUpBroken} alt=""/>
-                      </span>
-                      </button>
-                    </span>
-                  </div>
-                </div>
-              </>
-              }
+      <div className="banner-thumnail">
+        <img src={banner} alt=""/>
+      </div>
+      <div className="banner-container">
+        <div className="container">
+          <div className="banner-content">
+            <div className="banner-heading col-md-6">
+              <div className="row">
+                <h1>Cart</h1>
+              </div>
             </div>
           </div>
-
-          <div className="cart__right">
-            <Total/>
-
-            {userid ?
+        </div>
+      </div>
+    </div>
+    <div className="cart">
+      <div className="cart__left">
+        <div>
+          <h3>Shopping Cart</h3>
+          <span className="amb-btn mt-4">
+            <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleBackToBrowse}>Back to browse
+              <span className="arrow-btn">
+                <img src ={solarArrowUpBroken} alt=""/>
+              </span>
+            </button>
+          </span>
+          {cart?.map((item) => (
+            <CartItem
+              key={item.id}
+              id={item.id}
+              image={item.image}
+              title={item.title}
+              price={item.price} 
+              quantity={item.quantity}
+              paymentType={item.paymentType}
+            />
+          ))}
+          {setShowReferral &&
             <>
-            <span className="amb-btn mt-4">
-              <button type="button" className="btn btn-primary btn-color bt-size signbtn" onClick={() => handleSubscribeNow('pay_now')}>Subscribe and Pay
-                <span className="arrow-btn">
-                  <img src ={solarArrowUpBroken} alt=""/>
+            <div className='row form-now'>
+              <p><strong>If you have you been referred by a High Vista Guild Ambassador, please enter the Ambassador’s referral code and click on Apply Referral Code. Please contact your Ambassador to get the referral code if you haven’t received it.</strong></p>
+            </div>
+            <div className="row  form-row">
+              <div className="form-group col-md-6">
+                <label htmlFor="id_number">Referral Code<span></span></label>
+                <input type="text" className="form-control" name="referral_code" id="referral_code" placeholder="" aria-describedby="referral_codeHelp" onChange={handleCode}/>
+                <span className="amb-btn mt-4">
+                  <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleReferralCode}>Apply Referral Code<br/>
+                    <span className="arrow-btn">
+                      <img src ={solarArrowUpBroken} alt=""/>
+                    </span>
+                  </button>
                 </span>
-              </button>
-            </span>
+              </div>
+            </div>
             </>
-             :
-            <>
-            <span className="amb-btn mt-4">
-              <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => handleSubscribeNow('create_account_pay')}>Create account and Pay
-                <span className="arrow-btn">
-                  <img src ={solarArrowUpBroken} alt=""/>
-                </span>
-              </button>
-            </span>
+          }
+        </div>
+      </div>
+      <div className="cart__right">
+        <Total/>
+        {userid && (isLoggedIn == null)?
+          <>
             <span className="amb-btn mt-4">
               <button type="button" className="btn btn-primary btn-color bt-size signbtn" onClick={() => handleSubscribeNow('signin_pay')}>Sign in and Pay
                 <span className="arrow-btn">
@@ -471,12 +454,51 @@ const generatePaymentIdentifier = async (signature, merchantData) => {
                 </span>
               </button>
             </span>
-            </>
-          } 
-          </div>
-
-        </div>
-      <Footer />
+            
+          </>
+            :
+          <>
+          <span></span>
+          
+          
+          </>
+        }
+        {(userid == null) && (isLoggedIn == null) ? 
+        <>
+          
+          <span className="amb-btn mt-4">
+            <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => handleSubscribeNow('create_account_pay')}>Create account and Pay
+              <span className="arrow-btn">
+                <img src ={solarArrowUpBroken} alt=""/>
+              </span>
+            </button>
+          </span>
+          <span className="amb-btn mt-4">
+              <button type="button" className="btn btn-primary btn-color bt-size signbtn" onClick={() => handleSubscribeNow('signin_pay')}>Sign in and Pay
+                <span className="arrow-btn">
+                  <img src ={solarArrowUpBroken} alt=""/>
+                </span>
+              </button>
+            </span>
+        </>
+        : <span></span>
+        }
+        {isLoggedIn ? 
+        <>
+          
+          <span className="amb-btn mt-4">
+            <button type="button" className="btn btn-primary btn-color bt-size signbtn" onClick={() => handleSubscribeNow('pay')}>Pay
+              <span className="arrow-btn">
+                <img src ={solarArrowUpBroken} alt=""/>
+              </span>
+            </button>
+          </span>
+        </>
+        : <span></span>
+        } 
+      </div>
+    </div>
+    <Footer />
     </>
   )
 }

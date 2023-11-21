@@ -259,9 +259,11 @@ const Dashboard = () => {
                         <div className="col-md-6 pt-2">
                             <div className="subscriber-content mr-5">
                                 <h3 className="mb-4 ">Want to earn while you learn?<br /> Become a High Vista Ambassador now</h3>
-                                <p className="mb-4">By referring those in your network to our catalogue of digital learning through the ambassador programme, you can earn R200 for every referral every month for as long as they stay signed up.
+                                <p className="mb-4">By referring those in your network to our catalogue of digital learning, you can earn 50% of their subscription fee for every referral, every month, for as long as they stay signed up.
                                 </p>
-                                <p>To become a High Vista Ambassador, you need to have an active High Vista subscription.
+                                <p>To qualify for the referral fee, you need to be registered on our ambassador programme.
+                                </p>
+                                <p>To become a High Vista Ambassador, select the option below.
                                 </p>
                                 <div className="amb-btn">
                                     <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleRedirect}>Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>

@@ -209,6 +209,11 @@ const Subscription = () => {
         axios.post('common/subscription', values).then(response => {
             toast.dismiss();
             if (response.data.status) {
+                let authInfo = {
+                    id: response.data.data['_id'],
+                    isSubscriberRegister: 'yes'
+                };
+                localStorage.setItem('authInfo', JSON.stringify(authInfo));
                 //let merchantData = '';
                 //let paymentType = '';
                 //let orderItemName = 'Order#';

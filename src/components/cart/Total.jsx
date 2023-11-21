@@ -6,7 +6,6 @@ const Total = () => {
 
   const cart = useSelector((state) => state.cart)
   const state = useSelector((state) => state)
-  
   useEffect(() => {
     //getDiscount();
     
@@ -30,7 +29,7 @@ const Total = () => {
       <div className="total__p">Discount : <strong>{(state.discount != null) ? state.discount : 0}</strong></div>*/}
         <p className="total__p">
           total ({getTotal().totalQuantity} items) 
-          : <strong>R{(state.totalPrice != 0) ? state.totalPrice : getTotal().totalPrice}</strong>
+          : <strong>R {(typeof (state.totalPrice) !== 'undefined') ? state.totalPrice : getTotal().totalPrice}</strong>
         </p>
       </div>
     </div>
