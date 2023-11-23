@@ -108,6 +108,7 @@ const Header = () => {
                                                     Welcome {userInfo.name}</Link>
                                                     {toggle && (
                                                             <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
+                                                                <Link className="dropdown-item" to="/learner/dashboard">Dashboard</Link>
                                                                 <Link className="dropdown-item" to="/learner/subscription">Update profile / Complete Registration</Link>
                                                                 <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
                                                             </div>

@@ -20,7 +20,9 @@ const Dashboard = () => {
     let [userid, setUserid] = useState(udis);
     const location = useLocation();
     const userData = JSON.parse(localStorage.getItem("userInfo"));
-    
+    const cart = useSelector((state) => state.cart);
+    var cartData = {};
+
     useEffect(() => {
         //console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
         if(userInfo && userInfo.isSubscriberRegister === null){
@@ -54,8 +56,16 @@ const Dashboard = () => {
      * 
      */
     const paymentSuccess = async (response) => {
+        
+        cart.forEach((item,i) => {
+            cartData[i] = item;
+        })
+        console.log('cartData=',cartData);
         let merchantData = localStorage.getItem("merchantData");
-        let merchantDataResult = JSON.parse(merchantData);
+        let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
+        if(merchantDataResult === '') {
+            return;
+        }
         let is_recurring = '';
         if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
@@ -68,7 +78,8 @@ const Dashboard = () => {
             'userid' : userData.id,
             'payment_status': 'success',
             'is_recurring' : is_recurring,
-            'is_active' : 'true'
+            'is_active' : 'true',
+           'coursesData': cartData
         }
         
         axios.post('common/save-subscription', dataArray).then(response => {
@@ -93,13 +104,22 @@ const Dashboard = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-
-    const cancelPayment = (response) => {   
+     /**
+     * Get cancel payment data from payfast
+     * 
+     */
+    const cancelPayment = (response) => { 
+        cart.forEach((item,i) => {
+            cartData[i] = item;
+        })  
         console.log('cancel payment=',response);
         let merchantData = localStorage.getItem("merchantData");
-        let merchantDataResult = JSON.parse(merchantData);
+        let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
         console.log('merchantDataResult=',merchantDataResult);
         let is_recurring = '';
+        if(merchantDataResult === '') {
+            return;
+        }
         if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
         }
@@ -111,7 +131,8 @@ const Dashboard = () => {
             'userid' : userData.id,
             'payment_status': 'cancel',
             'is_recurring' : is_recurring,
-            'is_active' : 'false'
+            'is_active' : 'false',
+            'coursesData': cartData
         }
         
         //allMerchantData
@@ -133,10 +154,22 @@ const Dashboard = () => {
         })
         getMyCourses();
     }
+    /***********************************************************************/
+    /***********************************************************************/
+     /**
+     * Get notify payment from payfast
+     * 
+     */
     const notifyPayment = (response) => {
+        cart.forEach((item,i) => {
+            cartData[i] = item;
+        })
         console.log('notify payment=',response);
         let merchantData = localStorage.getItem("merchantData");
-        let merchantDataResult = JSON.parse(merchantData);
+        let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
+        if(merchantDataResult === '') {
+            return;
+        }
         let is_recurring = '';
         if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
             is_recurring = 'yes'
@@ -149,7 +182,8 @@ const Dashboard = () => {
             'userid' : userData.id,
             'payment_status': 'success',
             'is_recurring' : is_recurring,
-            'is_active' : 'true'
+            'is_active' : 'true',
+            'coursesData': cartData
         }
         
         axios.post('common/save-subscription', dataArray).then(response => {
@@ -172,6 +206,12 @@ const Dashboard = () => {
         })
         getMyCourses();
     }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Get Users courses list
+     * 
+     */
     const getMyCourses = () => {
         axios.get('common/get-my-courses/'+ userData.id).then(response => {
                 toast.dismiss();
@@ -231,7 +271,24 @@ const Dashboard = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-
+    /**
+     * Handle courses redirects
+     * 
+     */
+    const handleCourses = () => {
+        navigate('/learner/my-courses');
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Handle order history
+     * 
+     */
+    const handleOrderHistory = () => {
+        navigate('/learner/order-history');
+    }
+    /***********************************************************************/
+    /***********************************************************************/
     return (
         
         <>
@@ -290,8 +347,9 @@ const Dashboard = () => {
                                                 <tbody>
                                                     {console.log('myCourses',myCourses)}
                                                 {myCourses.length > 0 ? myCourses.map((item,i) =>
+                                                    
                                                     (<tr>
-                                                        <th scope="row">{item.plan_name}</th>
+                                                        <th scope="row">{console.log('item=',item)}{item.plan_name}</th>
                                                         <td>{item.createdAt}</td>
                                                     </tr>)  
                                                     ): <tr></tr>} 
@@ -299,8 +357,8 @@ const Dashboard = () => {
                                             </table>
                                         </div>
                                         <div className="amb-btn">
-                                            <button type="button" className="btn btn-primary btn-color bt-size mb-2">Go to courses <span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
-                                            <button type="button" className="btn btn-primary btn-color bt-size">View order history <span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
+                                            <button type="button" className="btn btn-primary btn-color bt-size mb-2" onClick={() => handleCourses()}>Go to courses <span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
+                                            <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => handleOrderHistory()}>View order history <span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
                                         </div>
                                     </div>
                                 </div>

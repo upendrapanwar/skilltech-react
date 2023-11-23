@@ -170,18 +170,20 @@ const Cart = () => {
     
     let merchantData = '';
     let paymentType = '';
-    let orderItemName = 'Order#';
+    let orderItemName = '';
     let userName = userInfo.name;
     let userArray = userName.split(" ");
     let firstName = userArray[0];
     let lastName = userArray[1];
+    let totalPrice = getTotal().totalPrice;
     const passPhrase = process.env.REACT_APP_PASSPHRASE;
     cart.forEach(item => {
       paymentType = item.paymentType
-      orderItemName = orderItemName + item.title
+      orderItemName = orderItemName +"#"+ item.title
     })
     console.log('paymentType=',paymentType);
     console.log('cartState=',cartState);
+    console.log('totalprice=', totalPrice);
     
     if(paymentType === 'subscription') {
       merchantData = {
@@ -195,14 +197,15 @@ const Cart = () => {
           'email_address' : userInfo.email,
           'cell_number' : '0765434543',
           'm_payment_id' : orderItemName,
-          'amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          'amount' : totalPrice,
           'item_name' : orderItemName,
           'item_description': 'Order for Hign Vista Subscription',    
           'email_confirmation': 1,
           'confirmation_address': userInfo.email,
           'subscription_type' : 1,
           'billing_date' : new Date().toISOString().slice(0, 10),
-          'recurring_amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          //'recurring_amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          'recurring_amount' : totalPrice,
           'frequency' : 3,
           'cycles' : 12
       }
@@ -218,7 +221,8 @@ const Cart = () => {
           'email_address' : userInfo.email,
           'cell_number' : '0765434543',
           'm_payment_id' : orderItemName,
-          'amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          //'amount' : (cartState.totalPrice != 0) ? cartState.totalPrice : getTotal().totalPrice,
+          'amount' : totalPrice,
           'item_name' : orderItemName,
           'item_description': 'Order for one off payment',    
           'email_confirmation': 1,

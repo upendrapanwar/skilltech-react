@@ -17,6 +17,8 @@ import TermsOfService from './containers/Terms-of-service';
 import Courses from './containers/store/Courses';
 import CoursesDetails from './containers/store/CoursesDetails';
 import Cart from './containers/store/Cart';
+import OrderHistory from './containers/learner/OrderHistory';
+import MyCourses from './containers/learner/MyCourses';
 
 const AdminLogin = lazy(() => import('./containers/admin/Login'));
 const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
@@ -35,18 +37,20 @@ function App() {
         <Route path='/learner/dashboard/cancel' element={<LearnerDashboard/>} />
         <Route path='/learner/dashboard/notify' element={<LearnerDashboard/>} />
         <Route path='/signup' element={<Signup/>} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
+        <Route path='/terms-of-service' element={<TermsOfService/>} />
+        <Route path='/browse-courses' element={<Courses/>} />
+        <Route path='/courses-details' element={<CoursesDetails/>} />
+        <Route path='/cart' element={<Cart/>} />
+
         <Route path='/learner/dashboard' element={<LearnerDashboard/>} />
         <Route path='/learner/subscription' element={<Subscription/>} />
+        <Route path='/learner/order-history' element={<OrderHistory/>} />
+        <Route path='/learner/my-courses' element={<MyCourses/>} />
         
         <Route path='/ambessador/ambassador-subscription' element={<AmbassadorSubscription/>} />
         <Route path='/ambessador/dashboard' element={<AmbassadorDashboard/>} />
         <Route path='/owner/dashboard' element={<Ownerdashboard/>} />
-        <Route path='/privacy-policy' element={<PrivacyPolicy/>} />
-        <Route path='/terms-of-service' element={<TermsOfService/>} />
-        
-        <Route path='/browse-courses' element={<Courses/>} />
-        <Route path='/courses-details' element={<CoursesDetails/>} />
-        <Route path='/cart' element={<Cart/>} />
 
         <Route path='/admin/login' element={<AdminLogin/>} />
         <Route path='/admin/admin-dashboard' element={<AdminDashboard/>} />

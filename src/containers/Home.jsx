@@ -2,26 +2,68 @@ import React, { useEffect } from "react";
 import banner from '../assets/images/homeBanner.svg';
 import about from '../assets/images/about-3-5.svg';
 import grid1 from '../assets/images/grid1.svg';
+import grid2 from '../assets/images/grid2.svg';
 import brokenArrow from '../assets/images/solar_arrow-up-broken.svg';
 import brokenBlu from '../assets/images/solar_arrow-up-broken-blu.svg';
 import graduationHat from '../assets/images/graduation-hat.svg';
 
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom';
+import { addToCart } from '../redux/cartSlice';
+
 
 const Home = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    let premiumCourseFirstId = 4;
+    let premiumCourseFirstImage = grid1;
+    let premiumCourseFirstTitle = "Employability Programme";
+    let premiumCourseFirstPrice = 1700;
+    let premiumCoursePaymentType = 'one_off';
+
+    let premiumCourseSecondId = 8;
+    let premiumCourseSecondImage = grid1;
+    let premiumCourseSecondTitle = "Process Incoming and Outgoing Telephone Calls";
+    let premiumCourseSecondPrice = 450;
+    
+    
+    useEffect(() => {
+
+    }, []);
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Redirects to login page
+     * 
+     */
     const handleLoginIn = (e) => {
         e.preventDefault();
         navigate("/login");
     }
-    useEffect(() => {
-
-    }, []);
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Redirects to browse courses page
+     * 
+     */
     const handleBrowseCourse = () => {
         navigate('/browse-courses');
     }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Redirects to course details page
+     * 
+     */
+    const handleVistaDetails = () => {
+        console.log('clicked');
+        navigate('/courses-details');
+        
+    }
+    /***********************************************************************/
+    /***********************************************************************/
     return (
         <>
             <Header />
@@ -37,7 +79,7 @@ const Home = () => {
                                 </h1>
                                 <p>Explore our catalogue of short courses for meaningful learning to help you develop your professional skills and personal power.
                                 </p>
-                                <button className="login-btn btn btn-warning bt-size">Browse Course
+                                <button className="login-btn btn btn-warning bt-size" onClick={() => handleBrowseCourse()}>Browse Course
                                     <span className="arrow-btn">
                                         <img src={brokenBlu} alt="My Happy SVG" />
                                     </span>
@@ -147,18 +189,19 @@ const Home = () => {
                     </div>
                     <div className="courseCat-grid-row d-flex justify-content-between align-items-center flex-wrap">
                         <div className="course_item">
-                        <Link to="#" className="course-grid">
+                        <Link to="/courses-details" className="course-grid">
                                 <figure className="figure">
-                                    <img src={grid1} className="figure-img img-fluid rounded" alt=" figure." />
+                                    <img src={grid2} className="figure-img img-fluid rounded" alt=" figure." />
                                 </figure>
                                 <div className="course-details">
-                                    <h4>Learning Python for Data Analysis and Visualization</h4>
+                                    <h4>The High Vista Course Package</h4>
                                     <div className="course_footer d-flex justify-content-between align-items-center">
                                         <span className="amb-btn mt-4">
-                                            <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW<span className="arrow-btn">
-                                                <img src={brokenArrow} alt="" /></span></button>
+                                            <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW
+                                                <span className="arrow-btn"><img src={brokenArrow} alt="" /></span>
+                                            </button>
                                         </span>
-                                        <span className="mt-4">R1500,00</span>
+                                        <span className="mt-4">R500/ per month</span>
                                     </div>
 
                                 </div>
@@ -170,13 +213,13 @@ const Home = () => {
                                     <img src={grid1} className="figure-img img-fluid rounded" alt="figure." />
                                 </figure>
                                 <div className="course-details">
-                                    <h4>Learning Python for Data Analysis and Visualization</h4>
+                                    <h4>{premiumCourseFirstTitle}</h4>
                                     <div className="course_footer d-flex justify-content-between align-items-center">
                                         <span className="amb-btn mt-4">
-                                            <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW<span className="arrow-btn">
+                                            <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => dispatch(addToCart({premiumCourseFirstId, premiumCourseFirstTitle, premiumCourseFirstImage, premiumCourseFirstPrice,premiumCoursePaymentType}))}>REGISTER NOW<span className="arrow-btn">
                                                 <img src={brokenArrow} alt="" /></span></button>
                                         </span>
-                                        <span className="mt-4">R1500,00</span>
+                                        <span className="mt-4">R{premiumCourseFirstPrice} (excl vat)</span>
                                     </div>
 
                                 </div>
@@ -188,13 +231,14 @@ const Home = () => {
                                     <img src={grid1} className="figure-img img-fluid rounded" alt="figure." />
                                 </figure>
                                 <div className="course-details">
-                                    <h4>Learning Python for Data Analysis and Visualization</h4>
+                                    <h4>{premiumCourseSecondTitle}</h4>
                                     <div className="course_footer d-flex justify-content-between align-items-center">
                                         <span className="amb-btn mt-4">
-                                            <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW<span className="arrow-btn">
-                                                <img src={brokenArrow} alt="" /></span></button>
+                                            <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => dispatch(addToCart({premiumCourseSecondId, premiumCourseSecondTitle, premiumCourseSecondImage, premiumCourseSecondPrice,premiumCoursePaymentType}))}>REGISTER NOW<span className="arrow-btn">
+                                                <img src={brokenArrow} alt="" /></span>
+                                            </button>
                                         </span>
-                                        <span className="mt-4">R1500,00</span>
+                                        <span className="mt-4">R{premiumCourseSecondPrice} (excl vat)</span>
                                     </div>
 
                                 </div>
