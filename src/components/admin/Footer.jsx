@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ModalLayout from '../admin/common/ModalLayout';
 
 const Footer = () => {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Footer = () => {
     return (
         <React.Fragment>
             
+           <ModalLayout /> 
         </React.Fragment>
     )
 }
