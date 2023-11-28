@@ -15,7 +15,7 @@ const Header = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
-    console.log('userInfo=',userInfo.role);
+    console.log('userInfo=',userInfo);
     useEffect(() => {
 
     }, []);
