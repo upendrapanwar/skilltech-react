@@ -61,7 +61,13 @@ const Header = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    
+    const handleRoleBasedRedirect = () => {
+        if(userInfo && userInfo.role === 'ambassador') {
+            navigate('/ambessador/dashboard');
+        } else {
+            navigate('/learner/dashboard');
+        }
+    }
     return (
         <React.Fragment>
             <header className="hvg__header">
@@ -109,11 +115,8 @@ const Header = () => {
                                                     Welcome {userInfo.name}</Link>
                                                     {toggle && (
                                                             <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
-                                                                <Link className="dropdown-item" to="/learner/dashboard">Dashboard</Link>
-                                                                {userInfo.role && userInfo.role === 'ambassador' ? (
-                                                                    <Link className="dropdown-item" to="/ambessador/dashboard">Ambassador Dashboard</Link>
-                                                                    ) : <></>
-                                                                } 
+                                                                <Link className="dropdown-item" to="#" onClick={() => handleRoleBasedRedirect()}>My Dashboard</Link>
+                                                                
                                                                 <Link className="dropdown-item" to="/learner/subscription">Update profile / Complete Registration</Link>
                                                                 <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
                                                             </div>

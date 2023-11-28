@@ -14,6 +14,7 @@ import Header from "../../components/admin/Header";
 import Footer from "../../components/admin/Footer";
 import axios from "axios";
 import { openModal } from '../../components/admin/common/modalSlice';
+import { deleteLead, getLeadsContent,getSubscribersContent } from "../../containers/admin/modal_slice/SubscriptionDetailsSlice"
 //import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../utils/globalConstantUtil'
 import { CONFIRMATION_MODAL_CLOSE_TYPES, MODAL_BODY_TYPES } from '../../components/admin/utils/globalConstantUtil';
 
@@ -67,9 +68,12 @@ const Subscription = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        //dispatch(getLeadsContent());
         agentSubscription();
     }, []);
     const [agentsubscriptions, setAgentSubscriptions] = useState("");
+    const subscriptionDetails = useSelector(state => state.subscriptionDetail);
+    //const [agentsubscriptions, setAgentSubscriptions] = useSelector(state => state.lead)
 
     const removeFilter = () => {
         //setTrans(RECENT_TRANSACTIONS)
@@ -116,8 +120,10 @@ const Subscription = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    const openAddNewLeadModal = () => {
-        dispatch(openModal({title : "Subscription Details", bodyType : MODAL_BODY_TYPES.SUBSCRIPTION_DETAIL}))
+    const openAddNewLeadModal = (id) => {
+        dispatch(openModal({title : "Subscription Details", bodyType : MODAL_BODY_TYPES.SUBSCRIPTION_DETAIL,
+            extraObject : { message : `Are you sure you want to delete this lead?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.LEAD_DELETE, id}
+        }))
     }
     /***********************************************************************/
     /***********************************************************************/
@@ -165,7 +171,7 @@ const Subscription = () => {
                                                     <td>R{l.amount}</td>
                                                     <td>{l.is_recurring}</td>
                                                     <td>{moment(l.createdAt).format("YYYY-MM-DD")}</td>
-                                                    <td><a href="#" className="inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700" onClick={() => openAddNewLeadModal()}>View</a></td>
+                                                    <td><a href="#" className="inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700" onClick={() => openAddNewLeadModal(l.id)}>View</a></td>
                                                 </tr>
                                             )
                                         })

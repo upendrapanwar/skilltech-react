@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import ErrorText from '../../../components/utility/ErrorText'
 //import { showNotification } from "../../common/headerSlice"
 import { showNotification } from "../../../components/admin/common/headerSlice"
-//import { addNewLead } from "../leadSlice"
+import { SubscriptionDetailsSlice } from "../../../containers/admin/modal_slice/SubscriptionDetailsSlice"
 
 const INITIAL_LEAD_OBJ = {
     first_name : "",
