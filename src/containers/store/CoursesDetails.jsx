@@ -173,7 +173,7 @@ const CoursesDetails = () => {
                                                 </span>
                                             </button>
                                         </span>*/}
-                                        <span className="mt-4">R500</span>
+                                        {/*<span className="mt-4">R500</span>*/}
                                     </div>
                                 </div>
                             </a>

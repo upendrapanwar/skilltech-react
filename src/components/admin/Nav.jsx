@@ -5,6 +5,7 @@ import { NavLink,  Routes, Link , useLocation} from 'react-router-dom'
 import SidebarSubmenu from '../../containers/admin/SidebarSubmenu';
 import XMarkIcon  from '@heroicons/react/24/outline/XMarkIcon'
 import { useDispatch } from 'react-redux';
+import logo from '../../assets/images/high-vista-guild.svg';
 
 const Nav = () => {
     const location = useLocation();
@@ -25,7 +26,7 @@ const Nav = () => {
 
                 <li className="mb-2 font-semibold text-xl">
                     
-                    <Link to={'/app/welcome'}><img className="mask mask-squircle w-10" src="/logo192.png" alt="DashWind Logo"/>DashWind</Link> </li>
+                    <Link to={'/app/welcome'}><img className="mask mask-squircle w-10" src={logo} alt="DashWind Logo"/>Skilltech</Link> </li>
                 {
                     routes.map((route, k) => {
                         return(

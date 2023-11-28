@@ -1,7 +1,7 @@
 // All components mapping with path for internal routes
 
 import { lazy } from 'react'
-
+const Subscription = lazy(() => import('../../../containers/admin/Subscription'));
 const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
 const Welcome = lazy(() => import('../pages/protected/Welcome'))
 const Page404 = lazy(() => import('../pages/protected/404'))
@@ -21,7 +21,7 @@ const DocComponents = lazy(() => import('../pages/DocComponents'))
 
 const routes = [
   {
-    path: '/dashboard', // the url
+    path: '/admin-dashboard', // the url
     component: Dashboard, // view rendered
   },
   {
@@ -41,8 +41,8 @@ const routes = [
     component: Calendar,
   },
   {
-    path: '/transactions',
-    component: Transactions,
+    path: '/subscription',
+    component: Subscription,
   },
   {
     path: '/settings-profile',

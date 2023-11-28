@@ -25,32 +25,32 @@ const submenuIconClasses = `h-5 w-5`
 const routes = [
 
   {
-    path: '/app/dashboard',
+    path: '/admin/admin-dashboard',
     icon: <Squares2X2Icon className={iconClasses}/>, 
     name: 'Dashboard',
   },
   {
-    path: '/app/leads', // url
+    path: '/admin/leads', // url
     icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
     name: 'Leads', // name that appear in Sidebar
   },
   {
-    path: '/app/transactions', // url
+    path: '/admin/subscription', // url
     icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
-    name: 'Transactions', // name that appear in Sidebar
+    name: 'Subscriptions', // name that appear in Sidebar
   },
   {
-    path: '/app/charts', // url
+    path: '/admin/charts', // url
     icon: <ChartBarIcon className={iconClasses}/>, // icon component
     name: 'Analytics', // name that appear in Sidebar
   },
   {
-    path: '/app/integration', // url
+    path: '/admin/integration', // url
     icon: <BoltIcon className={iconClasses}/>, // icon component
     name: 'Integration', // name that appear in Sidebar
   },
   {
-    path: '/app/calendar', // url
+    path: '/admin/calendar', // url
     icon: <CalendarDaysIcon className={iconClasses}/>, // icon component
     name: 'Calendar', // name that appear in Sidebar
   },
@@ -76,12 +76,12 @@ const routes = [
         name: 'Forgot Password',
       },
       {
-        path: '/app/blank',
+        path: '/admin/blank',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Blank Page',
       },
       {
-        path: '/app/404',
+        path: '/admin/404',
         icon: <ExclamationTriangleIcon className={submenuIconClasses}/>,
         name: '404',
       },
@@ -93,17 +93,17 @@ const routes = [
     name: 'Settings', // name that appear in Sidebar
     submenu : [
       {
-        path: '/app/settings-profile', //url
+        path: '/admin/settings-profile', //url
         icon: <UserIcon className={submenuIconClasses}/>, // icon component
         name: 'Profile', // name that appear in Sidebar
       },
       {
-        path: '/app/settings-billing',
+        path: '/admin/settings-billing',
         icon: <WalletIcon className={submenuIconClasses}/>,
         name: 'Billing',
       },
       {
-        path: '/app/settings-team', // url
+        path: '/admin/settings-team', // url
         icon: <UsersIcon className={submenuIconClasses}/>, // icon component
         name: 'Team Members', // name that appear in Sidebar
       },
@@ -115,17 +115,17 @@ const routes = [
     name: 'Documentation', // name that appear in Sidebar
     submenu : [
       {
-        path: '/app/getting-started', // url
+        path: '/admin/getting-started', // url
         icon: <DocumentTextIcon className={submenuIconClasses}/>, // icon component
         name: 'Getting Started', // name that appear in Sidebar
       },
       {
-        path: '/app/features',
+        path: '/admin/features',
         icon: <TableCellsIcon className={submenuIconClasses}/>, 
         name: 'Features',
       },
       {
-        path: '/app/components',
+        path: '/admin/components',
         icon: <CodeBracketSquareIcon className={submenuIconClasses}/>, 
         name: 'Components',
       }

@@ -22,6 +22,7 @@ import MyCourses from './containers/learner/MyCourses';
 
 const AdminLogin = lazy(() => import('./containers/admin/Login'));
 const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
+const AdminSubscription = lazy(() => import('./containers/admin/Subscription'));
 
 function App() {
   useEffect(() => {
@@ -54,6 +55,7 @@ function App() {
 
         <Route path='/admin/login' element={<AdminLogin/>} />
         <Route path='/admin/admin-dashboard' element={<AdminDashboard/>} />
+        <Route path='/admin/subscription' element={<AdminSubscription/>} />
      </Routes>
     </>
   );

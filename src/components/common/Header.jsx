@@ -10,11 +10,12 @@ import '../../assets/css/style.css';
 import '../../assets/css/all.css';
 
 const Header = () => {
+    
     const [toggle, setToggle] = useState(false)
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
-
+    console.log('userInfo=',userInfo.role);
     useEffect(() => {
 
     }, []);
@@ -109,6 +110,10 @@ const Header = () => {
                                                     {toggle && (
                                                             <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
                                                                 <Link className="dropdown-item" to="/learner/dashboard">Dashboard</Link>
+                                                                {userInfo.role && userInfo.role === 'ambassador' ? (
+                                                                    <Link className="dropdown-item" to="/ambessador/dashboard">Ambassador Dashboard</Link>
+                                                                    ) : <></>
+                                                                } 
                                                                 <Link className="dropdown-item" to="/learner/subscription">Update profile / Complete Registration</Link>
                                                                 <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
                                                             </div>
@@ -116,15 +121,15 @@ const Header = () => {
                                                     </>
                                             ) : (
                                                 <>
-                                                <Link className="nav-link dropdown-toggle" to="/login" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={() => setToggle(!toggle)}>
+                                                <Link className="nav-link" to="/login" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={() => setToggle(!toggle)}>
                                                     Login</Link>
-                                                    {toggle && (
+                                                    {/*toggle && (
                                                         <div className="dropdown-menu dropdown-menu-wrapper show" aria-labelledby="navbarDropdown">
                                                             <Link className="dropdown-item" to="/login">Learner Sign in</Link>
                                                             <Link className="dropdown-item" to="/login">Ambassador Sign in</Link>
                                                             <Link className="dropdown-item" to="/login">Owner / Merchant Sign in</Link>
                                                         </div>
-                                                    )}
+                                                    )*/}
                                                 
                                                 </>
                                             )}

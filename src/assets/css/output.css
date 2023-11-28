@@ -848,7 +848,11 @@ html {
   align-items: center;
   justify-content: center;
 }
-
+.divider::after, .divider::before {
+  --tw-bg-opacity: 0.1;
+  background-color: hsl(215 28% 17%/var(--tw-bg-opacity));
+  background-color: hsl(var(--bc)/var(--tw-bg-opacity));
+}
 .badge {
   display: inline-flex;
   align-items: center;
@@ -1300,6 +1304,10 @@ html {
 :where(.navbar > *) {
   display: inline-flex;
   align-items: center;
+}
+.drawer-side {
+  pointer-events: inherit;
+  position:inherit;
 }
 .swap {
   cursor: pointer;
@@ -3336,7 +3344,10 @@ audio, canvas, embed, iframe, img, object, svg, video {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--b2, var(--b1)) / var(--tw-bg-opacity));
 }
-
+.table td, .table th {
+  padding: 1rem;
+  border-top:none;
+}
 .bg-blue-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity));

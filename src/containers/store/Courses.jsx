@@ -147,7 +147,7 @@ const Courses = () => {
                                         </span>
                                     </button>
                                 </span>
-                                <span className="mt-4">R500</span>
+                                {/*<span className="mt-4">R500</span>*/}
                             </div>
                         </div>
                     </a>
@@ -288,7 +288,7 @@ const Courses = () => {
                                             <div className="table-heading">
                                                 <h3>The High Vista Course Package</h3>
                                                 <p className="pb-2">Subscribe now and get access to 10 awesome courses. Our courses are designed to help you unlock your potential - whether in the boardroom, dealing with potential customers or working in a team.</p>
-                                                <p className="priceperMonth"><span>R500 /</span> per month</p>
+                                                {/*<p className="priceperMonth"><span>R500 /</span> per month</p>*/}
                                             </div>
                                             <div className="amb-btn mt-4">
                                                 <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleVistaDetails}>Learn More<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>

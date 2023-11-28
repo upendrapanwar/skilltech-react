@@ -1,5 +1,5 @@
 {
-    "apiURI": "http://localhost:8800",
+    "apiURI": "https://high-vista-guild.onrender.com",
     "googleClientId": "",
     "facebookAppId": ""
 }
