@@ -61,7 +61,8 @@ const Header = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
-    const handleRoleBasedRedirect = () => {
+    const handleRoleBasedRedirect = (e) => {
+        e.preventDefault();
         if(userInfo && userInfo.role === 'ambassador') {
             navigate('/ambessador/dashboard');
         } else {
@@ -115,7 +116,7 @@ const Header = () => {
                                                     Welcome {userInfo.name}</Link>
                                                     {toggle && (
                                                             <div className="dropdown-menu dropdown-menu-wrapper dropdown-menu-right show" aria-labelledby="navbarDropdown">
-                                                                <Link className="dropdown-item" to="#" onClick={() => handleRoleBasedRedirect()}>My Dashboard</Link>
+                                                                <Link className="dropdown-item" to="#" onClick={handleRoleBasedRedirect}>My Dashboard</Link>
                                                                 
                                                                 <Link className="dropdown-item" to="/learner/subscription">Update profile / Complete Registration</Link>
                                                                 <Link className="dropdown-item" to="#" onClick={(e) => logout()}>Logout</Link>
