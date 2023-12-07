@@ -2,6 +2,7 @@
 
 import { lazy } from 'react'
 const Subscription = lazy(() => import('../../../containers/admin/Subscription'));
+const ActiveAgents = lazy(() => import('../../../containers/admin/ActiveAgents'));
 const Dashboard = lazy(() => import('../pages/protected/Dashboard'))
 const Welcome = lazy(() => import('../pages/protected/Welcome'))
 const Page404 = lazy(() => import('../pages/protected/404'))
@@ -44,6 +45,11 @@ const routes = [
     path: '/subscription',
     component: Subscription,
   },
+  {
+    path: '/active-agents',
+    component: ActiveAgents,
+  },
+  
   {
     path: '/settings-profile',
     component: ProfileSettings,

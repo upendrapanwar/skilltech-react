@@ -14,7 +14,13 @@ import config from '../../config.json';
 //import { useSelector } from 'react-redux'
 
 const Subscription = () => {
-    const userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    let userInfo = JSON.parse(localStorage.getItem("authInfo"));
+    console.log('typrof=',typeof userInfo.id);
+    let tmp = userInfo.id;
+    if(typeof tmp === "undefined") {
+        userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    }
+    console.log('kjk=',JSON.parse(localStorage.getItem('userInfo')));
     //const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     //userInfo = (userInfo === null) ? JSON.parse(localStorage.getItem("authInfo")) : '';  
     const pfParamString = '';
@@ -28,13 +34,14 @@ const Subscription = () => {
     let [showReferred, setShowReferred] = useState(false);
     let [signature, setSignature] = useState(null);
     let [userid, setUserid] = useState(userInfo.id);
+    
     //let [identifier, setIdentifier] = useState(null);
     let [allmerchantData, setAllMerchantData] = useState(null);
     
     const navigate = useNavigate();
     //const cart = useSelector((state) => state.cart)
 
-    //console.log('carts=',cart)
+    console.log('userid=',userInfo.id)
     useEffect(() => {
         
         //const script = document.createElement('script');

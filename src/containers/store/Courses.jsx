@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import banner from '../../assets/images/Banner.png';
 import highVista from '../../assets/images/4-410x260_1.svg';
 import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
+import authenticBookClub from '../../assets/images/authentic-book-club-scene-3-min1.jpg';
+import womanSitting from '../../assets/images/woman-sitting-library-with-her-laptop-min1.jpg';
 import grid1 from '../../assets/images/grid1.svg';
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
@@ -217,8 +219,18 @@ const Courses = () => {
      * Redirects to course details page
      * 
      */
-    const handleVistaDetails = () => {
-        navigate('/courses-details');
+    const handleVistaDetails = (title) => {
+        navigate('/courses-details',{state:{"title":title}});
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    
+    /**
+     * Redirects to premium courses page
+     * 
+     */
+    const handlePremiumCourses = () => {
+        navigate('/premium-courses');
     }
     /***********************************************************************/
     /***********************************************************************/
@@ -258,22 +270,22 @@ const Courses = () => {
                         <div className="banner-content">
                             <div className="banner-heading col-md-6">
                                 <div className="row">
-                                    <h1>Course Catalogue</h1>
+                                    <h1>Learning designed for the future!</h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+            
             <div className="hvg__main_container courseCat-section">
                 
                 <div className="container">
-
+                <div style={{"text-align":"center","margin-bottom":"20px"}}><h1 style={{"font-size":"3.5rem"}}>More ways to learn. More ways to earn.</h1></div>
                     <div className="hvg__card_section mb-0">
                         <div className="card">
                             <div className="card-body">
-                                <div className="row">
+                                <div className="row" style={{"margin-bottom": "35px"}}>
                                     <div className="col-md-6">
                                         <div className="catimg-wrapper">
                                             <div className="table-pie-image mt-2">
@@ -291,7 +303,7 @@ const Courses = () => {
                                                 {/*<p className="priceperMonth"><span>R500 /</span> per month</p>*/}
                                             </div>
                                             <div className="amb-btn mt-4">
-                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleVistaDetails}>Learn More<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
+                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={()=> handleVistaDetails("The High Vista Course Package")}>Learn More<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
                                             </div>
                                             {/*<div className="amb-btn mt-4">
                                                 <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleSubscribeNow}>Subscribe Now<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
@@ -299,16 +311,66 @@ const Courses = () => {
                                         </div>
                                     </div>
                                 </div>
-                                
-                            
+                                <div className="row" style={{"margin-bottom": "35px"}}>
+                                    <div className="col-md-6">
+                                        <div className="catimg-wrapper">
+                                            <div className="table-pie-image mt-2">
+                                                <img src={authenticBookClub} alt=""/>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6 ">
+                                        <div className="courseCat-content">
+                                            <div className="table-heading">
+                                                <h3>Become a High Vista Guild Ambassador</h3>
+                                                <p className="pb-2">Sign up for the High Vista Course Programme and choose to become an Ambassador! As an ambassador, you earn commission on every student who subscribes for the High Vista Guild course programme for as long as they stay are a subscriber.Subscribe now for the High Vista course programme to nlock access to the Ambassador programme</p>
+                                                {/*<p className="priceperMonth"><span>R500 /</span> per month</p>*/}
+                                            </div>
+                                            <div className="amb-btn mt-4">
+                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={()=> handleVistaDetails("Become a High Vista Guild Ambassador")}>Learn More<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
+                                            </div>
+                                            {/*<div className="amb-btn mt-4">
+                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleSubscribeNow}>Subscribe Now<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
+                                            </div>*/}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row" style={{"margin-bottom": "35px"}}>
+                                    <div className="col-md-6">
+                                        <div className="catimg-wrapper">
+                                            <div className="table-pie-image mt-2">
+                                                <img src={womanSitting} alt=""/>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6 ">
+                                        <div className="courseCat-content">
+                                            <div className="table-heading">
+                                                <h3>Our Premium Courses</h3>
+                                                <p className="pb-2">By choosing any of our high-impact premium courses, you unlock access to the knowledge you need to take the next giant leap in your career.Explore our premium courses on our digital campus or read more about it below.</p>
+                                                {/*<p className="priceperMonth"><span>R500 /</span> per month</p>*/}
+                                            </div>
+                                            <div className="amb-btn mt-4">
+                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handlePremiumCourses}>Learn More<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
+                                            </div>
+                                            {/*<div className="amb-btn mt-4">
+                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleSubscribeNow}>Subscribe Now<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
+                                            </div>*/}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
+                        
                     </div>
 
                 </div>
                 
-                <div className="courseCat-grid-section mt-5">
+                {/*<div className="courseCat-grid-section mt-5">
                     <div className="container">
                         <div className="table-heading text-center mb-4 pb-2">
                             <h3>Our Premium Courses</h3>
@@ -372,7 +434,7 @@ const Courses = () => {
                             )}
                         </div>
                     </div>
-                </div>
+                </div>*/}
             </div>
             <div>
             <Modal isOpen={open} onClose={handleClose} style={{

@@ -74,7 +74,7 @@ const Subscription = () => {
     const [agentsubscriptions, setAgentSubscriptions] = useState("");
     const subscriptionDetails = useSelector(state => state.subscriptionDetail);
     //const [agentsubscriptions, setAgentSubscriptions] = useSelector(state => state.lead)
-
+    
     const removeFilter = () => {
         //setTrans(RECENT_TRANSACTIONS)
     }
@@ -122,8 +122,8 @@ const Subscription = () => {
     /***********************************************************************/
     const openAddNewLeadModal = (id) => {
         dispatch(openModal({title : "Subscription Details", bodyType : MODAL_BODY_TYPES.SUBSCRIPTION_DETAIL,
-            extraObject : { message : `Are you sure you want to delete this lead?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.LEAD_DELETE, id}
-        }))
+            extraObject : {message : `Are you sure you want to delete this lead?`, type : CONFIRMATION_MODAL_CLOSE_TYPES.LEAD_DELETE, id}}))
+        
     }
     /***********************************************************************/
     /***********************************************************************/

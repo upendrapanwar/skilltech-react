@@ -44,8 +44,19 @@ const Cart = () => {
   const cartState = useSelector((state) => state)
   console.log('cart=',cart);
   console.log('userInfo=',userInfo);
+  console.log('userInfo.role=',userInfo.role);
   localStorage.setItem("discount_percent",0);
   const dispatch = useDispatch();
+  let return_url = process.env.REACT_APP_NGROK_URL+"/learner/dashboard/success";
+  let cancel_url = process.env.REACT_APP_NGROK_URL+"/learner/dashboard/cancel";
+  let notify_url = process.env.REACT_APP_NGROK_URL+"/learner/dashboard/notify";
+      
+  if(userInfo.role === "ambassador") {
+    return_url = process.env.REACT_APP_NGROK_URL+"/ambessador/dashboard/success";
+    cancel_url = process.env.REACT_APP_NGROK_URL+"/ambessador/dashboard/cancel";
+    notify_url = process.env.REACT_APP_NGROK_URL+"/ambessador/dashboard/notify";
+  }
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
@@ -185,13 +196,17 @@ const Cart = () => {
     console.log('cartState=',cartState);
     console.log('totalprice=', totalPrice);
     
+    
+    
     if(paymentType === 'subscription') {
+      console.log('userInfo=',userInfo);
+      
       merchantData = {
           "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
           "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-          'return_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/success",
-          'cancel_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/cancel",
-          'notify_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/notify",
+          'return_url' : return_url,
+          'cancel_url' : cancel_url,
+          'notify_url' : notify_url,
           'name_first' : firstName,
           'name_last' : lastName,
           'email_address' : userInfo.email,
@@ -213,9 +228,9 @@ const Cart = () => {
       merchantData = {
           "merchant_id" : process.env.REACT_APP_MERCHANT_ID,
           "merchant_key" : process.env.REACT_APP_MERCHANT_KEY,
-          'return_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/success",
-          'cancel_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/cancel",
-          'notify_url' : process.env.REACT_APP_NGROK_URL+"/learner/dashboard/notify",
+          'return_url' : return_url,
+          'cancel_url' : cancel_url,
+          'notify_url' : notify_url,
           'name_first' : firstName,
           'name_last' : lastName,
           'email_address' : userInfo.email,
@@ -371,16 +386,17 @@ const generatePaymentIdentifier = async (signature, merchantData) => {
 };
 /***********************************************************************/
 /***********************************************************************/
-  return (
+ 
+return (
     <>
     {identifier &&
       <Helmet>
         <script>{`{
             window.payfast_do_onsite_payment({
               uuid: '${identifier}',
-              "return_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/success",
-              "cancel_url": '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/cancel",
-              'notify_url' : '${process.env.REACT_APP_NGROK_URL}'+"/learner/dashboard/notify",
+              "return_url": '${return_url}',
+              "cancel_url": '${cancel_url}',
+              'notify_url' : '${notify_url}',
             })
           }`}
         </script>

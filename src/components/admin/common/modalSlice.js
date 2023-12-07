@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const modalSlice = createSlice({
+export const modalSlice = createSlice({
     name: 'modal',
     initialState: {
         title: "",  // current  title state management
@@ -12,7 +12,7 @@ const modalSlice = createSlice({
     reducers: {
 
         openModal: (state, action) => {
-            console.log('clll');
+            alert('opnemodal');
             const {title, bodyType, extraObject, size} = action.payload
             state.isOpen = true
             state.bodyType = bodyType

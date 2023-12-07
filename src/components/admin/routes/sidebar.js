@@ -40,6 +40,11 @@ const routes = [
     name: 'Subscriptions', // name that appear in Sidebar
   },
   {
+    path: '/admin/active-agents', // url
+    icon: <UserIcon className={submenuIconClasses}/>, // icon component
+    name: 'ActiveAgents', // name that appear in Sidebar
+  },
+  {
     path: '/admin/charts', // url
     icon: <ChartBarIcon className={iconClasses}/>, // icon component
     name: 'Analytics', // name that appear in Sidebar

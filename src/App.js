@@ -19,10 +19,12 @@ import CoursesDetails from './containers/store/CoursesDetails';
 import Cart from './containers/store/Cart';
 import OrderHistory from './containers/learner/OrderHistory';
 import MyCourses from './containers/learner/MyCourses';
+import PremiumCourses from './containers/store/PremiumCourses';
 
 const AdminLogin = lazy(() => import('./containers/admin/Login'));
 const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
 const AdminSubscription = lazy(() => import('./containers/admin/Subscription'));
+const AdminActiveAgents = lazy(() => import('./containers/admin/ActiveAgents'));
 
 function App() {
   useEffect(() => {
@@ -43,6 +45,7 @@ function App() {
         <Route path='/browse-courses' element={<Courses/>} />
         <Route path='/courses-details' element={<CoursesDetails/>} />
         <Route path='/cart' element={<Cart/>} />
+        <Route path='/premium-courses' element={<PremiumCourses/>} />
 
         <Route path='/learner/dashboard' element={<LearnerDashboard/>} />
         <Route path='/learner/subscription' element={<Subscription/>} />
@@ -51,11 +54,15 @@ function App() {
         
         <Route path='/ambessador/ambassador-subscription' element={<AmbassadorSubscription/>} />
         <Route path='/ambessador/dashboard' element={<AmbassadorDashboard/>} />
+        <Route path='/ambessador/dashboard/success' element={<AmbassadorDashboard/>} />
+        <Route path='/ambessador/dashboard/cancel' element={<AmbassadorDashboard/>} />
+        <Route path='/ambessador/dashboard/notify' element={<AmbassadorDashboard/>} />
         <Route path='/owner/dashboard' element={<Ownerdashboard/>} />
 
         <Route path='/admin/login' element={<AdminLogin/>} />
         <Route path='/admin/admin-dashboard' element={<AdminDashboard/>} />
         <Route path='/admin/subscription' element={<AdminSubscription/>} />
+        <Route path='/admin/active-agents' element={<AdminActiveAgents/>} />
      </Routes>
     </>
   );

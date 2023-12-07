@@ -5,12 +5,34 @@ import barChart from '../../assets/images/The-bar-chart-showing-the-monthly-refr
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import { toast } from 'react-toastify';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { clearCart } from '../../redux/cartSlice';
+import { useSelector, useDispatch } from 'react-redux'
 import axios from "axios";
 
 const Dashboard = () => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const userInfo = JSON.parse(localStorage.getItem("authInfo")) ? JSON.parse(localStorage.getItem("authInfo")) : null;
+    const location = useLocation();
+    let [myCourses, setMyCourses] = useState('');
+    const userData = JSON.parse(localStorage.getItem("userInfo"));
+    const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart);
+    var cartData = {};
+    const navigate = useNavigate();
     let [referralCode, setReferralCode] = useState(false);
     useEffect(() => {
+        let tmp = location.pathname.slice(location.pathname.lastIndexOf("/") , location.pathname.length);
+        console.log('pathname=',tmp)
+        if(tmp === "/success"){
+            paymentSuccess()
+        }
+        if(tmp === "/cancel"){
+            cancelPayment()
+        }
+        if(tmp === "/notify"){
+            notifyPayment()
+        }
+        getMyCourses();
         getReferralCode();
     }, []);
     toast.configure();
@@ -36,6 +58,209 @@ const Dashboard = () => {
         })
         
     }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Handle courses redirects
+     * 
+     */
+    const handleCourses = () => {
+        navigate('/learner/my-courses');
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Handle order history
+     * 
+     */
+    const handleOrderHistory = () => {
+        navigate('/learner/order-history');
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Handle payment success from payfast
+     * 
+     */
+    const paymentSuccess = async (response) => {
+        
+        cart.forEach((item,i) => {
+            cartData[i] = item;
+        })
+        console.log('cartData=',cartData);
+        let merchantData = localStorage.getItem("merchantData");
+        let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
+        if(merchantDataResult === '') {
+            return;
+        }
+        let is_recurring = '';
+        if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
+            is_recurring = 'yes'
+        }
+        if(merchantDataResult['item_description'] === "Order for one off payment") {
+            is_recurring = 'no'
+        }
+        const dataArray = {
+            'merchantData' : merchantDataResult,
+            'userid' : userData.id,
+            'payment_status': 'success',
+            'is_recurring' : is_recurring,
+            'is_active' : 'true',
+           'coursesData': cartData
+        }
+        
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Successful!', { position: "top-center",autoClose: 3000 });
+                    dispatch(clearCart());
+                //}
+                
+                //navigate('/login');
+            }
+            localStorage.setItem('merchantData', '');
+        }).catch(error => {
+            toast.dismiss();
+            localStorage.setItem('merchantData', '');
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        getMyCourses();
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+     /**
+     * Get cancel payment data from payfast
+     * 
+     */
+    const cancelPayment = (response) => { 
+        cart.forEach((item,i) => {
+            cartData[i] = item;
+        })  
+        console.log('cancel payment=',response);
+        let merchantData = localStorage.getItem("merchantData");
+        let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
+        console.log('merchantDataResult=',merchantDataResult);
+        let is_recurring = '';
+        if(merchantDataResult === '') {
+            return;
+        }
+        if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
+            is_recurring = 'yes'
+        }
+        if(merchantDataResult['item_description'] === "Order for one off payment") {
+            is_recurring = 'no'
+        }
+        const dataArray = {
+            'merchantData' : merchantDataResult,
+            'userid' : userData.id,
+            'payment_status': 'cancel',
+            'is_recurring' : is_recurring,
+            'is_active' : 'false',
+            'coursesData': cartData
+        }
+        
+        //allMerchantData
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Cancelled!', { position: "top-center",autoClose: 3000 });
+                    dispatch(clearCart());
+                //}
+                
+                //navigate('/login');
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        getMyCourses();
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+     /**
+     * Get notify payment from payfast
+     * 
+     */
+    const notifyPayment = (response) => {
+        cart.forEach((item,i) => {
+            cartData[i] = item;
+        })
+        console.log('notify payment=',response);
+        let merchantData = localStorage.getItem("merchantData");
+        let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
+        if(merchantDataResult === '') {
+            return;
+        }
+        let is_recurring = '';
+        if(merchantDataResult['item_description'] === "Order for Hign Vista Subscription") {
+            is_recurring = 'yes'
+        }
+        if(merchantDataResult['item_description'] === "Order for one off payment") {
+            is_recurring = 'no'
+        }
+        const dataArray = {
+            'merchantData' : merchantDataResult,
+            'userid' : userData.id,
+            'payment_status': 'success',
+            'is_recurring' : is_recurring,
+            'is_active' : 'true',
+            'coursesData': cartData
+        }
+        
+        axios.post('common/save-subscription', dataArray).then(response => {
+
+            if (response) {
+                //if(response.data.message === "Error while saving.") {
+                    toast.success('Registration Successful!', { position: "top-center",autoClose: 3000 });
+                    dispatch(clearCart());
+                //}
+                
+                //navigate('/login');
+            }
+            localStorage.setItem('merchantData', '');
+        }).catch(error => {
+            toast.dismiss();
+            localStorage.setItem('merchantData', '');
+            if (error.response) {
+                toast.error('Registration Failed!', { position: "top-center",autoClose: 3000 });
+            }
+        })
+        getMyCourses();
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Get Users courses list
+     * 
+     */
+    const getMyCourses = () => {
+        axios.get('common/get-my-courses/'+ userData.id).then(response => {
+                toast.dismiss();
+    
+                if (response.data) {
+                    
+                    if(response.data.status) {
+                        setMyCourses(response.data.data);
+                        console.log(response.data)
+                    }
+                    
+                }
+            }).catch(error => {
+                toast.dismiss();
+                if (error.response) {
+                    toast.error('Code is not available', { position: "top-center",autoClose: 3000 });
+                }
+            });
+        
+      }
+      /***********************************************************************/
+      /***********************************************************************/
     return (
         <>
             <Header />
@@ -143,26 +368,21 @@ const Dashboard = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Larry</td>
-                                            </tr>
+                                        {myCourses.length > 0 ? myCourses.map((item,i) =>
+                                                    
+                                                    (<tr>
+                                                        <th scope="row">{console.log('item=',item)}{item.plan_name}</th>
+                                                        <td>{item.createdAt}</td>
+                                                    </tr>)  
+                                                    ): <tr></tr>} 
                                         </tbody>
                                     </table>
                                 </div>
 
                                 <div className="amb-btn">
-                                    <button type="button" className="btn btn-primary btn-color bt-size">Go to courses <span
+                                    <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => handleCourses()}>Go to courses <span
                                         className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
-                                    <button type="button" className="btn btn-primary btn-color bt-size">View order history <span
+                                    <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => handleOrderHistory()}>View order history <span
                                         className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
                                 </div>
                             </div>

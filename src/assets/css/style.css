@@ -111,7 +111,10 @@ section#shadow-host-companion {
 .section-heading {
     position: relative;
 }
-
+.banner-heading {
+    background:#1A1A1A;
+    padding: 10px 0px 10px 30px;
+}
 .section-heading:after {
     content: '';
     width: 160px;
@@ -771,7 +774,7 @@ footer .footer-content ul li a {
     padding: 0;
     margin-bottom: 40px;
     width: 31.3%;
-    min-height: 380px;
+    min-height: 310px;
     margin-right:20px;
 }
 .course-details h4 {
@@ -785,8 +788,15 @@ footer .footer-content ul li a {
 }
 .courseCat-grid-section .courseCat-grid-row .course_item .figure {
     margin-bottom: 0px;
+    height: 200px;
+    width: 100%;
 }
-
+.courseCat-grid-section .courseCat-grid-row .course_item .figure img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    object-position: top center;
+}
 .courseCat-grid-section .courseCat-grid-row .course_item a.course-grid {
     text-decoration: none;
     color: #000;

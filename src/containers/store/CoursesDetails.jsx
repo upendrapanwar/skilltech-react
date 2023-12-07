@@ -3,6 +3,7 @@ import banner from '../../assets/images/Banner.png';
 import highVista from '../../assets/images/4-410x260_1.svg';
 import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
 import grid1 from '../../assets/images/grid1.svg';
+import authenticBookClub from '../../assets/images/authentic-book-club-scene-3-min1.jpg';
 import CHATGPT_WIZARDRY_NAVIGATING_THE_REALM_OF_AI_CONVERSATIONS from '../../assets/images/course_images/CHATGPT_WIZARDRY_NAVIGATING_THE_REALM_OF_AI_CONVERSATIONS.png';
 import CLICK_SWIPE_ZOOM_BECOMING_A_COMPUTER_NAVIGATION_WIZ from '../../assets/images/course_images/CLICK_SWIPE_ZOOM BECOMING A COMPUTER NAVIGATION WIZ.png';
 import CRAFTING_A_JOB_WINNING_CV from '../../assets/images/course_images/CRAFTING_A_JOB_WINNING_CV.png';
@@ -19,9 +20,10 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import "react-data-table-component-extensions/dist/index.css";
 import { addToCart } from '../../redux/cartSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const CoursesDetails = () => {
+    const locations = useLocation();
     const [myApi, setMyApi] = useState([]);
     let [coursedData, setCoursedData] = useState(null);
     let [course, setCourse] = useState(null);
@@ -35,6 +37,8 @@ const CoursesDetails = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart)
+       
+    console.log('locations=',locations);   
     useEffect(() => {
         getAllCourses();
         
@@ -237,7 +241,8 @@ const CoursesDetails = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
     let price = 500;
     let id = '9999';
-    let title = 'High Vista Package';
+    //let title = 'High Vista Package';
+    let title = (locations && locations.state != null) ? locations.state.title : 'Subscription Package'; 
     let image = grid1;
     let paymentType = 'subscription';                        
     return (
@@ -254,7 +259,9 @@ const CoursesDetails = () => {
                         <div className="banner-content">
                             <div className="banner-heading col-md-6">
                                 <div className="row">
-                                    <h1>Course Catalogue</h1>
+                                    {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") ?
+                                    <h1>The High Vista Course Package</h1> : <h1>Become a High Vista Guild Ambassador</h1>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -263,10 +270,43 @@ const CoursesDetails = () => {
             </div>
 
             <div className="hvg__main_container courseCat-section">
-               
+                <div className="container">
+                    <div className="hvg__card_section mb-0">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="catimg-wrapper">
+                                            <div className="table-pie-image mt-2">
+                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") ?
+                                                <img src={highVista} alt=""/> : <img src={authenticBookClub} alt=""/>
+                                            }
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="col-md-6 ">
+                                        <div className="courseCat-content">
+                                            <div className="table-heading">
+                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") ?
+                                                <><h3>The High Vista Course Package</h3><p className="pb-2">Subscribe now and get access to 10 awesome courses. Our courses are designed to help you unlock your potential - whether in the boardroom, dealing with potential customers or working in a team.</p></> : <><h3>Become a High Vista Guild Ambassador</h3>
+                                                <p className="pb-2">Sign up for the High Vista Course Programme and choose to become an Ambassador! As an ambassador, you earn commission on every student who subscribes for the High Vista Guild course programme for as long as they stay are a subscriber.Subscribe now for the High Vista course programme to nlock access to the Ambassador programme</p></>
+                                            }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
                 <div className="courseCat-grid-section mt-5">
                     <div className="container">
-                        
+                    
                         <div className="courseCat-grid-row d-flex justify-content-between align-items-center flex-wrap">
                             {currentPosts}
                         </div>

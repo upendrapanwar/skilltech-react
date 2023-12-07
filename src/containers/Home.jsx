@@ -3,6 +3,9 @@ import banner from '../assets/images/homeBanner.svg';
 import about from '../assets/images/about-3-5.svg';
 import grid1 from '../assets/images/grid1.svg';
 import grid2 from '../assets/images/grid2.svg';
+import highVista from '../assets/images/4-410x260_1.svg';
+import employability from '../assets/images/Employability.png';
+import processimg from '../assets/images/Process.png';
 import brokenArrow from '../assets/images/solar_arrow-up-broken.svg';
 import brokenBlu from '../assets/images/solar_arrow-up-broken-blu.svg';
 import graduationHat from '../assets/images/graduation-hat.svg';
@@ -57,9 +60,21 @@ const Home = () => {
      * Redirects to course details page
      * 
      */
-    const handleVistaDetails = () => {
+    const handleVistaDetails = (e,title) => {
         console.log('clicked');
-        navigate('/courses-details');
+        e.preventDefault();
+        navigate('/courses-details',{state:{"title":title}});
+        
+    }
+    /***********************************************************************/
+    /***********************************************************************/
+    /**
+     * Redirects to premium courses page
+     * 
+     */
+    const handlePremiumCourses = (e) => {
+        e.preventDefault();
+        window.open('https://skilltechsa.online/');
         
     }
     /***********************************************************************/
@@ -189,9 +204,9 @@ const Home = () => {
                     </div>
                     <div className="courseCat-grid-row d-flex justify-content-between align-items-center flex-wrap">
                         <div className="course_item">
-                        <Link to="/courses-details" className="course-grid">
+                        <Link to="#" className="course-grid" onClick={(e)=> handleVistaDetails(e,"The High Vista Course Package")}>
                                 <figure className="figure">
-                                    <img src={grid2} className="figure-img img-fluid rounded" alt=" figure." />
+                                    <img src={highVista} className="figure-img img-fluid rounded" alt=" figure." />
                                 </figure>
                                 <div className="course-details">
                                     <h4>The High Vista Course Package</h4>
@@ -208,9 +223,9 @@ const Home = () => {
                             </Link>
                         </div>
                         <div className="course_item">
-                        <Link to="#" className="course-grid">
+                        <Link to="#" className="course-grid" onClick={(e) => handlePremiumCourses(e)}>
                                 <figure className="figure">
-                                    <img src={grid1} className="figure-img img-fluid rounded" alt="figure." />
+                                    <img src={employability} className="figure-img img-fluid rounded" alt="figure." />
                                 </figure>
                                 <div className="course-details">
                                     <h4>{premiumCourseFirstTitle}</h4>
@@ -226,9 +241,9 @@ const Home = () => {
                             </Link>
                         </div>
                         <div className="course_item">
-                            <Link to="#" className="course-grid">
+                            <Link to="#" className="course-grid" onClick={(e) => handlePremiumCourses(e)}>
                                 <figure className="figure">
-                                    <img src={grid1} className="figure-img img-fluid rounded" alt="figure." />
+                                    <img src={processimg} className="figure-img img-fluid rounded" alt="figure." />
                                 </figure>
                                 <div className="course-details">
                                     <h4>{premiumCourseSecondTitle}</h4>

@@ -20,7 +20,6 @@ export const SubscriptionDetailsSlice = createSlice({
     },
     reducers: {
 
-
         addNewLead: (state, action) => {
             
             let {newLeadObj} = action.payload
