@@ -20,6 +20,7 @@ import Cart from './containers/store/Cart';
 import OrderHistory from './containers/learner/OrderHistory';
 import MyCourses from './containers/learner/MyCourses';
 import PremiumCourses from './containers/store/PremiumCourses';
+import UpdateProfile from './containers/learner/UpdateProfile';
 
 const AdminLogin = lazy(() => import('./containers/admin/Login'));
 const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
@@ -51,6 +52,7 @@ function App() {
         <Route path='/learner/subscription' element={<Subscription/>} />
         <Route path='/learner/order-history' element={<OrderHistory/>} />
         <Route path='/learner/my-courses' element={<MyCourses/>} />
+        <Route path='/learner/updateprofile' element={<UpdateProfile/>} />
         
         <Route path='/ambessador/ambassador-subscription' element={<AmbassadorSubscription/>} />
         <Route path='/ambessador/dashboard' element={<AmbassadorDashboard/>} />
