@@ -646,7 +646,15 @@ const Subscription = () => {
                                                     <div className="form-group col-md-12">
                                                         <div className="row">
                                                             <div className="form-group col-md-12">
-                                                            <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. <Link to={termsConditionPDF}>View our e-commerce policy here<span>*</span> <br/>View our POPI website privacy policy here</Link>.<span>*</span></p>
+                                                            <p>We're serious about your privacy. Please read our Terms and Conditions before you continue. <a
+                                                                href={termsConditionPDF}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                View our e-commerce policy here
+                                                                <span>*</span> <br />
+                                                                View our POPI website privacy policy here
+                                                            </a>.<span>*</span></p>
                                                                     
                                                                 <label className="radio-inline">
                                                                     <input type="checkbox" id="ecommercePolicy" name="ecommercePolicy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="true" />I have read and accept the e-commerce policy.<span>*</span>
