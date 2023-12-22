@@ -5,7 +5,7 @@ import Footer from "../../components/common/Footer";
 import Loader from "../../components/common/Loader";
 import { toast } from 'react-toastify';
 import SubscriptionSchema from "../../validation-schemas/SubscriptionSchema";
-import termsConditionPDF from "../../assets/pdf/Skill Tech Solutions - Website Privacy Policy_2023.pdf";
+import termsConditionPDF from "../../assets/pdf/Skill_Tech_Solutions_Website_Privacy_Policy_2023.pdf";
 import { Formik} from 'formik';
 import axios from "axios";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
