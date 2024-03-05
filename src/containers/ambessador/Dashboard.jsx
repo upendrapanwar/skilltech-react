@@ -231,6 +231,7 @@ const Dashboard = () => {
    *
    */
   const notifyPayment = (response) => {
+    console.log('response',response);
     cart.forEach((item, i) => {
       cartData[i] = item;
     });
