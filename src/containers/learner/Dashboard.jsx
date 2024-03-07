@@ -161,6 +161,7 @@ const Dashboard = () => {
     * 
     */
     const notifyPayment = (response) => {
+        
         cart.forEach((item, i) => {
             cartData[i] = item;
         })
@@ -177,13 +178,15 @@ const Dashboard = () => {
         if (merchantDataResult['item_description'] === "Order for one off payment") {
             is_recurring = 'no'
         }
+        merchantDataResult['itn'] = JSON.stringify(response);
         const dataArray = {
             'merchantData': merchantDataResult,
             'userid': userData.id,
             'payment_status': 'success',
             'is_recurring': is_recurring,
             'is_active': 'true',
-            'coursesData': cartData
+            'coursesData': cartData,
+            
         }
 
         axios.post('common/save-subscription', dataArray).then(response => {

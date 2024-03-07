@@ -59,8 +59,10 @@ const Cart = () => {
       process.env.REACT_APP_NGROK_URL + "/ambessador/dashboard/success";
     cancel_url =
       process.env.REACT_APP_NGROK_URL + "/ambessador/dashboard/cancel";
-    notify_url =
-      process.env.REACT_APP_NGROK_URL + "/ambessador/dashboard/notify";
+    //notify_url =
+    //  process.env.REACT_APP_NGROK_URL + "/ambessador/dashboard/notify";
+    notify_url = "http://localhost:8800/common/notify"; 
+      
   }
 
   useEffect(() => {
@@ -313,8 +315,7 @@ const Cart = () => {
    *
    */
   const generateSignature = async (merchantData, passPhrase) => {
-
-    console.log("generateSignature RUN")
+    
     //setLoading(true);
     const dataArray = {
       merchantData: merchantData,
@@ -399,7 +400,7 @@ const Cart = () => {
       .then((res) => {
         console.log("uuid", res.data.uuid);
         localStorage.setItem("uuid", JSON.stringify(res.data.uuid));
-        console.log("uuidData=====>", res.data);
+        
         // const data = JSON.stringify(merchantData);
         // const uuid = JSON.stringify(res.data.uuid);
 
