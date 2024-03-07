@@ -16,7 +16,7 @@ const AmbassadorSubscription = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   let [loading, setLoading] = useState("false");
-  let [referralCodes, setReferralCodes] = useState(null);
+  let [referralCode, setReferralCode] = useState(null);
   let [userid, setUserid] = useState(userInfo.id);
   let [uploadCertificate, setUploadCertificate] = useState(null);
   let [uploadBankProof, setUploadBankProof] = useState(null);
@@ -28,6 +28,7 @@ const AmbassadorSubscription = () => {
     generateReferralCode();
   }, []);
   toast.configure();
+
   const generateReferralCode = () => {
     //ex: HG00123
     var strDate = new Date(); // By default Date empty constructor give you Date.now
@@ -50,7 +51,7 @@ const AmbassadorSubscription = () => {
           var result = (pad + n).slice(-pad.length);
           referralCode = "HG" + result + twoDigitYear;
           console.log("Referral code generated:", referralCode);
-          setReferralCodes(referralCode);
+          setReferralCode(referralCode);
         }
       })
       .catch((error) => {
@@ -88,16 +89,43 @@ const AmbassadorSubscription = () => {
   /***********************************************************************/
 
   /**
+   * Handle email to ambassador
+   *
+   */
+  const sendEmailToAmbassador = () => {
+    console.log("Email is sending from here!");
+    axios
+    .get(`common/send-email-ambassador/${userInfo.id}`,
+    )
+    .then((response) => {
+      toast.dismiss();
+
+      if (response.data.status) {
+        console.log("Email has been sent to ambassador!");
+      }
+    })
+    .catch((error) => {
+      console.log("Error", error);
+    });
+  }
+
+
+
+  /***********************************************************************/
+  /***********************************************************************/
+
+  /**
    * Handle after form submission
    *
    */
   const handleSubmit = (values, { setSubmitting }) => {
+    console.log("Check handle submit")
     setLoading(true);
     //console.log("uploadBankProof",uploadBankProof);
     //console.log("uploadCertificate",uploadCertificate);
     values.certificate = uploadCertificate;
     values.bank_proof = uploadBankProof;
-    values.referralCode = referralCodes;
+    values.referral_code = referralCode;
     console.log("Submitting form...", values);
     const config = {
       headers: {
@@ -105,17 +133,17 @@ const AmbassadorSubscription = () => {
         "Content-Type": "multipart/form-data;application/json;charset=UTF-8",
       },
     };
-    console.log(values);
     axios
       .post("common/ambassador-subscription", values)
       .then((response) => { 
         toast.dismiss();
-        console.log("inside2");
         if (response.data.status) {
           toast.success(response.data.message, {
             position: "top-center",
             autoClose: 3000,
           });
+          console.log("Response data after becoming ambassador", response.data);
+          sendEmailToAmbassador();
           navigate("/ambessador/dashboard");
         }
       })

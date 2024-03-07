@@ -97,6 +97,7 @@ const Cart = () => {
    *
    */
   const handleCode = (event) => {
+    console.log("ReferalCode: ", event.target.value);
     setReferralCode(event.target.value);
   };
   /***********************************************************************/
@@ -138,29 +139,20 @@ const Cart = () => {
   /***********************************************************************/
   const handleReferralCode = (event) => {
     axios
-      .get("common/check-referral-code/" + referralCode)
+      .get(`common/check-referral-code/${referralCode}?userId=${tmp_userInfo.id}`)
       .then((response) => {
-        toast.dismiss();
+        console.log("REspose:", response)
+        toast.dismiss(); 
 
         if (response.data) {
-          if (response.status) {
-            localStorage.setItem("discount_percent", 5);
-            let isSubscription = "";
-            cart.forEach((item) => {
-              isSubscription = item.paymentType;
-            });
-
-            if (isSubscription == "subscription") {
-              //dispatch(getDiscount(5));
-            }
-
-            toast.success("Code applied Sucessfully", {
+          console.log("response.data:", response.data)
+          if (response.status === 200) {
+            console.log("Response data of Check Referral Code: ", response.data);
+            toast.success("Code applied successfully!", {
               position: "top-center",
               autoClose: 3000,
             });
-          }
-
-          //navigate('/login');
+          } 
         }
       })
       .catch((error) => {

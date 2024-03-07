@@ -1113,3 +1113,14 @@ footer .footer-content ul li a {
 .content-para {
   text-align: justify;
 }
+
+.referral-section {
+  background-color: #f5f5f5;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.referral-QR {
+  max-width: 150px;
+  max-height: 150px;
+}

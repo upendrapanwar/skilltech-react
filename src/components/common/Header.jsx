@@ -124,7 +124,7 @@ const Header = () => {
                         </Link>
                       </li>
                       {userInfo && userInfo.name ? (
-                        ""
+                      ''
                       ) : (
                         <>
                           <li className="nav-item">

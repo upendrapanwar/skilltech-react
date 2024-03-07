@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
-// import "../../index.css";
-// import "../../assets/css/admin.css";
-// import "../../assets/css/output.css";
+import "../../index.css";
+import "../../assets/css/admin.css";
+import "../../assets/css/output.css";
 import openRightDrawer from "../admin/common/rightDrawerSlice";
 import RIGHT_DRAWER_TYPES from "../admin/utils/globalConstantUtil";
 
