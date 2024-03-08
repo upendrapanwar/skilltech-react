@@ -29,6 +29,8 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
 
   // ********************************
+  const referral = sessionStorage.getItem("referralCode");
+  // ********************************
   useEffect(() => {
     let tmp = location.pathname.slice(
       location.pathname.lastIndexOf("/"),
@@ -101,6 +103,7 @@ const Dashboard = () => {
     });
     console.log("cartData=", cartData);
     let merchantData = localStorage.getItem("merchantData");
+    let subscriptionId = localStorage.getItem("subscriptionId");
     let uuid = localStorage.getItem("uuid");
     let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
     if (merchantDataResult === "") {
@@ -125,7 +128,9 @@ const Dashboard = () => {
       is_recurring: is_recurring,
       is_active: "true",
       coursesData: cartData,
-      uuid: uuid
+      uuid: uuid,
+      id:subscriptionId,
+      referralCode: referral,
     };
     console.log("Updated dattaArray", dataArray)
 
@@ -133,13 +138,12 @@ const Dashboard = () => {
       .post("common/save-subscription", dataArray)
       .then((response) => {
         if (response) {
-          //if(response.data.message === "Error while saving.") {
+          console.log("Save subscription: ", response)
           toast.success("Registration Successful!", {
             position: "top-center",
             autoClose: 3000,
           });
           dispatch(clearCart());
-          //}
 
           //navigate('/login');
         }
@@ -324,27 +328,31 @@ const Dashboard = () => {
         }
       });
   };
+  
+  const generateTimestamp = () => {
+    // Get current date and time in UTC format
+    const now = new Date().toISOString().slice(0, -1);
+    // Get the timezone offset in hours and minutes
+    const offset = (new Date().getTimezoneOffset() / 60)
+      .toString()
+      .padStart(2, "0");
+    // Construct the timestamp string
+    const timestamp = `${now}${offset > 0 ? "-" : "+"}${Math.abs(offset)
+      .toString()
+      .padStart(2, "0")}:00`;
+    return timestamp;
+  }
   /***********************************************************************/
   /***********************************************************************/
   /**
    * remove courses
    *
    */
-  const handleCancelClick = async (uuid, plan_name) => {
+  const handleCancelClick = async (plan_name) => {
 
-    function generateTimestamp() {
-      // Get current date and time in UTC format
-      const now = new Date().toISOString().slice(0, -1);
-      // Get the timezone offset in hours and minutes
-      const offset = (new Date().getTimezoneOffset() / 60)
-        .toString()
-        .padStart(2, "0");
-      // Construct the timestamp string
-      const timestamp = `${now}${offset > 0 ? "-" : "+"}${Math.abs(offset)
-        .toString()
-        .padStart(2, "0")}:00`;
-      return timestamp;
-    }
+    let merchantData = localStorage.getItem("merchantData");
+    let uuid = localStorage.getItem("uuid");
+    let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
     // Example usage
     const timestamps = generateTimestamp();
     console.log("update timeStamps", timestamps)
@@ -357,7 +365,7 @@ const Dashboard = () => {
 
     console.log("plan name : ", plan_name)
     const merchant_id = 10030936;
-    const signature = "e4b3d41a3aab986147f5a78c7d8e6bf4";
+    const signature = merchantDataResult['signature'];
     // const timestamp = new Date().getTime();
 
 

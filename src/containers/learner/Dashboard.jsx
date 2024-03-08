@@ -19,9 +19,12 @@ const Dashboard = () => {
     const udis = userInfo ? userInfo.id : null;
     let [userid, setUserid] = useState(udis);
     const location = useLocation();
-    const userData = JSON.parse(localStorage.getItem("userInfo"));
+    const userData = JSON.parse(localStorage.getItem("userInfo")); 
     const cart = useSelector((state) => state.cart);
     var cartData = {};
+    const referral = sessionStorage.getItem("referralCode");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         //console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
@@ -62,6 +65,8 @@ const Dashboard = () => {
         })
         console.log('cartData=', cartData);
         let merchantData = localStorage.getItem("merchantData");
+        let subscriptionId = localStorage.getItem("subscriptionId");
+        let uuid = localStorage.getItem("uuid");
         let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
         if (merchantDataResult === '') {
             return;
@@ -74,18 +79,22 @@ const Dashboard = () => {
             is_recurring = 'no'
         }
         const dataArray = {
-            'merchantData': merchantDataResult,
-            'userid': userData.id,
-            'payment_status': 'success',
-            'is_recurring': is_recurring,
-            'is_active': 'true',
-            'coursesData': cartData
-        }
+            merchantData: merchantDataResult,
+            userid: userData.id,
+            payment_status: "success",
+            is_recurring: is_recurring,
+            is_active: "true",
+            coursesData: cartData,
+            uuid: uuid,
+            id:subscriptionId,
+            referralCode: referral,
+          };
 
         axios.post('common/save-subscription', dataArray).then(response => {
 
             if (response) {
                 //if(response.data.message === "Error while saving.") {
+                console.log("Save subscription: ", response)
                 toast.success('Registration Successful!', { position: "top-center", autoClose: 3000 });
                 dispatch(clearCart());
                 //}
@@ -114,6 +123,7 @@ const Dashboard = () => {
         })
         console.log('cancel payment=', response);
         let merchantData = localStorage.getItem("merchantData");
+        let uuid = localStorage.getItem("uuid");
         let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
         console.log('merchantDataResult=', merchantDataResult);
         let is_recurring = '';
@@ -127,13 +137,14 @@ const Dashboard = () => {
             is_recurring = 'no'
         }
         const dataArray = {
-            'merchantData': merchantDataResult,
-            'userid': userData.id,
-            'payment_status': 'cancel payment',
-            'is_recurring': is_recurring,
-            'is_active': 'false',
-            'coursesData': cartData
-        }
+            merchantData: merchantDataResult,
+            userid: userData.id,
+            payment_status: "cancel payment",
+            is_recurring: is_recurring,
+            is_active: "false",
+            coursesData: cartData,
+            uuid: uuid
+          };
 
         //allMerchantData
         axios.post('common/save-subscription', dataArray).then(response => {
@@ -167,6 +178,7 @@ const Dashboard = () => {
         })
         console.log('notify payment=', response);
         let merchantData = localStorage.getItem("merchantData");
+        let uuid = localStorage.getItem("uuid");
         let merchantDataResult = (merchantData) ? JSON.parse(merchantData) : '';
         if (merchantDataResult === '') {
             return;
@@ -180,14 +192,14 @@ const Dashboard = () => {
         }
         merchantDataResult['itn'] = JSON.stringify(response);
         const dataArray = {
-            'merchantData': merchantDataResult,
-            'userid': userData.id,
-            'payment_status': 'success',
-            'is_recurring': is_recurring,
-            'is_active': 'true',
-            'coursesData': cartData,
-            
-        }
+        merchantData: merchantDataResult,
+        userid: userData.id,
+        payment_status: "success",
+        is_recurring: is_recurring,
+        is_active: "true",
+        coursesData: cartData,
+        uuid: uuid
+        };
 
         axios.post('common/save-subscription', dataArray).then(response => {
 
@@ -238,6 +250,110 @@ const Dashboard = () => {
         });
 
     }
+     /***********************************************************************/
+  /***********************************************************************/
+  const generateTimestamp = () => {
+    // Get current date and time in UTC format
+    const now = new Date().toISOString().slice(0, -1);
+    // Get the timezone offset in hours and minutes
+    const offset = (new Date().getTimezoneOffset() / 60)
+      .toString()
+      .padStart(2, "0");
+    // Construct the timestamp string
+    const timestamp = `${now}${offset > 0 ? "-" : "+"}${Math.abs(offset)
+      .toString()
+      .padStart(2, "0")}:00`;
+    return timestamp;
+  }
+    /***********************************************************************/
+    /***********************************************************************/
+  /**
+   * remove courses
+   *
+   */
+  const handleCancelClick = async (plan_name) => {
+
+    let merchantData = localStorage.getItem("merchantData");
+    let uuid = localStorage.getItem("uuid");
+    let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
+    // Example usage
+    const timestamps = generateTimestamp();
+    console.log("update timeStamps", timestamps)
+
+
+    // const UUID = JSON.parse(uuid);
+    // const uuId = UUID.replace(/^%22|%22$/g, "");
+
+    // console.log("uuid : ", uuId)
+
+    console.log("plan name : ", plan_name)
+    const merchant_id = 10030936;
+    const signature = merchantDataResult['signature'];
+    // const timestamp = new Date().getTime();
+
+
+    setIsLoading(true);
+    setError(null);
+
+    const PayFsToken = localStorage.getItem("authInfo");
+    const tokenObject = JSON.parse(PayFsToken);
+    const token = tokenObject.token;
+
+    // *************************************************************************
+
+    var myHeaders = new Headers();
+    myHeaders.append("merchant-id", merchant_id);
+    myHeaders.append("version", "v1");
+    myHeaders.append("timestamp", timestamps);
+    myHeaders.append("signature", signature);
+    // myHeaders.append('Authorization', `Bearer ${token}`)
+
+    var urlencoded = new URLSearchParams();
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow'
+
+    };
+    // var url = `https://api.payfast.co.za/subscriptions/${uuId}/cancel?testing=true`
+    var url = `https://sandbox.payfast.co.za/subscriptions/${uuid}/cancel`
+    fetch(url, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+
+    // ********************************************************************************
+
+    // try {
+    //   const response = await fetch(`https://sandbox.payfast.co.za/subscriptions/${uuId}/cancel`, {
+    //     method: 'PUT', // You might need to adjust the HTTP method based on PayFast API requirements
+    //     headers: {
+    //       'merchant_id': merchant_id,
+    //       'version': 'v1',
+    //       'timestamp': timestamp.toString(),
+    //       'signature': signature,
+    //       "Access-Control-Allow-Headers": "Content-Type",
+    //       'Authorization': `Bearer ${token}`
+
+
+    //       // Include any additional headers required by the PayFast API, like authorization headers
+    //     },
+    //     // Add any payload if needed
+    //     body: JSON.stringify({}),
+    //   });
+    //   if (!response.ok) {
+    //     throw new Error(`Failed to cancel subscription: ${response.statusText}`);
+    //   }
+
+    //   // Subscription successfully canceled
+    //   console.log('Subscription canceled successfully');
+    // } catch (error) {
+    //   setError(error.message);
+    // } finally {
+    //   setIsLoading(false);
+    // }
+  };
     /***********************************************************************/
     /***********************************************************************/
     /**
@@ -346,8 +462,9 @@ const Dashboard = () => {
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Course Name</th>
-                                                        <th scope="col">payment Status</th>
-                                                        <th scope="col">Start date</th>
+                                                        {/* <th scope="col">payment Status</th>
+                                                        <th scope="col">Start date</th> */}
+                                                        <th scope="col">Action</th>
 
                                                     </tr>
                                                 </thead>
@@ -357,8 +474,18 @@ const Dashboard = () => {
 
                                                     (<tr>
                                                         <th scope="row">{console.log('item=', item)}{item.plan_name}</th>
-                                                        <th>{item.payment_status}</th>
-                                                        <td>{item.createdAt}</td>
+                                                        {/* <th>{item.payment_status}</th>
+                                                        <td>{item.createdAt}</td> */}
+                                                        <td>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary btn-color bt-size"
+                                                            // onClick={() => handleRemoveCourses(item._id)}
+                                                            onClick={() => handleCancelClick(item.uuid, item.plan_name)}
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                        </td>
                                                     </tr>)
                                                     ) : <tr></tr>}
                                                 </tbody>

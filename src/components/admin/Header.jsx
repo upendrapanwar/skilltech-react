@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import BellIcon from "@heroicons/react/24/outline/BellIcon";
-import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon";
-import "../../index.css";
-import "../../assets/css/admin.css";
-import "../../assets/css/output.css";
+import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon"; 
 import openRightDrawer from "../admin/common/rightDrawerSlice";
 import RIGHT_DRAWER_TYPES from "../admin/utils/globalConstantUtil";
 
+
+
+
 const Header = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { noOfNotifications } = useState("");
+
+  // Conditionally import CSS files for admin routes only
+    if (location.pathname.startsWith('/admin')) {
+      import("../../index.css");
+      import("../../assets/css/admin.css");
+      import("../../assets/css/output.css");
+    }
 
   useEffect(() => {}, []);
   /***********************************************************************/
@@ -96,3 +104,5 @@ const Header = () => {
 };
 
 export default Header;
+
+

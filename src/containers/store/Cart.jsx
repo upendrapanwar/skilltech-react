@@ -33,11 +33,13 @@ const Cart = () => {
   }
 
   const passPhrase = process.env.REACT_APP_PASSPHRASE;
+  const [error, setError] = useState('');
   let [signature, setSignature] = useState(null);
   let [showReferral, setShowReferral] = useState(false);
   let [referralCode, setReferralCode] = useState(null);
   let [identifier, setIdentifier] = useState(null);
   let [uuid , setUuid] = useState();
+  let [subscriptionPayId, setSubscriptionPayId] = useState();
   let [userid, setUserid] = useState(userInfo ? userInfo.id : null);
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
@@ -51,8 +53,9 @@ const Cart = () => {
     process.env.REACT_APP_NGROK_URL + "/learner/dashboard/success";
   let cancel_url =
     process.env.REACT_APP_NGROK_URL + "/learner/dashboard/cancel";
-  let notify_url =
-    process.env.REACT_APP_NGROK_URL + "/learner/dashboard/notify";
+  // let notify_url =
+  //   process.env.REACT_APP_NGROK_URL + "/learner/dashboard/notify";
+    let  notify_url = process.env.REACT_APP_NGROK_NODE_URL + "/common/notify";
 
   if (userInfo.role === "ambassador") {
     return_url =
@@ -61,8 +64,7 @@ const Cart = () => {
       process.env.REACT_APP_NGROK_URL + "/ambessador/dashboard/cancel";
     //notify_url =
     //  process.env.REACT_APP_NGROK_URL + "/ambessador/dashboard/notify";
-    notify_url = "http://localhost:8800/common/notify"; 
-      
+    notify_url = process.env.REACT_APP_NGROK_NODE_URL + "/common/notify";
   }
 
   useEffect(() => {
@@ -101,6 +103,7 @@ const Cart = () => {
   const handleCode = (event) => {
     console.log("ReferalCode: ", event.target.value);
     setReferralCode(event.target.value);
+    setError('');
   };
   /***********************************************************************/
   /***********************************************************************/
@@ -140,6 +143,9 @@ const Cart = () => {
   /***********************************************************************/
   /***********************************************************************/
   const handleReferralCode = (event) => {
+    if (!referralCode) {
+      setError('Referral code is required');
+    } else {
     axios
       .get(`common/check-referral-code/${referralCode}?userId=${tmp_userInfo.id}`)
       .then((response) => {
@@ -150,6 +156,7 @@ const Cart = () => {
           console.log("response.data:", response.data)
           if (response.status === 200) {
             console.log("Response data of Check Referral Code: ", response.data);
+            sessionStorage.setItem("referralCode", referralCode);
             toast.success("Code applied successfully!", {
               position: "top-center",
               autoClose: 3000,
@@ -166,6 +173,7 @@ const Cart = () => {
           });
         }
       });
+    }
   };
   /***********************************************************************/
   /***********************************************************************/
@@ -173,7 +181,8 @@ const Cart = () => {
    * Handle subscribe now
    *
    */
-  const handleSubscribeNow = (redirect) => {
+  const handleSubscribeNow = async (redirect) => {
+    let spayId = '';
     if (redirect === "signin_pay") {
       navigate("/login");
       return true;
@@ -190,6 +199,25 @@ const Cart = () => {
         return true;
       }
     }
+    await axios
+      .get("common/getSubscriptionId")
+      .then((response) => {
+        console.log("subscriptionId", response.data.data);
+        
+        localStorage.setItem("subscriptionId", response.data.data);
+        spayId = response.data.data;
+        // Generate payment identifier
+      })
+      .catch((error) => {
+        
+        if (error.response) {
+          toast.error("Please complete your registation", {
+            position: "top-center",
+            autoClose: 3000,
+          });
+        }
+      });
+    console.log('spayId=',spayId);
 
     let merchantData = "";
     let paymentType = "";
@@ -216,7 +244,7 @@ const Cart = () => {
         merchant_key: process.env.REACT_APP_MERCHANT_KEY,
         return_url: return_url,
         cancel_url: cancel_url,
-        notify_url: notify_url,
+        notify_url: notify_url+'/'+spayId,
         name_first: firstName,
         name_last: lastName,
         email_address: userInfo.email,
@@ -240,7 +268,7 @@ const Cart = () => {
         merchant_key: process.env.REACT_APP_MERCHANT_KEY,
         return_url: return_url,
         cancel_url: cancel_url,
-        notify_url: notify_url,
+        notify_url: notify_url+'/'+spayId,
         name_first: firstName,
         name_last: lastName,
         email_address: userInfo.email,
@@ -425,6 +453,7 @@ const Cart = () => {
   /***********************************************************************/
   /***********************************************************************/
 
+
   return (
     <>
       {identifier && (
@@ -488,7 +517,8 @@ const Cart = () => {
                   paymentType={item.paymentType}
                 />
               ))}
-            {userid && isLoggedIn !== null && setShowReferral && (
+            {tmp_userInfo && userid && isLoggedIn !== null && setShowReferral && (
+              tmp_userInfo.role === "subscriber" ?
               <>
                 <div className="row form-now">
                   <p>
@@ -515,6 +545,7 @@ const Cart = () => {
                       aria-describedby="referral_codeHelp"
                       onChange={handleCode}
                     />
+                    {error && <div className="text-danger">{error}</div>}
                     <span className="amb-btn mt-4">
                       <button
                         type="button"
@@ -531,6 +562,7 @@ const Cart = () => {
                   </div>
                 </div>
               </>
+              : ""
             )}
           </div>
         </div>
