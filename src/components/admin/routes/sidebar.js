@@ -76,37 +76,37 @@ const routes = [
         name: 'Active Subscription of Subscriber', // name that appear in Sidebar
       },
       {
-        path: '#',
+        path: '/admin/defaulted-subscription-paymentof-ambassador',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Defaulted Subscription payment of Ambassador',
       },
       {
-        path: '#',
+        path: '/admin/defaulted-subscription-paymentof-subscriber',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Defaulted Subscription pyament of Subscriber',
       },
       {
-        path: '#',
+        path: '/admin/subscription-cancelledby-ambassador',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Cancellation of Subscription-by Ambassador',
       },
       {
-        path: '#',
+        path: '/admin/subscription-cancelledby-subscriber',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Cancellation of Subscriptioin-by Subscriber',
       },
       {
-        path: '#',
+        path: '/admin/active-inactive-referral-per-ambassador',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Referral Per Ambassador',
       },
       {
-        path: '#',
+        path: '/admin/active-referral-per-ambassador',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Active Referral Per Ambassador',
       },
       {
-        path: '#',
+        path: '/admin/inactive-referral-per-ambassador',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Inactive Referral Per Ambassador',
       },

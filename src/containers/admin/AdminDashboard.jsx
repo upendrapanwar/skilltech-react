@@ -31,8 +31,8 @@ const AdminDashboard = () => {
     const reportTitleAndUrl = [
         { title: "Active Subcripton of Ambassador", url: "active-subscribed-ambassador" },
         { title: "Active Subscription of Subscriber", url: "active-subscribed-subscriber" },
-        { title: "Defaulted Subscriptions Payments of Ambassador", url: "defaulted-subscription-paymentofambassador" },
-        { title: "Defaulted Subscriptions Payments of Subscribers", url: "defaulted-subscription-paymentofsubscriber" },
+        { title: "Defaulted Subscriptions Payments of Ambassador", url: "defaulted-subscription-paymentof-ambassador" },
+        { title: "Defaulted Subscriptions Payments of Subscribers", url: "defaulted-subscription-paymentof-subscriber" },
         { title: "Subscription cancelled by Ambassador", url: "subscription-cancelledby-ambassador" },
         { title: "Subscription cancelled by Subscriber", url: "subscription-cancelledby-subscriber" },
         { title: "Referral Per Ambassador", url: "active-inactive-referral-per-ambassador" },
@@ -41,15 +41,15 @@ const AdminDashboard = () => {
     ];
 
     const reportTableHeader = [
-        ["First Name", "Last Name", "Referral Code", "Date of HVG subscription", "Subscription Status", "Date of ambassador sign up"],
-        ["First Name", "Last Name", "Date of HVG subscription", "Subscription Status"],
-        ["First Name", "Last Name", "Referral Code", "Payment Failure Reason"],
-        ["First Name", "Last Name", "Payment Failure Reason"],
-        ["First Name", "Last Name", "Referral Code", "Date of HVG subscription Cancellation"],
-        ["First Name", "Last Name", "Date of HVG subscription Cancellation"],
-        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral", " Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code", "	HVG Subscription status"],
-        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral", " Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"],
-        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral", " Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"]
+        ["Ambassador First Name", "Ambassador Last Name", "Ambassador Referral Code", "Date of HVG subscription", "Subscription Status", "Date of ambassador sign up"],
+        ["Subscriber First Name", "Subscriber Last Name", "Date of HVG subscription", "Subscription Status"],
+        ["Ambassador First Name", "Ambassador Last Name", "Ambassador Referral Code", "Payment Failure Reason"],
+        ["Subscriber First Name", "Subscriber Last Name", "Payment Failure Reason"],
+        ["Ambassador First Name", "Ambassador Last Name", "Ambassador Referral Code", "Date of HVG subscription Cancellation"],
+        ["Subscriber First Name", "Subscriber Last Name", "Date of HVG subscription Cancellation"],
+        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code", "HVG Subscription status"],
+        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"],
+        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"]
     ];
 
     const [navigateUrl, setNavigateUrl] = useState('/admin/active-subscribed-ambassador');
@@ -158,7 +158,7 @@ const AdminDashboard = () => {
                     setActiveSubscribedSubscriber(response.data.data);
                     //console.log('activeSubscribedSubscriber=',activeSubscribedSubscriber);
                 }
-                if (apiUrl === 'defaulted-subscription-paymentofambassador') {
+                if (apiUrl === 'defaulted-subscription-paymentof-ambassador') {
                     const ambassadorData = response.data.data;
                     const filtered = ambassadorData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
                     // console.log("filter ambassadorData", filtered)
@@ -167,7 +167,7 @@ const AdminDashboard = () => {
                     //console.log('defaultedSubscriptionPaymentofambassador=',defaultedSubscriptionPaymentofambassador);
                 }
 
-                if (apiUrl === 'defaulted-subscription-paymentofsubscriber') {
+                if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
                     const subscriberData = response.data.data;
                     const filtered = subscriberData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
                     setDefaultedSubscriptionPaymentofsubscriber(filtered);
@@ -240,12 +240,14 @@ const AdminDashboard = () => {
 
     }
     console.log("userReport", userReport)
-
     console.log("activeSubscribedSubscriber", activeSubscribedSubscriber)
+
     console.log("defaultedSubscriptionPaymentofambassador", defaultedSubscriptionPaymentofambassador)
     console.log("defaultedSubscriptionPaymentofsubscriber", defaultedSubscriptionPaymentofsubscriber)
     console.log("subscriptionCancelledbyAmbassador", subscriptionCancelledbyAmbassador)
     console.log("subscriptionCancelledbySubscriber", subscriptionCancelledbySubscriber)
+
+    console.log("ActiveInactiveReferralPerAmbassador", activeInactiveReferralPerAmbassador)
 
 
 
@@ -397,7 +399,7 @@ const AdminDashboard = () => {
                                                 )
                                             })}
 
-                                            {reportApiUrl === 'defaulted-subscription-paymentofambassador' && defaultedSubscriptionPaymentofambassador && defaultedSubscriptionPaymentofambassador.map((item, index) => {
+                                            {reportApiUrl === 'defaulted-subscription-paymentof-ambassador' && defaultedSubscriptionPaymentofambassador && defaultedSubscriptionPaymentofambassador.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
                                                         <td>{item.userid.firstname.toUpperCase()}</td>
@@ -408,7 +410,7 @@ const AdminDashboard = () => {
                                                 </>
                                             })}
 
-                                            {reportApiUrl === 'defaulted-subscription-paymentofsubscriber' && defaultedSubscriptionPaymentofsubscriber && defaultedSubscriptionPaymentofsubscriber.map((item, index) => {
+                                            {reportApiUrl === 'defaulted-subscription-paymentof-subscriber' && defaultedSubscriptionPaymentofsubscriber && defaultedSubscriptionPaymentofsubscriber.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
                                                         <td>{item.userid.firstname.toUpperCase()}</td>
@@ -418,7 +420,7 @@ const AdminDashboard = () => {
                                                 </>
                                             })}
 
-                                            {reportApiUrl === 'subscription-cancelledby-ambassador' && subscriptionCancelledbyAmbassador && subscriptionCancelledbyAmbassador.map((item, index) => {
+                                            {reportApiUrl === 'subscription-cancelledby-ambassador' && subscriptionCancelledbyAmbassador.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
                                                         <td>{item.userId.firstname.toUpperCase()}</td>
@@ -429,7 +431,7 @@ const AdminDashboard = () => {
                                                 </>
                                             })}
 
-                                            {reportApiUrl === 'subscription-cancelledby-subscriber' && subscriptionCancelledbySubscriber && subscriptionCancelledbySubscriber.map((item, index) => {
+                                            {reportApiUrl === 'subscription-cancelledby-subscriber' && subscriptionCancelledbySubscriber.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
                                                         <td>{item.userId.firstname.toUpperCase()}</td>
@@ -439,13 +441,47 @@ const AdminDashboard = () => {
                                                 </>
                                             })}
 
-                                            {/* {subscriptionCancelledbySubscriber} */}
 
-                                            {activeInactiveReferralPerAmbassador}
+                                            {reportApiUrl === 'active-inactive-referral-per-ambassador' && activeInactiveReferralPerAmbassador.map((data, index) => {
+                                                return <>
+                                                <tr key={index}>
+                                                    <td>{data.Subscriber_firstname}</td>
+                                                    <td>{data.Subscriber_lastname}</td>
+                                                    <td>{data.Ambassador_referralcode}</td>
+                                                    <td>{data.Ambassador_firstname}</td>
+                                                    <td>{data.Ambassador_lastname}</td>
+                                                    <td>{data.Date_of_use_of_referral_code}</td>
+                                                    <td>{data.HVG_Subscription_status}</td>
+                                                </tr>
+                                                </>
+                                            })}
 
-                                            {activeReferralPerAmbassador}
+                                            {reportApiUrl === 'active-referral-per-ambassador' && activeReferralPerAmbassador.map((data, index) => {
+                                                return <>
+                                                <tr key={index}>
+                                                    <td>{data.Subscriber_firstname}</td>
+                                                    <td>{data.Subscriber_lastname}</td>
+                                                    <td>{data.Ambassador_referralcode}</td>
+                                                    <td>{data.Ambassador_firstname}</td>
+                                                    <td>{data.Ambassador_lastname}</td>
+                                                    <td>{data.Date_of_use_of_referral_code}</td>
+                                                </tr>
+                                                </>
+                                            })}
 
-                                            {inactiveReferralPerAmbassador}
+                                            {reportApiUrl === 'inactive-referral-per-ambassador' && inactiveReferralPerAmbassador.map((data, index) => {
+                                                return <>
+                                                <tr key={index}>
+                                                    <td>{data.Subscriber_firstname}</td>
+                                                    <td>{data.Subscriber_lastname}</td>
+                                                    <td>{data.Ambassador_referralcode}</td>
+                                                    <td>{data.Ambassador_firstname}</td>
+                                                    <td>{data.Ambassador_lastname}</td>
+                                                    <td>{data.Date_of_use_of_referral_code}</td>
+                                                </tr>
+                                                </>
+                                            })}
+
                                             <tr><td style={{ "text-align": "right" }} colspan="6"><Link className="inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700" to={navigateUrl}>View More</Link></td></tr>
                                         </tbody>
                                     </table>

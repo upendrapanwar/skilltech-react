@@ -5,8 +5,9 @@ import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon"; 
 import openRightDrawer from "../admin/common/rightDrawerSlice";
 import RIGHT_DRAWER_TYPES from "../admin/utils/globalConstantUtil";
-
-
+import '../../index.css';
+import '../../assets/css/admin.css';
+import '../../assets/css/output.css';
 
 
 const Header = () => {
@@ -15,16 +16,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { noOfNotifications } = useState("");
 
-  // Conditionally import CSS files for admin routes only
-    if (location.pathname.startsWith('/admin')) {
-      import("../../index.css");
-      import("../../assets/css/admin.css");
-      import("../../assets/css/output.css");
-    }
 
-  useEffect(() => {}, []);
-  /***********************************************************************/
-  /***********************************************************************/
   // Opening right sidebar for notification
   const openNotification = () => {
     dispatch(

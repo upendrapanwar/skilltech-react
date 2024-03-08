@@ -190,7 +190,7 @@ const ActiveSubscribedAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              id: value.id,
+              // id: value.id,
               firstname: value.firstname,
               surname: value.surname,
               referral_code: value.referral_code,
@@ -199,34 +199,27 @@ const ActiveSubscribedAmbassador = () => {
             });
           });
           var columnsData = [
+            // {
+            //   name: "ID",
+            //   selector: (row, i) => row.id,
+            //   cell: (row) => <span>{row.id}</span>,
+            //   sortable: true,
+            //   minWidth: '200px',
+            // },
             {
-              name: "ID",
-              selector: (row, i) => row.id,
-              cell: (row) => <span>{row.id}</span>,
+              name: "AMBASSADOR FIRST NAME",
+              selector: (row, i) => row.firstname,
+              cell: (row) => <span>{row.firstname}</span>,
               sortable: true,
-              minWidth: '200px',
             },
-            // {
-            //   name: "FIRST NAME",
-            //   selector: (row, i) => row.firstname,
-            //   cell: (row) => <span>{row.firstname}</span>,
-            //   sortable: true,
-            // },
-            // {
-            //   name: "LAST NAME",
-            //   selector: (row, i) => row.surname,
-            //   cell: (row) => <span>{row.surname}</span>,
-            //   sortable: true,
-            // },
             {
-                name: "NAME OF AMBASSADOR",
-                selector: (row, i) => `${row.firstname} ${row.surname}`,
-                cell: (row) => <span>{`${row.firstname} ${row.surname}`}</span>,
-                sortable: true,
-              },
-              
+              name: "AMBASSADOR LAST NAME",
+              selector: (row, i) => row.surname,
+              cell: (row) => <span>{row.surname}</span>,
+              sortable: true,
+            },  
             {
-              name: "REFERRAL CODE",
+              name: "AMBASSADOR REFERRAL CODE",
               selector: (row, i) => row.referral_code,
               cell: (row) => <span>{row.referral_code}</span>,
               sortable: true,
@@ -301,7 +294,7 @@ const ActiveSubscribedAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              id: value.id,
+              // id: value.id,
               firstname: value.firstname,
               surname: value.surname,
               referral_code: value.referral_code,

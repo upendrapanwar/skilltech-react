@@ -451,7 +451,7 @@ const Subscription = () => {
                               <small className="text-danger">
                                 {errors.surname}
                               </small>
-                            ) : null}
+                            ) : null} 
                           </div>
                         </div>
                         <div className="row  form-row">

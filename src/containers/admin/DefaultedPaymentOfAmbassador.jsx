@@ -31,15 +31,16 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 
-const ActiveSubscribedSubscriber = () => {
-
+const DefaultedPaymentOfAmbassador = () => {
+  const [navigateUrl, setNavigateUrl] = useState([]);
   const [userReport, setUserReport] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [data, setData] = useState([]);
   const [orderDataSet, setOrderDataSet] = useState([]);
   const tableData = {};
-
+  const [index, setIndex] = useState(0);
   const dispatch = useDispatch();
-
+  const statsData = [];
   const [dateValue, setDateValue] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -58,7 +59,7 @@ const ActiveSubscribedSubscriber = () => {
   let [userid, setUserid] = useState(authInfo ? authInfo.id : null);
   const navigate = useNavigate();
   const { newNotificationMessage, newNotificationStatus } = useState("");
-  const apiUrl = "active-subscribed-subscriber";
+  const apiUrl = "defaulted-subscription-paymentof-ambassador";
 
   useEffect(() => {
     if (newNotificationMessage !== "") {
@@ -84,59 +85,41 @@ const ActiveSubscribedSubscriber = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              // id: value.id,
-              firstname: value.firstname,
-              surname: value.surname,
-              is_active: value.is_active,
-              subscription_date: value.subscription_date,
+                Subscriber_firstname: value.Subscriber_firstname,
+                Subscriber_lastname: value.Subscriber_lastname,
+                referral_code: value.Ambassador_referralcode,
+                Ambassador_firstname: value.Ambassador_firstname,
+                Ambassador_lastname: value.Ambassador_lastname,
+                Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
+                HVG_Subscription_status: value.HVG_Subscription_status,
             });
           });
           var columnsData = [
-            // {
-            //   name: "ID",
-            //   selector: (row, i) => row.id,
-            //   cell: (row) => <span>{row.id}</span>,
-            //   sortable: true,
-            //   minWidth: '200px',
-            // },
+            
             {
-              name: "FIRST NAME",
-              selector: (row, i) => row.firstname,
-              cell: (row) => <span>{row.firstname}</span>,
-              sortable: true,
-            },
-            {
-              name: "LAST NAME",
-              selector: (row, i) => row.surname,
-              cell: (row) => <span>{row.surname}</span>,
-              sortable: true,
-            },
-            {
-                name: "DATE OF HVG SUBSCRIPTION",
-                selector: (row, i) => row.subscription_date,
-                cell: (row) => {
-                  const date = new Date(row.subscription_date);
-                  const day = date.getDate();
-                  const month = date.toLocaleString('en-us', { month: 'short' });
-                  const year = date.getFullYear();
-                  const formattedDate = `${day} ${month}, ${year}`;
-                  return <span>{formattedDate}</span>;
-                },
+                name: "AMBASSADOR FIRST NAME",
+                selector: (row, i) => row.Ambassador_firstname,
+                cell: (row) => row.Ambassador_firstname,
                 sortable: true,
               },
-              
+              {
+                name: "AMBASSADOR LAST NAME",
+                selector: (row, i) => row.Ambassador_lastname,
+                cell: (row) => row.Ambassador_lastname,
+                sortable: true,
+              },
+              {
+                name: "AMBASSADOR REFERRAL CODE",
+                selector: (row, i) => row.referral_code,
+                cell: (row) => <span>{row.referral_code}</span>,
+                sortable: true,
+              },              
             {
-              name: "SUBSCRIPTION STATUS",
-              selector: (row, i) => row.is_active,
-              cell: (row) => <span>{row.is_active}</span>,
+              name: "PAIMENT FAILURE REASON",
+              selector: (row, i) => row.HVG_Subscription_status,
+              cell: (row) => <span>{row.HVG_Subscription_status}</span>,
               sortable: true,
             },
-            // {
-            //   name: "DATE OF AMBASSADOR SIGN UP",
-            //   selector: (row, i) => row.ambassador_date,
-            //   cell: (row) => <span>{row.ambassador_date}</span>,
-            //   sortable: true,
-            // },
           ];
           setColumns(columnsData);
           setOrderDataSet(ambassadorDataArray);
@@ -159,7 +142,7 @@ const ActiveSubscribedSubscriber = () => {
   /***********************************************************************/
   const handleSubmit = (values, { resetForm }) => {
     console.log("This is ambassador handleSubmit values check:",values);
-    let urls = "active-subscribed-subscriber";
+    let urls = "defaulted-subscription-paymentof-ambassador";
     if (values.start_date) {
       urls += "/" + values.start_date;
     }
@@ -181,11 +164,13 @@ const ActiveSubscribedSubscriber = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              // id: value.id,
-              firstname: value.firstname,
-              surname: value.surname,
-              is_active: value.is_active,
-              subscription_date: value.subscription_date,
+                Subscriber_firstname: value.Subscriber_firstname,
+                Subscriber_lastname: value.Subscriber_lastname,
+                referral_code: value.Ambassador_referralcode,
+                Ambassador_firstname: value.Ambassador_firstname,
+                Ambassador_lastname: value.Ambassador_lastname,
+                Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
+                HVG_Subscription_status: value.HVG_Subscription_status,
             });
           });
           setOrderDataSet(ambassadorDataArray);
@@ -219,7 +204,7 @@ const ActiveSubscribedSubscriber = () => {
             {/* report section */}
             <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
               <div className="text-xl font-semibold py-1 px-2">
-                Active Subcripton of Subscriber
+                Active and Inactive Referral Used per Ambassador
               </div>
               <div className="divider mt-2"></div>
               <div className="">
@@ -327,4 +312,4 @@ const ActiveSubscribedSubscriber = () => {
   );
 };
 
-export default ActiveSubscribedSubscriber;
+export default DefaultedPaymentOfAmbassador;

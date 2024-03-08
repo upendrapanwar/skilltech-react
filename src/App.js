@@ -24,6 +24,13 @@ import AboutUs from './components/common/AboutUs';
 import HowItWorks from './components/common/HowItWorks';
 import ContactUs from './components/common/ContactUs';
 import ActiveSubscribedSubscriber from './containers/admin/ActiveSubscribedSubscriber';
+import ReferralPerAmbassador from './containers/admin/ReferralPerAmbassador';
+import ActiveReferralPerAmbassador from './containers/admin/ActiveReferralPerAmbassador';
+import InactiveReferralPerAmbassador from './containers/admin/InactiveReferralPerAmbassador';
+import DefaultedPaymentOfAmbassador from './containers/admin/DefaultedPaymentOfAmbassador';
+import DefaultedPaymentOfSubscriber from './containers/admin/DefaultedPaymentOfSubscriber';
+import CancelSubscriptionBySubscriber from './containers/admin/CancelSubscriptionBySubscriber';
+import CancelSubscriptionByAmbassador from './containers/admin/CancelSubscriptionByAmbassador';
 
 const AdminLogin = lazy(() => import('./containers/admin/Login'));
 const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
@@ -79,6 +86,13 @@ function App() {
         <Route path='/admin/active-agents' element={<AdminActiveAgents/>} />
         <Route path='/admin/active-subscribed-ambassador' element={<ActiveSubscribedAmbassador/>} />
         <Route path='/admin/active-subscribed-subscriber' element={<ActiveSubscribedSubscriber/>} />
+        <Route path='/admin/defaulted-subscription-paymentof-ambassador' element={<DefaultedPaymentOfAmbassador/>} />
+        <Route path='/admin/defaulted-subscription-paymentof-subscriber' element={<DefaultedPaymentOfSubscriber/>} />
+        <Route path='/admin/subscription-cancelledby-ambassador' element={<CancelSubscriptionByAmbassador/>} />
+        <Route path='/admin/subscription-cancelledby-subscriber' element={<CancelSubscriptionBySubscriber/>} />
+        <Route path='/admin/active-inactive-referral-per-ambassador' element={<ReferralPerAmbassador/>} />
+        <Route path='/admin/active-referral-per-ambassador' element={<ActiveReferralPerAmbassador/>} />
+        <Route path='/admin/inactive-referral-per-ambassador' element={<InactiveReferralPerAmbassador/>} />
      </Routes>
     </>
   );
