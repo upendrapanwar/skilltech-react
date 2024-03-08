@@ -75,6 +75,7 @@ const DefaultedPaymentOfAmbassador = () => {
     axios
       .get(`admin/${apiUrl}`)
       .then((response) => {
+        console.log("REports Data: ", response.data.data)
         if (response.data.status) {
           toast.success(response.data.message, {
             position: "top-center",
@@ -85,11 +86,9 @@ const DefaultedPaymentOfAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-                Subscriber_firstname: value.Subscriber_firstname,
-                Subscriber_lastname: value.Subscriber_lastname,
+              Ambassador_firstname: value.Ambassador_firstname,
+              Ambassador_lastname: value.Ambassador_lastname,
                 referral_code: value.Ambassador_referralcode,
-                Ambassador_firstname: value.Ambassador_firstname,
-                Ambassador_lastname: value.Ambassador_lastname,
                 Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
                 HVG_Subscription_status: value.HVG_Subscription_status,
             });
