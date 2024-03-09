@@ -634,8 +634,8 @@ const Dashboard = () => {
                     <thead>
                       <tr>
                         <th scope="col">Course Name</th>
-                        <th scope="col">Payment Status</th>
-                        <th scope="col">Start date</th>
+                        {/* <th scope="col">Payment Status</th> */}
+                        <th scope="col">Start date (MM/DD/YYYY)</th>
 
                         <th scope="col">Action</th>
                       </tr>
@@ -643,19 +643,17 @@ const Dashboard = () => {
                     <tbody>
                       {myCourses.length > 0 ? (
                         myCourses.map((item, i) => (
-                          <tr>
+                          <tr> 
                             <th scope="row">
                               {console.log("item=", item)}
                               {item.plan_name}
                             </th>
-                            <td>{item.payment_status}</td>
-                            <td>{item.createdAt}</td>
-
+                            {/* <td>{item.payment_status}</td> */}
+                            <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                             <td>
                               <button
                                 type="button"
                                 className="btn btn-primary btn-color bt-size"
-                                // onClick={() => handleRemoveCourses(item._id)}
                                 onClick={() => handleCancelClick(item.uuid, item.plan_name)}
                               >
                                 Remove

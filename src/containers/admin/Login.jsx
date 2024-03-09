@@ -81,7 +81,7 @@ const AdminLogin = () => {
     
     return (
         <>
-            {/*<Header/>*/}
+            <Header/>
             <div>
                 <div className="min-h-screen bg-base-200 flex items-center">
                     <div className="card mx-auto w-full max-w-5xl  shadow-xl">

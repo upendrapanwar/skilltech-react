@@ -55,7 +55,6 @@ const MyCourses = () => {
                         const resp = response.data.data;
                         const filtered = resp.filter(item => item.is_active !== false);
                         setMyCourses(filtered);
-                        // console.log("getMyCourses#####", filtered)
                     }
                     
                 }
@@ -137,7 +136,7 @@ const MyCourses = () => {
                                                         <th scope="row">{item.course_title}</th>
                                                         <td>R{item.course_price}</td>
                                                         <td>{(item.paymentType ==='one_off') ? 'One Time' : 'Subscription'}</td>
-                                                        <td>{item.createdAt}</td>
+                                                        <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                                     </tr>)  
                                                     ): <tr></tr>} 
                                                 </tbody>

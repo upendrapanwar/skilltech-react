@@ -59,7 +59,7 @@ const CancelSubscriptionByAmbassador = () => {
   let [userid, setUserid] = useState(authInfo ? authInfo.id : null);
   const navigate = useNavigate();
   const { newNotificationMessage, newNotificationStatus } = useState("");
-  const apiUrl = "active-inactive-referral-per-ambassador";
+  const apiUrl = "subscription-cancelledby-ambassador";
 
   useEffect(() => {
     if (newNotificationMessage !== "") {
@@ -69,9 +69,11 @@ const CancelSubscriptionByAmbassador = () => {
         NotificationManager.error(newNotificationMessage, "Error");
       dispatch(removeNotificationMessage());
     }
-    
-    //reportApiUrl = apiUrl;
+    firstRenderReport();
+  }, []);
+  toast.configure();
 
+  const firstRenderReport = () => {
     axios
       .get(`admin/${apiUrl}`)
       .then((response) => {
@@ -85,34 +87,13 @@ const CancelSubscriptionByAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-                Subscriber_firstname: value.Subscriber_firstname,
-                Subscriber_lastname: value.Subscriber_lastname,
-                referral_code: value.Ambassador_referralcode,
-                Ambassador_firstname: value.Ambassador_firstname,
-                Ambassador_lastname: value.Ambassador_lastname,
-                Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
-                HVG_Subscription_status: value.HVG_Subscription_status,
+              Ambassador_firstname: value.userId.firstname,
+              Ambassador_lastname: value.userId.surname,
+              referral_code: value.userId.referral_code,
+              subscription_cancellation_date: value.cancellation_date,
             });
           });
           var columnsData = [
-            {
-              name: "SUBSCRIBER FIRST NAME",
-              selector: (row, i) => row.Subscriber_firstname,
-              cell: (row) => <span>{row.Subscriber_firstname}</span>,
-              sortable: true,
-            },
-            {
-              name: "SUBSCRIBER LAST NAME",
-              selector: (row, i) => row.Subscriber_lastname,
-              cell: (row) => <span>{row.Subscriber_lastname}</span>,
-              sortable: true,
-            },  
-            {
-              name: "AMBASSADOR REFERRAL CODE USED",
-              selector: (row, i) => row.referral_code,
-              cell: (row) => <span>{row.referral_code}</span>,
-              sortable: true,
-            },
             {
                 name: "AMBASSADOR FIRST NAME",
                 selector: (row, i) => row.Ambassador_firstname,
@@ -125,11 +106,17 @@ const CancelSubscriptionByAmbassador = () => {
                 cell: (row) => row.Ambassador_lastname,
                 sortable: true,
               },
+              {
+                name: "AMBASSADOR REFERRAL CODE",
+                selector: (row, i) => row.referral_code,
+                cell: (row) => <span>{row.referral_code}</span>,
+                sortable: true,
+              },
             {
-                name: "DATE OF USE OF REFERRAL USED",
-                selector: (row, i) => row.Date_of_use_of_referral_code,
+                name: "DATE OF HVG SUBSCRIPTION CALCELLATION",
+                selector: (row, i) => row.subscription_cancellation_date,
                 cell: (row) => {
-                  const date = new Date(row.Date_of_use_of_referral_code);
+                  const date = new Date(row.subscription_cancellation_date);
                   const day = date.getDate();
                   const month = date.toLocaleString('en-us', { month: 'short' });
                   const year = date.getFullYear();
@@ -138,13 +125,6 @@ const CancelSubscriptionByAmbassador = () => {
                 },
                 sortable: true,
               },
-              
-            {
-              name: "HVG SUBSCRIPTION STATUS",
-              selector: (row, i) => row.HVG_Subscription_status,
-              cell: (row) => <span>{row.HVG_Subscription_status}</span>,
-              sortable: true,
-            },
           ];
           setColumns(columnsData);
           setOrderDataSet(ambassadorDataArray);
@@ -160,14 +140,13 @@ const CancelSubscriptionByAmbassador = () => {
         console.log(error);
       });
     console.log("apiUrl=" + apiUrl);
-  }, []);
-  toast.configure();
+  }
 
   /***********************************************************************/
   /***********************************************************************/
   const handleSubmit = (values, { resetForm }) => {
     console.log("This is ambassador handleSubmit values check:",values);
-    let urls = "active-inactive-referral-per-ambassador";
+    let urls = "subscription-cancelledby-ambassador";
     if (values.start_date) {
       urls += "/" + values.start_date;
     }
@@ -189,13 +168,10 @@ const CancelSubscriptionByAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-                Subscriber_firstname: value.Subscriber_firstname,
-                Subscriber_lastname: value.Subscriber_lastname,
-                referral_code: value.Ambassador_referralcode,
-                Ambassador_firstname: value.Ambassador_firstname,
-                Ambassador_lastname: value.Ambassador_lastname,
-                Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
-                HVG_Subscription_status: value.HVG_Subscription_status,
+              Ambassador_firstname: value.userId.firstname,
+              Ambassador_lastname: value.userId.surname,
+              referral_code: value.userId.referral_code,
+              subscription_cancellation_date: value.cancellation_date,
             });
           });
           setOrderDataSet(ambassadorDataArray);
@@ -210,10 +186,11 @@ const CancelSubscriptionByAmbassador = () => {
         console.log(error);
       });
   };
-  // tableData = {
-  //     columns: columns,
-  //     data: orderDataSet
-  // };
+  const handleResetButton = (resetForm) => {
+    resetForm();
+    firstRenderReport();  
+  };
+  
   return (
     <>
       <div className="drawer drawer-mobile">
@@ -229,7 +206,7 @@ const CancelSubscriptionByAmbassador = () => {
             {/* report section */}
             <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
               <div className="text-xl font-semibold py-1 px-2">
-                Active and Inactive Referral Used per Ambassador
+                Subscription cancelled by Ambassador
               </div>
               <div className="divider mt-2"></div>
               <div className="">
@@ -244,6 +221,7 @@ const CancelSubscriptionByAmbassador = () => {
                       handleSubmit(values, { resetForm });
                     }}
                   >
+                    {({ resetForm }) => (
                     <Form className="flex w-[100%] justify-between align-center py-3 rounded-sl bg-base-100 rounded px-2">
                       <div className="flex flex-col">
                         <label htmlFor="start_date">Start Date</label>
@@ -280,20 +258,22 @@ const CancelSubscriptionByAmbassador = () => {
                           Search
                         </button>
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          onClick={() => handleResetButton(resetForm)}
                         >
                           Reset
                         </button>
 
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                         >
                           Export
                         </button>
                       </div>
                     </Form>
+                    )}
                   </Formik>
                 </div>
               </div>

@@ -64,18 +64,6 @@ const AdminDashboard = () => {
     const [activeReferralPerAmbassador, setActiveReferralPerAmbassador] = useState([]);
     const [inactiveReferralPerAmbassador, setInactiveReferralPerAmbassador] = useState([]);
     const [index, setIndex] = useState(0);
-
-
-
-    // const periodOptions = [
-    //     { name: "Today", value: "TODAY" },
-    //     { name: "Yesterday", value: "YESTERDAY" },
-    //     { name: "This Week", value: "THIS_WEEK" },
-    //     { name: "Last Week", value: "LAST_WEEK" },
-    //     { name: "This Month", value: "THIS_MONTH" },
-    //     { name: "Last Month", value: "LAST_MONTH" },
-    // ]
-
     const dispatch = useDispatch()
     const statsData = [];
 
@@ -84,12 +72,6 @@ const AdminDashboard = () => {
         endDate: new Date()
     });
 
-
-    const handleDatePickerValueChange = (newValue) => {
-        //console.log("newValue:", newValue);
-        setDateValue(newValue);
-        //updateDashboardPeriod(newValue)
-    }
     const authInfo = JSON.parse(localStorage.getItem("authInfo"));
     const location = useLocation();
     console.log('authInfo=', authInfo);
@@ -106,8 +88,11 @@ const AdminDashboard = () => {
             if (newNotificationStatus === 0) NotificationManager.error(newNotificationMessage, 'Error')
             dispatch(removeNotificationMessage())
         }
+        firstRenderReport();
+    }, []);
+    toast.configure();
 
-        //reportApiUrl = apiUrl;
+    const firstRenderReport = () => {
         setReportApiUrl(apiUrl);
         axios.get(`admin/${apiUrl}`).then(response => {
             if (response.data.status) {
@@ -125,8 +110,7 @@ const AdminDashboard = () => {
             console.log(error);
         })
         console.log('apiUrl=' + apiUrl);
-    }, []);
-    toast.configure();
+    }
 
     /***********************************************************************/
     /***********************************************************************/
@@ -214,31 +198,13 @@ const AdminDashboard = () => {
 
     }
 
-    // const handleResetButton = ({ resetForm }) => {
-    //     console.log("handleResetButton is working")
-    // }
 
-    const handleResetButton = () => {
-        console.log("handleResetButton is working");
-        console.log("handleResetButton reportApiUrl", reportApiUrl);
+    const handleResetButton = (resetForm) => {
+        resetForm();
+        firstRenderReport();  
+    };
 
-        axios.get(`admin/${reportApiUrl}`).then(response => {
-            if (response.data.status) {
-                toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
-                setUserReport(response.data.data);
-                console.log("Check for handleReset Button data:", response.data.data)
-                console.log("Check for handleReset Button userReport:", userReport)
-
-            }
-        }).catch(error => {
-            toast.dismiss();
-            if (error.response) {
-                toast.error(error.response.data.message, { autoClose: 3000 });
-            }
-            console.log(error);
-        })
-
-    }
+    
     console.log("userReport", userReport)
     console.log("activeSubscribedSubscriber", activeSubscribedSubscriber)
 
@@ -308,12 +274,8 @@ const AdminDashboard = () => {
                                         onSubmit={(values, { resetForm }) => {
                                             handleSubmit(values, { resetForm });
                                         }}
-
-                                    // onClick={(values, {resetForm}) => {
-                                    //     handleResetButton(values, { resetForm });
-                                    // }}
-
                                     >
+                                        {({ resetForm }) => (
                                         <Form className="flex w-[100%] justify-between align-center py-3 rounded-sl bg-base-100 rounded px-2">
 
                                             <div className="flex flex-col">
@@ -346,11 +308,14 @@ const AdminDashboard = () => {
 
                                             <div className="flex align-center justify-between mt-6">
                                                 <button type="submit" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Search</button>
-                                                <button type="submit" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700" onClick={handleResetButton}>Reset</button>
+                                                <button type="button" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                                                 onClick={() => handleResetButton(resetForm)}
+                                                 >Reset</button>
 
                                                 {/* <button type="submit" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Export</button> */}
                                             </div>
                                         </Form>
+                                         )}
                                     </Formik>
                                 </div>
                             </div>
@@ -404,7 +369,7 @@ const AdminDashboard = () => {
                                                     <tr key={index}>
                                                         <td>{item.userid.firstname.toUpperCase()}</td>
                                                         <td>{item.userid.surname.toUpperCase()}</td>
-                                                        <td></td>
+                                                        <td>{item.userid.referral_code}</td>
                                                         <td>{item.payment_status}</td>
                                                     </tr>
                                                 </>

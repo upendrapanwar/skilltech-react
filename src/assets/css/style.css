@@ -107,7 +107,7 @@ section#shadow-host-companion {
   width: auto !important;
 }
 .btn {
-  min-width: 160px;
+  min-width: 160px; 
   text-align: left;
   position: relative;
   padding: 0.375rem 3rem 0.375rem 1.2rem;
@@ -1123,4 +1123,8 @@ footer .footer-content ul li a {
 .referral-QR {
   max-width: 150px;
   max-height: 150px;
+}
+
+.bt-size {
+  min-width: 120px;
 }

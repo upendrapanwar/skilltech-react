@@ -5,9 +5,9 @@ import BellIcon from "@heroicons/react/24/outline/BellIcon";
 import Bars3Icon from "@heroicons/react/24/outline/Bars3Icon"; 
 import openRightDrawer from "../admin/common/rightDrawerSlice";
 import RIGHT_DRAWER_TYPES from "../admin/utils/globalConstantUtil";
-import '../../index.css';
-import '../../assets/css/admin.css';
-import '../../assets/css/output.css';
+// import '../../index.css';
+// import '../../assets/css/admin.css';
+// import '../../assets/css/output.css';
 
 
 const Header = () => {
@@ -15,6 +15,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { noOfNotifications } = useState("");
+
+  const isAdminPage = location.pathname.includes('admin');
+  console.log('isAdminPage=',isAdminPage);
+  if(isAdminPage) {
+    require('../../index.css');
+    require('../../assets/css/admin.css');
+    require('../../assets/css/output.css');
+  }
 
 
   // Opening right sidebar for notification

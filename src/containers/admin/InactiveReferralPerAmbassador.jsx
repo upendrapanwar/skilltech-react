@@ -69,7 +69,12 @@ const InactiveReferralPerAmbassador = () => {
         NotificationManager.error(newNotificationMessage, "Error");
       dispatch(removeNotificationMessage());
     }
+    firstRenderReport();
     
+  }, []);
+  toast.configure();
+
+  const firstRenderReport = () =>{
     axios
       .get(`admin/${apiUrl}`)
       .then((response) => {
@@ -150,8 +155,7 @@ const InactiveReferralPerAmbassador = () => {
         console.log(error);
       });
     console.log("apiUrl=" + apiUrl);
-  }, []);
-  toast.configure();
+  }
 
   /***********************************************************************/
   /***********************************************************************/
@@ -199,10 +203,12 @@ const InactiveReferralPerAmbassador = () => {
         console.log(error);
       });
   };
-  // tableData = {
-  //     columns: columns,
-  //     data: orderDataSet
-  // };
+  const handleResetButton = (resetForm) => {
+    resetForm();
+    firstRenderReport();  
+  };
+
+
   return (
     <>
       <div className="drawer drawer-mobile">
@@ -218,7 +224,7 @@ const InactiveReferralPerAmbassador = () => {
             {/* report section */}
             <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
               <div className="text-xl font-semibold py-1 px-2">
-                Inactive Referrals Used per Ambassador
+                Inactive Referrals per Ambassador
               </div>
               <div className="divider mt-2"></div>
               <div className="">
@@ -233,6 +239,7 @@ const InactiveReferralPerAmbassador = () => {
                       handleSubmit(values, { resetForm });
                     }}
                   >
+                    {({ resetForm }) => (
                     <Form className="flex w-[100%] justify-between align-center py-3 rounded-sl bg-base-100 rounded px-2">
                       <div className="flex flex-col">
                         <label htmlFor="start_date">Start Date</label>
@@ -269,20 +276,22 @@ const InactiveReferralPerAmbassador = () => {
                           Search
                         </button>
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          onClick={() => handleResetButton(resetForm)}
                         >
                           Reset
                         </button>
 
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                         >
                           Export
                         </button>
                       </div>
                     </Form>
+                    )}
                   </Formik>
                 </div>
               </div>

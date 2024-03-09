@@ -146,7 +146,7 @@ const Dashboard = () => {
             uuid: uuid
           };
 
-        //allMerchantData
+        //allMerchantData 
         axios.post('common/save-subscription', dataArray).then(response => {
 
             if (response) {
@@ -462,8 +462,8 @@ const Dashboard = () => {
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Course Name</th>
-                                                        {/* <th scope="col">payment Status</th>
-                                                        <th scope="col">Start date</th> */}
+                                                        {/* <th scope="col">payment Status</th> */}
+                                                        <th scope="col">Start date (MM/DD/YYYY)</th>
                                                         <th scope="col">Action</th>
 
                                                     </tr>
@@ -474,13 +474,12 @@ const Dashboard = () => {
 
                                                     (<tr>
                                                         <th scope="row">{console.log('item=', item)}{item.plan_name}</th>
-                                                        {/* <th>{item.payment_status}</th>
-                                                        <td>{item.createdAt}</td> */}
+                                                        {/* <th>{item.payment_status}</th> */}
+                                                        <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                                         <td>
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary btn-color bt-size"
-                                                            // onClick={() => handleRemoveCourses(item._id)}
                                                             onClick={() => handleCancelClick(item.uuid, item.plan_name)}
                                                         >
                                                             Remove

@@ -32,101 +32,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 
 const ActiveSubscribedAmbassador = () => {
-  // const reportTitleAndUrl = [
-  //   {
-  //     title: "Active Subcripton of Ambassador",
-  //     url: "active-subscribed-ambassador",
-  //   },
-  //   {
-  //     title: "Active Subscription of Subscriber",
-  //     url: "active-subscribed-subscriber",
-  //   },
-  //   {
-  //     title: "Defaulted Subscriptions Payments of Ambassador",
-  //     url: "defaulted-subscription-paymentofambassador",
-  //   },
-  //   {
-  //     title: "Defaulted Subscriptions Payments of Subscribers",
-  //     url: "defaulted-subscription-paymentofsubscriber",
-  //   },
-  //   {
-  //     title: "Subscription cancelled by Ambassador",
-  //     url: "subscription-cancelledby-ambassador",
-  //   },
-  //   {
-  //     title: "Subscription cancelled by Subscriber",
-  //     url: "subscription-cancelledby-subscriber",
-  //   },
-  //   {
-  //     title: "Referral Per Ambassador",
-  //     url: "active-inactive-referral-per-ambassador",
-  //   },
-  //   {
-  //     title: "Active Referral Per Ambassador",
-  //     url: "active-referral-per-ambassador",
-  //   },
-  //   {
-  //     title: "Inactive Referral Per Ambassador",
-  //     url: "inactive-referral-per-ambassador",
-  //   },
-  // ];
-
-  // const reportTableHeader = [
-  //   [
-  //     "First Name",
-  //     "Last Name",
-  //     "Referral Code",
-  //     "Date of HVG subscription",
-  //     "Subscription Status",
-  //     "Date of ambassador sign up",
-  //   ],
-  //   [
-  //     "First Name",
-  //     "Last Name",
-  //     "Date of HVG subscription",
-  //     "Subscription Status",
-  //   ],
-  //   ["First Name", "Last Name", "Referral Code", "Payment Failure Reason"],
-  //   ["First Name", "Last Name", "Payment Failure Reason"],
-  //   [
-  //     "First Name",
-  //     "Last Name",
-  //     "Referral Code",
-  //     "Date of HVG subscription Cancellation",
-  //   ],
-  //   ["First Name", "Last Name", "Date of HVG subscription Cancellation"],
-  //   [
-  //     "Subscriber First Name",
-  //     "Subcriber Last Name",
-  //     "Ambassador Referral",
-  //     " Code Used ",
-  //     "Referred Ambassador First Name",
-  //     "Referred Ambassador Last Name",
-  //     "	Date of use of referral code",
-  //     "	HVG Subscription status",
-  //   ],
-  //   [
-  //     "Subscriber First Name",
-  //     "Subcriber Last Name",
-  //     "Ambassador Referral",
-  //     " Code Used ",
-  //     "Referred Ambassador First Name",
-  //     "Referred Ambassador Last Name",
-  //     "	Date of use of referral code",
-  //   ],
-  //   [
-  //     "Subscriber First Name",
-  //     "Subcriber Last Name",
-  //     "Ambassador Referral",
-  //     " Code Used ",
-  //     "Referred Ambassador First Name",
-  //     "Referred Ambassador Last Name",
-  //     "	Date of use of referral code",
-  //   ],
-  // ];
-
   const [navigateUrl, setNavigateUrl] = useState([]);
-
   const [userReport, setUserReport] = useState([]);
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
@@ -174,9 +80,11 @@ const ActiveSubscribedAmbassador = () => {
         NotificationManager.error(newNotificationMessage, "Error");
       dispatch(removeNotificationMessage());
     }
-    
-    //reportApiUrl = apiUrl;
+    firstRenderReport();
+  }, []);
+  toast.configure();
 
+  const firstRenderReport = () =>{
     axios
       .get(`admin/${apiUrl}`)
       .then((response) => {
@@ -265,8 +173,7 @@ const ActiveSubscribedAmbassador = () => {
         console.log(error);
       });
     console.log("apiUrl=" + apiUrl);
-  }, []);
-  toast.configure();
+  }
 
   /***********************************************************************/
   /***********************************************************************/
@@ -314,10 +221,13 @@ const ActiveSubscribedAmbassador = () => {
         console.log(error);
       });
   };
-  // tableData = {
-  //     columns: columns,
-  //     data: orderDataSet
-  // };
+  
+  const handleResetButton = (resetForm) => {
+    resetForm();
+    firstRenderReport();  
+  };
+
+
   return (
     <>
       <div className="drawer drawer-mobile">
@@ -348,6 +258,7 @@ const ActiveSubscribedAmbassador = () => {
                       handleSubmit(values, { resetForm });
                     }}
                   >
+                    {({ resetForm }) => (
                     <Form className="flex w-[100%] justify-between align-center py-3 rounded-sl bg-base-100 rounded px-2">
                       <div className="flex flex-col">
                         <label htmlFor="start_date">Start Date</label>
@@ -384,20 +295,22 @@ const ActiveSubscribedAmbassador = () => {
                           Search
                         </button>
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          onClick={() => handleResetButton(resetForm)}
                         >
                           Reset
                         </button>
 
                         <button
-                          type="submit"
+                          type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                         >
                           Export
                         </button>
                       </div>
                     </Form>
+                       )}
                   </Formik>
                 </div>
               </div>
