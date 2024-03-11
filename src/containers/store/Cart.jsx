@@ -444,7 +444,7 @@ const Cart = () => {
         return res.data || null;
       })
       .catch((error) => {
-        console.error(error);
+        console.error(error); 
       });
     console.log("res.data", result);
     //axios.defaults.baseURL = config.apiURI;
