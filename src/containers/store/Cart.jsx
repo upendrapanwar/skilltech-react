@@ -427,7 +427,7 @@ const Cart = () => {
       //const result = await axios.post('https://www.payfast.co.za/onsite/process', pfParamString_updated)
       .then((res) => {
         console.log("uuid", res.data.uuid);
-        localStorage.setItem("uuid", JSON.stringify(res.data.uuid));
+        localStorage.setItem("uuid", res.data.uuid);
         
         // const data = JSON.stringify(merchantData);
         // const uuid = JSON.stringify(res.data.uuid);

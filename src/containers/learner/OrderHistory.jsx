@@ -118,14 +118,14 @@ const OrderHistory = () => {
      * 
      */
     const getMyCourses = () => {
-        axios.get('common/get-my-courses/'+ userid).then(response => {
+        axios.get('common/get-user-courses/'+ userid).then(response => {
                 toast.dismiss();
     
                 if (response.data) {
                     
                     if(response.data.status) { 
                         setMyCourses(response.data.data);
-                        console.log(response.data.data[0])
+                        console.log(response.data.data)
                     }
                     
                 }
@@ -194,9 +194,9 @@ const OrderHistory = () => {
                                                         <th scope="row">{item.plan_name}</th>
                                                         <td>{item.payment_mode}</td>
                                                         <td>{item.payment_status}</td>
-                                                        <td>R{item.amount}</td>
+                                                        <td>$ {item.amount}</td>
                                                         <td>{item.is_recurring}</td>
-                                                        <td>{item.createdAt}</td>
+                                                        <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                                         {/*<td><button type="button" className="btn-primary btn-color bt-size mb-2" onClick={() => handleOpen(item.id)}>View Details</button>
                                                         <Modal
                 onClose={handleClose}

@@ -47,14 +47,13 @@ const MyCourses = () => {
      * 
      */
     const getMyCourses = () => {
-        axios.get('common/get-user-courses/'+ userid).then(response => {
+        axios.get('common/get-my-courses/'+ userid).then(response => {
                 toast.dismiss();
     
                 if (response.data) {
                     if(response.data.status) {
-                        const resp = response.data.data;
-                        const filtered = resp.filter(item => item.is_active !== false);
-                        setMyCourses(filtered);
+                        setMyCourses(response.data.data);
+                        console.log("get my course response data", response.data.data)
                     }
                     
                 }
@@ -132,9 +131,9 @@ const MyCourses = () => {
                                                     
                                                     (<tr>
                                                         <td><img style={{'height':'60px','width':"100%"}} src={item.image} alt={item.course_title}/></td>
-                                                        <td>{item.orderid}</td>
+                                                        <td>{item._id}</td>
                                                         <th scope="row">{item.course_title}</th>
-                                                        <td>R{item.course_price}</td>
+                                                        <td>$ {item.course_price}</td>
                                                         <td>{(item.paymentType ==='one_off') ? 'One Time' : 'Subscription'}</td>
                                                         <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                                     </tr>)  

@@ -43,9 +43,6 @@ const Dashboard = () => {
     if (tmp === "/cancel") {
       cancelPayment();
     }
-    // if (tmp === "/notify") {
-    //   notifyPayment();
-    // }
     getMyCourses();
     getReferralCode();
   }, []);
@@ -106,6 +103,8 @@ const Dashboard = () => {
     let subscriptionId = localStorage.getItem("subscriptionId");
     let uuid = localStorage.getItem("uuid");
     let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
+    uuid = uuid.replace(/^"(.*)"$/, '$1');
+
     if (merchantDataResult === "") {
       return;
     }
@@ -174,6 +173,7 @@ const Dashboard = () => {
     console.log("cancel payment=", response);
     let merchantData = localStorage.getItem("merchantData");
     let uuid = localStorage.getItem("uuid");
+    uuid = uuid.replace(/^"(.*)"$/, '$1');
     let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
     console.log("merchantDataResult=", merchantDataResult);
     let is_recurring = "";
@@ -194,7 +194,7 @@ const Dashboard = () => {
     const dataArray = {
       merchantData: merchantDataResult,
       userid: userData.id,
-      payment_status: "cancel payment",
+      payment_status: "cancel",
       is_recurring: is_recurring,
       is_active: "false",
       coursesData: cartData,
@@ -231,118 +231,19 @@ const Dashboard = () => {
   /***********************************************************************/
   /***********************************************************************/
   /**
-   * Get notify payment from payfast
-   *
-   */
-  // const notifyPayment = (response) => {
-  //   console.log('response',response);
-  //   cart.forEach((item, i) => {
-  //     cartData[i] = item;
-  //   });
-  //   console.log("notify payment=", response);
-  //   let merchantData = localStorage.getItem("merchantData");
-  //   let uuid = localStorage.getItem("uuid");
-  //   let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
-  //   if (merchantDataResult === "") {
-  //     return;
-  //   }
-  //   let is_recurring = "";
-  //   if (
-  //     merchantDataResult["item_description"] ===
-  //     "Order for Hign Vista Subscription"
-  //   ) {
-  //     is_recurring = "yes";
-  //   }
-  //   if (
-  //     merchantDataResult["item_description"] === "Order for one off payment"
-  //   ) {
-  //     is_recurring = "no";
-  //   }
-  //   const dataArray = {
-  //     merchantData: merchantDataResult,
-  //     userid: userData.id,
-  //     payment_status: "success",
-  //     is_recurring: is_recurring,
-  //     is_active: "true",
-  //     coursesData: cartData,
-  //     uuid: uuid
-  //   };
-
-  //   axios
-  //     .post("common/save-subscription", dataArray)
-  //     .then((response) => {
-  //       if (response) {
-  //         //if(response.data.message === "Error while saving.") {
-  //         toast.success("Payment Successful!", {
-  //           position: "top-center",
-  //           autoClose: 3000,
-  //         });
-  //         dispatch(clearCart());
-  //         //}
-
-  //         //navigate('/login');
-  //       }
-  //       localStorage.setItem("merchantData", "");
-  //     })
-  //     .catch((error) => {
-  //       toast.dismiss();
-  //       localStorage.setItem("merchantData", "");
-  //       if (error.response) {
-  //         toast.error("Payment Failed!", {
-  //           position: "top-center",
-  //           autoClose: 5000,
-  //         });
-  //       }
-  //     });
-  //   getMyCourses();
-  // };
-  /***********************************************************************/
-  /***********************************************************************/
-  /**
    * Get User courses list
    *
    */
   const getMyCourses = () => {
-    axios
+    axios 
       .get("common/get-my-courses/" + userData.id)
       .then((response) => {
         toast.dismiss();
 
         if (response.data) {
           if (response.data.status) {
-            const resp = response.data.data;
-            // const filtered = resp.filter(item => item.is_active !== false);
-            const filtered = resp.filter(item => item.is_active !== false && item.payment_status === 'success');
-            setMyCourses(filtered);
-            console.log("setMyCourses#######***** ", filtered);
-          }
-        }
-      })
-      .catch((error) => {
-        toast.dismiss();
-        if (error.response) {
-          toast.error("Code is not available", {
-            position: "top-center",
-            autoClose: 3000,
-          });
-        }
-      });
-  };
-  /***********************************************************************/
-  /***********************************************************************/
-  /**
-   * Update User course cancellation status
-   *
-   */
-  const cancelCourseByUser = () => {
-    axios
-      .get("common/cancel-course/" + userData.id)
-      .then((response) => {
-        toast.dismiss();
-
-        if (response.data) {
-          if (response.data.status) {
-            console.log("Cancel reposnse data: ", response.data.data);
+            setMyCourses(response.data.data);
+            console.log("setMyCourses#######***** ", response.data.data);
           }
         }
       })
@@ -357,19 +258,25 @@ const Dashboard = () => {
       });
   };
   
+  
+  // const generateTimestamp = () => {
+  //   // Get current date and time in UTC format
+  //   const now = new Date().toISOString().slice(0, -1);
+  //   // Get the timezone offset in hours and minutes
+  //   const offset = (new Date().getTimezoneOffset() / 60)
+  //     .toString()
+  //     .padStart(2, "0");
+  //   // Construct the timestamp string
+  //   const timestamp = `${now}${offset > 0 ? "-" : "+"}${Math.abs(offset)
+  //     .toString()
+  //     .padStart(2, "0")}:00`;
+  //   return timestamp;
+  // }
   const generateTimestamp = () => {
     // Get current date and time in UTC format
-    const now = new Date().toISOString().slice(0, -1);
-    // Get the timezone offset in hours and minutes
-    const offset = (new Date().getTimezoneOffset() / 60)
-      .toString()
-      .padStart(2, "0");
-    // Construct the timestamp string
-    const timestamp = `${now}${offset > 0 ? "-" : "+"}${Math.abs(offset)
-      .toString()
-      .padStart(2, "0")}:00`;
-    return timestamp;
-  }
+    const now = new Date().toISOString().slice(0, 19);
+    return now;
+}
 
   /***********************************************************************/
   /***********************************************************************/
@@ -377,76 +284,140 @@ const Dashboard = () => {
    * Cancel course by user
    *
    */
-  const handleCancelClick = async (token, merchantId, signature) => {
-    const url = `https://api.payfast.co.za/subscriptions/${token}/cancel`;
-    // const timestamp = new Date().toISOString();  
-    const version = 'v1';
-    
-    const headers = {
-      'Content-Type': 'application/json',
-      'merchant-id': merchantId,
-      'version': version,
-      'timestamp': generateTimestamp(),
-      'signature': signature,
-    };
-  
-    const options = {
-      method: 'POST',
-      headers: headers
-    };
-  
+  const handleCancelClick = async (merchantData, orderId) => {
     try {
-      const response = await fetch(url, options);
-      const result = await response.text();
-      console.log(result);
-      cancelCourseByUser();
+        const merchant_data = JSON.parse(merchantData);
+        const token = merchant_data.token;
+        const merchantId = merchant_data.merchant_id;
+        const signature = merchant_data.signature;
+        const timestamp = generateTimestamp();
+
+        console.log("merchant_data", merchant_data)
+        console.log("token", token)
+        console.log("merchantId", merchantId)
+        console.log("timestamp", timestamp)
+        console.log("signature", signature)
+        console.log("orderId", orderId)
+
+        const url = `https://api.payfast.co.za/subscriptions/${token}/cancel?testing=true`;
+        const version = 'v1';
+
+        // var myHeaders = new Headers();
+        // myHeaders.append("merchant-id", merchantId);
+        // myHeaders.append("version", version);
+        // myHeaders.append("timestamp", timestamp);
+        // myHeaders.append("signature", signature);
+
+        // var urlencoded = new URLSearchParams();
+        // var requestOptions = {
+        //   method: 'PUT',
+        //   headers: myHeaders,
+        //   body: urlencoded,
+        //   redirect: 'follow'
+
+        // };
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'merchant-id': merchantId,
+            'version': version,
+            'timestamp' : timestamp,
+            'signature': signature
+        };
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: headers
+        };
+
+        const response = await fetch(url, requestOptions);
+        const result = await response.json();
+
+        console.log("PayFast cancel response:", result);
+
+        if (response.status === 200) {
+            console.log("Cancellation successful.");
+            cancelCourseByUser(orderId);
+        } else {
+            console.error("Cancellation failed:", result);
+        }
     } catch (error) {
-      console.error('Error:', error);
+        console.error('Error:', error);
     }
-  };
+};
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
+   * Subscription cancel by user
+   *
+   */
+  const cancelCourseByUser = (orderId) => {
+    axios
+        .put("common/cancel-course/" + orderId)
+        .then((response) => {
+            toast.dismiss();
+
+            if (response.data && response.data.status) {
+                console.log("Cancel response data:", response.data.data);
+                toast.success("Payment cancelled.", {
+                    position: "top-center",
+                    autoClose: 3000,
+                });
+            }
+        })
+        .catch((error) => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error("Code is not available", {
+                    position: "top-center",
+                    autoClose: 3000,
+                });
+            }
+        });
+};
 
 
   // const handleCancelClick = async (plan_name) => {
 
-  //   let merchantData = localStorage.getItem("merchantData");
-  //   let uuid = localStorage.getItem("uuid");
-  //   let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
-  //   const timestamps = generateTimestamp();
-  //   console.log("update timeStamps", timestamps)
+    // let merchantData = localStorage.getItem("merchantData");
+    // let uuid = localStorage.getItem("uuid");
+    // let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
+    // const timestamps = generateTimestamp();
+    // console.log("update timeStamps", timestamps)
 
-  //   console.log("plan name : ", plan_name)
-  //   const merchant_id = 10030936;
-  //   const signature = merchantDataResult['signature'];
+    // console.log("plan name : ", plan_name)
+    // const merchant_id = 10030936;
+    // const signature = merchantDataResult['signature'];
 
 
-  //   setIsLoading(true);
-  //   setError(null);
+    // setIsLoading(true);
+    // setError(null);
 
-  //   const PayFsToken = localStorage.getItem("authInfo");
-  //   const tokenObject = JSON.parse(PayFsToken);
-  //   const token = tokenObject.token;
+    // const PayFsToken = localStorage.getItem("authInfo");
+    // const tokenObject = JSON.parse(PayFsToken);
+    // const token = tokenObject.token;
 
-  //   var myHeaders = new Headers();
-  //   myHeaders.append("merchant-id", merchant_id);
-  //   myHeaders.append("version", "v1");
-  //   myHeaders.append("timestamp", timestamps);
-  //   myHeaders.append("signature", signature);
-  //   // myHeaders.append('Authorization', `Bearer ${token}`)
+    // var myHeaders = new Headers();
+    // myHeaders.append("merchant-id", merchant_id);
+    // myHeaders.append("version", "v1");
+    // myHeaders.append("timestamp", timestamps);
+    // myHeaders.append("signature", signature);
+    // // myHeaders.append('Authorization', `Bearer ${token}`)
 
-  //   var urlencoded = new URLSearchParams();
-  //   var requestOptions = {
-  //     method: 'PUT',
-  //     headers: myHeaders,
-  //     body: urlencoded,
-  //     redirect: 'follow'
+    // var urlencoded = new URLSearchParams();
+    // var requestOptions = {
+    //   method: 'PUT',
+    //   headers: myHeaders,
+    //   body: urlencoded,
+    //   redirect: 'follow'
 
-  //   };
-  //   // var url = `https://api.payfast.co.za/subscriptions/${uuId}/cancel?testing=true`
-  //   var url = `https://sandbox.payfast.co.za/subscriptions/${uuid}/cancel`
-  //   fetch(url, requestOptions)
-  //     .then(response => response.text())
-  //     .then(result => console.log(result))
-  //     .catch(error => console.log('error', error));
+    // };
+    // // var url = `https://api.payfast.co.za/subscriptions/${uuId}/cancel?testing=true`
+    // var url = `https://sandbox.payfast.co.za/subscriptions/${uuid}/cancel`
+    // fetch(url, requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => console.log(result))
+    //   .catch(error => console.log('error', error));
 
   // };
 
@@ -575,7 +546,7 @@ const Dashboard = () => {
                           <tr> 
                             <th scope="row">
                               {console.log("item=", item)}
-                              {item.plan_name}
+                              {item.course_title}
                             </th>
                             {/* <td>{item.payment_status}</td> */}
                             <td>{new Date(item.createdAt).toLocaleDateString()}</td>
@@ -584,7 +555,7 @@ const Dashboard = () => {
                                 type="button"
                                 className="btn btn-primary btn-color bt-size"
                                 // onClick={() => handleCancelClick(item.uuid, item.plan_name)}
-                                onClick={() => handleCancelClick(item.merchantData.token, item.merchantData.merchant_id, item.merchantData.signature)}
+                                onClick={() => handleCancelClick(item.merchantData, item._id)}
                               >
                                 Remove
                               </button>
