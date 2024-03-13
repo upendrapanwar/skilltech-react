@@ -119,7 +119,7 @@ const OrderHistory = () => {
      */
     const getMyCourses = () => {
         axios.get('common/get-user-courses/'+ userid).then(response => {
-                toast.dismiss();
+                toast.dismiss(); 
     
                 if (response.data) {
                     

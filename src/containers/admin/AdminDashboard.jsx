@@ -31,8 +31,8 @@ const AdminDashboard = () => {
     const reportTitleAndUrl = [
         { title: "Active Subcripton of Ambassador", url: "active-subscribed-ambassador" },
         { title: "Active Subscription of Subscriber", url: "active-subscribed-subscriber" },
-        { title: "Defaulted Subscriptions Payments of Ambassador", url: "defaulted-subscription-paymentof-ambassador" },
-        { title: "Defaulted Subscriptions Payments of Subscribers", url: "defaulted-subscription-paymentof-subscriber" },
+        { title: "Defaulted Subscription Payment of Ambassador", url: "defaulted-subscription-paymentof-ambassador" },
+        { title: "Defaulted Subscription Payment of Subscribers", url: "defaulted-subscription-paymentof-subscriber" },
         { title: "Subscription cancelled by Ambassador", url: "subscription-cancelledby-ambassador" },
         { title: "Subscription cancelled by Subscriber", url: "subscription-cancelledby-subscriber" },
         { title: "Referral Per Ambassador", url: "active-inactive-referral-per-ambassador" },
@@ -54,7 +54,7 @@ const AdminDashboard = () => {
 
     const [navigateUrl, setNavigateUrl] = useState('/admin/active-subscribed-ambassador');
     const [reportApiUrl, setReportApiUrl] = useState([]);
-    const [userReport, setUserReport] = useState([]);
+    const [activeSubscribedAmbassador, setActiveSubscribedAmbassador] = useState([]);
     const [activeSubscribedSubscriber, setActiveSubscribedSubscriber] = useState([]);
     const [defaultedSubscriptionPaymentofambassador, setDefaultedSubscriptionPaymentofambassador] = useState([]);
     const [defaultedSubscriptionPaymentofsubscriber, setDefaultedSubscriptionPaymentofsubscriber] = useState([]);
@@ -97,9 +97,9 @@ const AdminDashboard = () => {
         axios.get(`admin/${apiUrl}`).then(response => {
             if (response.data.status) {
                 toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
-                setUserReport(response.data.data);
+                setActiveSubscribedAmbassador(response.data.data);
 
-                console.log(userReport);
+                console.log(activeSubscribedAmbassador);
             }
         }).catch(error => {
             toast.dismiss();
@@ -134,18 +134,14 @@ const AdminDashboard = () => {
             if (response.data.status) {
                 toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
                 if (apiUrl === 'active-subscribed-ambassador') {
-                    setUserReport(response.data.data);
-
-                    //console.log('userReport=',userReport);
+                    setActiveSubscribedAmbassador(response.data.data);
                 }
                 if (apiUrl === 'active-subscribed-subscriber') {
                     setActiveSubscribedSubscriber(response.data.data);
-                    //console.log('activeSubscribedSubscriber=',activeSubscribedSubscriber);
                 }
                 if (apiUrl === 'defaulted-subscription-paymentof-ambassador') {
                     const ambassadorData = response.data.data;
                     const filtered = ambassadorData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
-                    // console.log("filter ambassadorData", filtered)
                     setDefaultedSubscriptionPaymentofambassador(filtered);
                     // setDefaultedSubscriptionPaymentofambassador(response.data.data);
                     //console.log('defaultedSubscriptionPaymentofambassador=',defaultedSubscriptionPaymentofambassador);
@@ -186,6 +182,34 @@ const AdminDashboard = () => {
                 }
                 console.log('reportApiUrl=', reportApiUrl);
 
+            } else {
+                if (apiUrl === 'active-subscribed-ambassador') {
+                    setActiveSubscribedAmbassador('');
+                }
+                if (apiUrl === 'active-subscribed-subscriber') {
+                    setActiveSubscribedSubscriber('');
+                }
+                if (apiUrl === 'defaulted-subscription-paymentof-ambassador') {
+                    setDefaultedSubscriptionPaymentofambassador('');
+                }
+                if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
+                    setDefaultedSubscriptionPaymentofsubscriber('');
+                }
+                if (apiUrl === 'subscription-cancelledby-ambassador') {
+                    setSubscriptionCancelledbyAmbassador('');
+                }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    setSubscriptionCancelledbySubscriber('');
+                }
+                if (apiUrl === 'active-inactive-referral-per-ambassador') {
+                    setActiveInactiveReferralPerAmbassador('');
+                }
+                if (apiUrl === 'active-referral-per-ambassador') {
+                    setActiveReferralPerAmbassador('');
+                }
+                if (apiUrl === 'inactive-referral-per-ambassador') {
+                    setInactiveReferralPerAmbassador('');
+                }
             }
         }).catch(error => {
             toast.dismiss();
@@ -205,7 +229,7 @@ const AdminDashboard = () => {
     };
 
     
-    console.log("userReport", userReport)
+    console.log("activeSubscribedAmbassador", activeSubscribedAmbassador)
     console.log("activeSubscribedSubscriber", activeSubscribedSubscriber)
 
     console.log("defaultedSubscriptionPaymentofambassador", defaultedSubscriptionPaymentofambassador)
@@ -333,36 +357,32 @@ const AdminDashboard = () => {
 
                                         </thead>
                                         <tbody>
-                                            {console.log('reportApiUrl=', reportApiUrl)}
-                                            {console.log('userReport=', userReport)}
-                                            {reportApiUrl === 'active-subscribed-ambassador' && userReport.length > 0 && userReport.map((user, index) => {
-
-                                                return (
-                                                    <tr key={index}>
-                                                        {user.firstname !== '' && <td>{user.firstname ? user.firstname.toUpperCase() : 'N/A'} </td>}
-                                                        {user.surname !== '' && <td>{user.surname ? user.surname.toUpperCase() : 'N/A'}</td>}
-                                                        {user.referral_code !== '' && <td>{user.referral_code ? user.referral_code : 'N/A'}</td>}
-                                                        {user.subscription_date !== '' && <td>{user.subscription_date ? new Date(user.subscription_date).toLocaleDateString() : 'N/A'}</td>}
-                                                        <td>Active</td>
-                                                        {user.ambassador_date !== '' && <td>{user.ambassador_date ? new Date(user.ambassador_date).toLocaleDateString() : 'N/A'}</td>}
-
-                                                    </tr>
-                                                )
-                                            })
-
+                                            {reportApiUrl === 'active-subscribed-ambassador' && activeSubscribedAmbassador.length > 0 && activeSubscribedAmbassador.map((user, index) => {
+                                                    return (
+                                                        <tr key={index}>
+                                                            {user.firstname !== '' && <td>{user.firstname ? user.firstname.toUpperCase() : 'N/A'} </td>}
+                                                            {user.surname !== '' && <td>{user.surname ? user.surname.toUpperCase() : 'N/A'}</td>}
+                                                            {user.referral_code !== '' && <td>{user.referral_code ? user.referral_code : 'N/A'}</td>}
+                                                            {user.subscription_date !== '' && <td>{user.subscription_date ? new Date(user.subscription_date).toLocaleDateString() : 'N/A'}</td>}
+                                                            {user.subscription_status !== '' && <td>{user.subscription_status ? user.subscription_status : 'N/A'}</td>}
+                                                            {user.ambassador_date !== '' && <td>{user.ambassador_date ? new Date(user.ambassador_date).toLocaleDateString() : 'N/A'}</td>}
+                                                        </tr>
+                                                    );
+                                                })
                                             }
 
-                                            {reportApiUrl === 'active-subscribed-subscriber' && activeSubscribedSubscriber && activeSubscribedSubscriber.map((user, index) => {
+
+                                            {reportApiUrl === 'active-subscribed-subscriber' && activeSubscribedSubscriber.length > 0 && activeSubscribedSubscriber.map((user, index) => {
                                                 return (
                                                     <tr key={index}>
                                                         <td>{user.firstname ? user.firstname.toUpperCase() : 'N/A'} </td>
                                                         <td>{user.surname ? user.surname.toUpperCase() : 'N/A'}</td>
                                                         <td>{user.subscription_date ? new Date(user.subscription_date).toLocaleDateString() : 'N/A'}</td>
-                                                        <td>Active</td>
-
+                                                        <td>{user.subscription_status ? user.subscription_status : 'N/A'}</td>
                                                     </tr>
                                                 )
-                                            })}
+                                            })
+                                            }
 
                                             {reportApiUrl === 'defaulted-subscription-paymentof-ambassador' && defaultedSubscriptionPaymentofambassador && defaultedSubscriptionPaymentofambassador.map((item, index) => {
                                                 return <>

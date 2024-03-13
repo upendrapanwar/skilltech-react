@@ -9,6 +9,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { clearCart } from "../../redux/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { Reports } from "./Reports";
 
 const Dashboard = () => {
   const userInfo = JSON.parse(localStorage.getItem("authInfo"))
@@ -594,6 +595,8 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
+         <Reports/>
 
           <div className="hvg__card_section mb-4">
             <div className="card">

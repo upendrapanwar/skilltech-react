@@ -87,21 +87,13 @@ const ActiveSubscribedSubscriber = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              // id: value.id,
               firstname: value.firstname,
               surname: value.surname,
-              is_active: value.is_active,
+              subscription_status: value.subscription_status,
               subscription_date: value.subscription_date,
             });
           });
           var columnsData = [
-            // {
-            //   name: "ID",
-            //   selector: (row, i) => row.id,
-            //   cell: (row) => <span>{row.id}</span>,
-            //   sortable: true,
-            //   minWidth: '200px',
-            // },
             {
               name: "FIRST NAME",
               selector: (row, i) => row.firstname,
@@ -130,8 +122,8 @@ const ActiveSubscribedSubscriber = () => {
               
             {
               name: "SUBSCRIPTION STATUS",
-              selector: (row, i) => row.is_active,
-              cell: (row) => <span>{row.is_active}</span>,
+              selector: (row, i) => row.subscription_status,
+              cell: (row) => <span>{row.subscription_status}</span>,
               sortable: true,
             },
             // {
@@ -183,10 +175,9 @@ const ActiveSubscribedSubscriber = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              // id: value.id,
               firstname: value.firstname,
               surname: value.surname,
-              is_active: value.is_active,
+              subscription_status: value.subscription_status,
               subscription_date: value.subscription_date,
             });
           });

@@ -98,22 +98,15 @@ const ActiveSubscribedAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              // id: value.id,
               firstname: value.firstname,
               surname: value.surname,
               referral_code: value.referral_code,
-              is_active: value.is_active,
               subscription_date: value.subscription_date,
+              subscription_status: value.subscription_status,
+              ambassador_date: value.ambassador_date,
             });
           });
           var columnsData = [
-            // {
-            //   name: "ID",
-            //   selector: (row, i) => row.id,
-            //   cell: (row) => <span>{row.id}</span>,
-            //   sortable: true,
-            //   minWidth: '200px',
-            // },
             {
               name: "AMBASSADOR FIRST NAME",
               selector: (row, i) => row.firstname,
@@ -148,8 +141,8 @@ const ActiveSubscribedAmbassador = () => {
               
             {
               name: "SUBSCRIPTION STATUS",
-              selector: (row, i) => row.is_active,
-              cell: (row) => <span>{row.is_active}</span>,
+              selector: (row, i) => row.subscription_status,
+              cell: (row) => <span>{row.subscription_status}</span>,
               sortable: true,
             },
             {
@@ -201,12 +194,12 @@ const ActiveSubscribedAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-              // id: value.id,
               firstname: value.firstname,
               surname: value.surname,
               referral_code: value.referral_code,
-              is_active: value.is_active,
               subscription_date: value.subscription_date,
+              subscription_status: value.subscription_status,
+              ambassador_date: value.ambassador_date,
             });
           });
           setOrderDataSet(ambassadorDataArray);
