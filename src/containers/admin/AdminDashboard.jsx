@@ -37,7 +37,8 @@ const AdminDashboard = () => {
         { title: "Subscription cancelled by Subscriber", url: "subscription-cancelledby-subscriber" },
         { title: "Referral Per Ambassador", url: "active-inactive-referral-per-ambassador" },
         { title: "Active Referral Per Ambassador", url: "active-referral-per-ambassador" },
-        { title: "Inactive Referral Per Ambassador", url: "inactive-referral-per-ambassador" }
+        { title: "Inactive Referral Per Ambassador", url: "inactive-referral-per-ambassador" },
+        { title: "Payment due to ambassador", url: "payment-due-to-ambassador" }
     ];
 
     const reportTableHeader = [
@@ -49,10 +50,12 @@ const AdminDashboard = () => {
         ["Subscriber First Name", "Subscriber Last Name", "Date of HVG subscription Cancellation"],
         ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code", "HVG Subscription status"],
         ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"],
-        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"]
+        ["Subscriber First Name", "Subcriber Last Name", "Ambassador Referral Code Used ", "Referred Ambassador First Name", "Referred Ambassador Last Name", "	Date of use of referral code"],
+        ["Ambassador First Name", "Ambassador Last Name", "Ambassador Referral Code", "Current active referrals", "Total amount due this month"]
     ];
 
     const [navigateUrl, setNavigateUrl] = useState('/admin/active-subscribed-ambassador');
+    const [values, setValues] = useState([]);
     const [reportApiUrl, setReportApiUrl] = useState([]);
     const [activeSubscribedAmbassador, setActiveSubscribedAmbassador] = useState([]);
     const [activeSubscribedSubscriber, setActiveSubscribedSubscriber] = useState([]);
@@ -63,6 +66,7 @@ const AdminDashboard = () => {
     const [activeInactiveReferralPerAmbassador, setActiveInactiveReferralPerAmbassador] = useState([]);
     const [activeReferralPerAmbassador, setActiveReferralPerAmbassador] = useState([]);
     const [inactiveReferralPerAmbassador, setInactiveReferralPerAmbassador] = useState([]);
+    const [paymentDueToAmbassador, setPaymentDueToAmbassador] = useState([]);
     const [index, setIndex] = useState(0);
     const dispatch = useDispatch()
     const statsData = [];
@@ -116,6 +120,7 @@ const AdminDashboard = () => {
     /***********************************************************************/
     const handleSubmit = (values, { resetForm }) => {
         console.log(values);
+        setValues(values)
         setIndex(values.report_type);
         const apiUrl = reportTitleAndUrl[values.report_type].url;
         var urls = apiUrl;
@@ -143,42 +148,34 @@ const AdminDashboard = () => {
                     const ambassadorData = response.data.data;
                     const filtered = ambassadorData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
                     setDefaultedSubscriptionPaymentofambassador(filtered);
-                    // setDefaultedSubscriptionPaymentofambassador(response.data.data);
-                    //console.log('defaultedSubscriptionPaymentofambassador=',defaultedSubscriptionPaymentofambassador);
                 }
 
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
                     const subscriberData = response.data.data;
                     const filtered = subscriberData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
                     setDefaultedSubscriptionPaymentofsubscriber(filtered);
-                    // setDefaultedSubscriptionPaymentofsubscriber(response.data.data);
-                    //console.log('defaultedSubscriptionPaymentofsubscriber=',defaultedSubscriptionPaymentofsubscriber);
                 }
                 if (apiUrl === 'subscription-cancelledby-ambassador') {
                     const cancleByAmb = response.data.data;
                     const filtered = cancleByAmb.filter(item => item.userId !== null);
                     setSubscriptionCancelledbyAmbassador(filtered);
-                    // setSubscriptionCancelledbyAmbassador(response.data.data);
-                    //console.log('subscriptionCancelledbyAmbassador=',subscriptionCancelledbyAmbassador);
                 }
                 if (apiUrl === 'subscription-cancelledby-subscriber') {
                     const cancleBySub = response.data.data;
                     const filtered = cancleBySub.filter(item => item.userId !== null);
                     setSubscriptionCancelledbySubscriber(filtered);
-                    // setSubscriptionCancelledbySubscriber(response.data.data);
-                    //console.log('subscriptionCancelledbySubscriber=',subscriptionCancelledbySubscriber);
                 }
                 if (apiUrl === 'active-inactive-referral-per-ambassador') {
                     setActiveInactiveReferralPerAmbassador(response.data.data);
-                    //console.log('activeInactiveReferralPerAmbassador=',activeInactiveReferralPerAmbassador);
                 }
                 if (apiUrl === 'active-referral-per-ambassador') {
                     setActiveReferralPerAmbassador(response.data.data);
-                    //console.log('activeReferralPerAmbassador=',activeReferralPerAmbassador);
                 }
                 if (apiUrl === 'inactive-referral-per-ambassador') {
                     setInactiveReferralPerAmbassador(response.data.data);
-                    //console.log('inactiveReferralPerAmbassador=',inactiveReferralPerAmbassador);
+                }
+                if (apiUrl === 'payment-due-to-ambassador') {
+                    setPaymentDueToAmbassador(response.data.data);
                 }
                 console.log('reportApiUrl=', reportApiUrl);
 
@@ -210,6 +207,9 @@ const AdminDashboard = () => {
                 if (apiUrl === 'inactive-referral-per-ambassador') {
                     setInactiveReferralPerAmbassador('');
                 }
+                if (apiUrl === 'payment-due-to-ambassador') {
+                    setPaymentDueToAmbassador('');
+                }
             }
         }).catch(error => {
             toast.dismiss();
@@ -225,21 +225,105 @@ const AdminDashboard = () => {
 
     const handleResetButton = (resetForm) => {
         resetForm();
-        firstRenderReport();  
+        const apiUrl = reportTitleAndUrl[index].url;
+        setReportApiUrl(apiUrl);
+        setNavigateUrl(`/admin/${apiUrl}`);
+        
+        axios.get(`admin/${apiUrl}`, values).then(response => {
+            if (response.data.status) {
+                toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
+                if (apiUrl === 'active-subscribed-ambassador') {
+                    setActiveSubscribedAmbassador(response.data.data);
+                }
+                if (apiUrl === 'active-subscribed-subscriber') {
+                    setActiveSubscribedSubscriber(response.data.data);
+                }
+                if (apiUrl === 'defaulted-subscription-paymentof-ambassador') {
+                    const ambassadorData = response.data.data;
+                    const filtered = ambassadorData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
+                    setDefaultedSubscriptionPaymentofambassador(filtered);
+                }
+
+                if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
+                    const subscriberData = response.data.data;
+                    const filtered = subscriberData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
+                    setDefaultedSubscriptionPaymentofsubscriber(filtered);
+                }
+                if (apiUrl === 'subscription-cancelledby-ambassador') {
+                    const cancleByAmb = response.data.data;
+                    const filtered = cancleByAmb.filter(item => item.userId !== null);
+                    setSubscriptionCancelledbyAmbassador(filtered);
+                }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    const cancleBySub = response.data.data;
+                    const filtered = cancleBySub.filter(item => item.userId !== null);
+                    setSubscriptionCancelledbySubscriber(filtered);
+                }
+                if (apiUrl === 'active-inactive-referral-per-ambassador') {
+                    setActiveInactiveReferralPerAmbassador(response.data.data);
+                }
+                if (apiUrl === 'active-referral-per-ambassador') {
+                    setActiveReferralPerAmbassador(response.data.data);
+                }
+                if (apiUrl === 'inactive-referral-per-ambassador') {
+                    setInactiveReferralPerAmbassador(response.data.data);
+                }
+                if (apiUrl === 'payment-due-to-ambassador') {
+                    setPaymentDueToAmbassador(response.data.data);
+                }
+                console.log('reportApiUrl=', reportApiUrl);
+
+            } else {
+                if (apiUrl === 'active-subscribed-ambassador') {
+                    setActiveSubscribedAmbassador('');
+                }
+                if (apiUrl === 'active-subscribed-subscriber') {
+                    setActiveSubscribedSubscriber('');
+                }
+                if (apiUrl === 'defaulted-subscription-paymentof-ambassador') {
+                    setDefaultedSubscriptionPaymentofambassador('');
+                }
+                if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
+                    setDefaultedSubscriptionPaymentofsubscriber('');
+                }
+                if (apiUrl === 'subscription-cancelledby-ambassador') {
+                    setSubscriptionCancelledbyAmbassador('');
+                }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    setSubscriptionCancelledbySubscriber('');
+                }
+                if (apiUrl === 'active-inactive-referral-per-ambassador') {
+                    setActiveInactiveReferralPerAmbassador('');
+                }
+                if (apiUrl === 'active-referral-per-ambassador') {
+                    setActiveReferralPerAmbassador('');
+                }
+                if (apiUrl === 'inactive-referral-per-ambassador') {
+                    setInactiveReferralPerAmbassador('');
+                }
+                if (apiUrl === 'payment-due-to-ambassador') {
+                    setPaymentDueToAmbassador('');
+                }
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                resetForm();
+                toast.error(error.response.data.message, { autoClose: 3000 });
+            }
+            console.log(error);
+        })  
     };
 
     
     console.log("activeSubscribedAmbassador", activeSubscribedAmbassador)
     console.log("activeSubscribedSubscriber", activeSubscribedSubscriber)
-
     console.log("defaultedSubscriptionPaymentofambassador", defaultedSubscriptionPaymentofambassador)
     console.log("defaultedSubscriptionPaymentofsubscriber", defaultedSubscriptionPaymentofsubscriber)
     console.log("subscriptionCancelledbyAmbassador", subscriptionCancelledbyAmbassador)
     console.log("subscriptionCancelledbySubscriber", subscriptionCancelledbySubscriber)
-
     console.log("ActiveInactiveReferralPerAmbassador", activeInactiveReferralPerAmbassador)
-
-
+    console.log("paymentDueToAmbassador", paymentDueToAmbassador)
 
     return (
 
@@ -249,37 +333,6 @@ const AdminDashboard = () => {
                 <div className="drawer-content flex flex-col ">
                     <Header />
                     <main className="flex-1 overflow-y-auto pt-2 px-2  bg-base-200">
-
-                        {/* <div className="h-16">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="">
-                                <Datepicker 
-                                    containerClassName="w-72 " 
-                                    value={dateValue} 
-                                    theme={"dark"}
-                                    inputClassName="input input-bordered w-72" 
-                                    popoverDirection={"down"}
-                                    toggleClassName="invisible"
-                                    onChange={handleDatePickerValueChange} 
-                                    showShortcuts={true} 
-                                    primaryColor={"black"} 
-                                /> 
-                            
-                            </div>
-                            <div className="text-right ">
-                                <button className="btn btn-ghost btn-sm normal-case"><ArrowPathIcon className="w-4 mr-2"/>Refresh Data</button>
-                                <button className="btn btn-ghost btn-sm normal-case  ml-2"><ShareIcon className="w-4 mr-2"/>Share</button>
-
-                                <div className="dropdown dropdown-bottom dropdown-end  ml-2">
-                                    <label tabIndex={0} className="btn btn-ghost btn-sm normal-case btn-square "><EllipsisVerticalIcon className="w-5"/></label>
-                                    <ul tabIndex={0} className="dropdown-content menu menu-compact  p-2 shadow bg-base-100 rounded-box w-52">
-                                        <li><a><EnvelopeIcon className="w-4"/>Email Digests</a></li>
-                                        <li><a><ArrowDownTrayIcon className="w-4"/>Download</a></li>
-                                    </ul>
-                                </div>
-                                </div>
-                            </div>
-                        </div>   */}
 
                         {/* report section */}
                         <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
@@ -326,6 +379,7 @@ const AdminDashboard = () => {
                                                     <option value={6}> Referral Per Ambassador</option>
                                                     <option value={7}> Active Referral Per Ambassador</option>
                                                     <option value={8}> Inactive Referral Per Ambassador</option>
+                                                    <option value={9}> Payment due to Ambassador</option>
                                                 </Field>
                                                 <ErrorMessage name="report_type" component="div" className="text-red-500 text-sm" />
                                             </div>
@@ -463,6 +517,18 @@ const AdminDashboard = () => {
                                                     <td>{data.Ambassador_firstname}</td>
                                                     <td>{data.Ambassador_lastname}</td>
                                                     <td>{data.Date_of_use_of_referral_code}</td>
+                                                </tr>
+                                                </>
+                                            })}
+
+                                            {reportApiUrl === 'payment-due-to-ambassador' && paymentDueToAmbassador.map((data, index) => {
+                                                return <>
+                                                <tr key={index}>
+                                                    <td>{data.Ambassador_firstname}</td>
+                                                    <td>{data.Ambassador_lastname}</td>
+                                                    <td>{data.Ambassador_referralcode}</td>
+                                                    <td>{data.referral_count}</td>
+                                                    <td>{data.due_amount}</td>
                                                 </tr>
                                                 </>
                                             })}

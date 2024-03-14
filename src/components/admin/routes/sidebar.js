@@ -72,8 +72,8 @@ const routes = [
       },
       {
         path: '/admin/active-subscribed-subscriber',
-        icon: <DocumentIcon className={submenuIconClasses}/>, // icon component
-        name: 'Active Subscription of Subscriber', // name that appear in Sidebar
+        icon: <DocumentIcon className={submenuIconClasses}/>,
+        name: 'Active Subscription of Subscriber',
       },
       {
         path: '/admin/defaulted-subscription-paymentof-ambassador',
@@ -109,6 +109,11 @@ const routes = [
         path: '/admin/inactive-referral-per-ambassador',
         icon: <DocumentIcon className={submenuIconClasses}/>,
         name: 'Inactive Referral Per Ambassador',
+      },
+      {
+        path: '/admin/payment-due-to-ambassador',
+        icon: <DocumentIcon className={submenuIconClasses}/>,
+        name: 'Payment due to ambassador',
       },
     ]
   },

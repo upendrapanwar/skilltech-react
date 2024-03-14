@@ -31,7 +31,7 @@ import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
 
-const ReferralPerAmbassador = () => {
+const PaymentDueToAmbassador = () => {
   const [navigateUrl, setNavigateUrl] = useState([]);
   const [userReport, setUserReport] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -46,11 +46,6 @@ const ReferralPerAmbassador = () => {
     endDate: new Date(),
   });
 
-  const handleDatePickerValueChange = (newValue) => {
-    //console.log("newValue:", newValue);
-    setDateValue(newValue);
-    //updateDashboardPeriod(newValue)
-  };
   const authInfo = JSON.parse(localStorage.getItem("authInfo"));
   const location = useLocation();
   console.log("authInfo=", authInfo);
@@ -59,7 +54,7 @@ const ReferralPerAmbassador = () => {
   let [userid, setUserid] = useState(authInfo ? authInfo.id : null);
   const navigate = useNavigate();
   const { newNotificationMessage, newNotificationStatus } = useState("");
-  const apiUrl = "active-inactive-referral-per-ambassador";
+  const apiUrl = "payment-due-to-ambassador";
 
   useEffect(() => {
     if (newNotificationMessage !== "") {
@@ -89,34 +84,14 @@ const ReferralPerAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-                Subscriber_firstname: value.Subscriber_firstname,
-                Subscriber_lastname: value.Subscriber_lastname,
-                referral_code: value.Ambassador_referralcode,
                 Ambassador_firstname: value.Ambassador_firstname,
                 Ambassador_lastname: value.Ambassador_lastname,
-                Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
-                HVG_Subscription_status: value.HVG_Subscription_status,
+                Ambassador_referralcode: value.Ambassador_referralcode,
+                referral_count: value.referral_count,
+                due_amount: value.due_amount,
             });
           });
           var columnsData = [
-            {
-              name: "SUBSCRIBER FIRST NAME",
-              selector: (row, i) => row.Subscriber_firstname,
-              cell: (row) => <span>{row.Subscriber_firstname}</span>,
-              sortable: true,
-            },
-            {
-              name: "SUBSCRIBER LAST NAME",
-              selector: (row, i) => row.Subscriber_lastname,
-              cell: (row) => <span>{row.Subscriber_lastname}</span>,
-              sortable: true,
-            },  
-            {
-              name: "AMBASSADOR REFERRAL CODE USED",
-              selector: (row, i) => row.referral_code,
-              cell: (row) => <span>{row.referral_code}</span>,
-              sortable: true,
-            },
             {
                 name: "AMBASSADOR FIRST NAME",
                 selector: (row, i) => row.Ambassador_firstname,
@@ -129,24 +104,22 @@ const ReferralPerAmbassador = () => {
                 cell: (row) => row.Ambassador_lastname,
                 sortable: true,
               },
-            {
-                name: "DATE OF USE OF REFERRAL USED",
-                selector: (row, i) => row.Date_of_use_of_referral_code,
-                cell: (row) => {
-                  const date = new Date(row.Date_of_use_of_referral_code);
-                  const day = date.getDate();
-                  const month = date.toLocaleString('en-us', { month: 'short' });
-                  const year = date.getFullYear();
-                  const formattedDate = `${day} ${month}, ${year}`;
-                  return <span>{formattedDate}</span>;
-                },
+              {
+                name: "AMBASSADOR REFERRAL CODE",
+                selector: (row, i) => row.Ambassador_referralcode,
+                cell: (row) => <span>{row.Ambassador_referralcode}</span>,
                 sortable: true,
               },
-              
             {
-              name: "HVG SUBSCRIPTION STATUS",
-              selector: (row, i) => row.HVG_Subscription_status,
-              cell: (row) => <span>{row.HVG_Subscription_status}</span>,
+              name: "CURRENT ACTIVE REFERRAL",
+              selector: (row, i) => row.referral_count,
+              cell: (row) => <span>{row.referral_count}</span>,
+              sortable: true,
+            },
+            {
+              name: "TOTAL AMOUNT DUE THIS MONTH",
+              selector: (row, i) => row.due_amount,
+              cell: (row) => <span>{row.due_amount}</span>,
               sortable: true,
             },
           ];
@@ -170,7 +143,7 @@ const ReferralPerAmbassador = () => {
   /***********************************************************************/
   const handleSubmit = (values, { resetForm }) => {
     console.log("This is ambassador handleSubmit values check:",values);
-    let urls = "active-inactive-referral-per-ambassador";
+    let urls = "payment-due-to-ambassador";
     if (values.start_date) {
       urls += "/" + values.start_date;
     }
@@ -192,13 +165,11 @@ const ReferralPerAmbassador = () => {
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
             ambassadorDataArray.push({
-                Subscriber_firstname: value.Subscriber_firstname,
-                Subscriber_lastname: value.Subscriber_lastname,
-                referral_code: value.Ambassador_referralcode,
                 Ambassador_firstname: value.Ambassador_firstname,
                 Ambassador_lastname: value.Ambassador_lastname,
-                Date_of_use_of_referral_code: value.Date_of_use_of_referral_code,
-                HVG_Subscription_status: value.HVG_Subscription_status,
+                Ambassador_referralcode: value.Ambassador_referralcode,
+                referral_count: value.referral_count,
+                due_amount: value.due_amount,
             });
           });
           setOrderDataSet(ambassadorDataArray);
@@ -345,4 +316,4 @@ const ReferralPerAmbassador = () => {
   );
 };
 
-export default ReferralPerAmbassador;
+export default PaymentDueToAmbassador;

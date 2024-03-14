@@ -194,7 +194,7 @@ const OrderHistory = () => {
                                                         <th scope="row">{item.plan_name}</th>
                                                         <td>{item.payment_mode}</td>
                                                         <td>{item.payment_status}</td>
-                                                        <td>$ {item.amount}</td>
+                                                        <td>R{item.amount}</td>
                                                         <td>{item.is_recurring}</td>
                                                         <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                                         {/*<td><button type="button" className="btn-primary btn-color bt-size mb-2" onClick={() => handleOpen(item.id)}>View Details</button>

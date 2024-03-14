@@ -31,6 +31,7 @@ import DefaultedPaymentOfAmbassador from './containers/admin/DefaultedPaymentOfA
 import DefaultedPaymentOfSubscriber from './containers/admin/DefaultedPaymentOfSubscriber';
 import CancelSubscriptionBySubscriber from './containers/admin/CancelSubscriptionBySubscriber';
 import CancelSubscriptionByAmbassador from './containers/admin/CancelSubscriptionByAmbassador';
+import PaymentDueToAmbassador from './containers/admin/PaymentDueToAmbassador';
 
 const AdminLogin = lazy(() => import('./containers/admin/Login'));
 const AdminDashboard = lazy(() => import('./containers/admin/AdminDashboard'));
@@ -93,6 +94,7 @@ function App() {
         <Route path='/admin/active-inactive-referral-per-ambassador' element={<ReferralPerAmbassador/>} />
         <Route path='/admin/active-referral-per-ambassador' element={<ActiveReferralPerAmbassador/>} />
         <Route path='/admin/inactive-referral-per-ambassador' element={<InactiveReferralPerAmbassador/>} />
+        <Route path='/admin/payment-due-to-ambassador' element={<PaymentDueToAmbassador/>} />
      </Routes>
     </>
   );

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import TitleCard from '../../components/admin/common/TitleCard';
 
-export const Reports = () => {
+export const Reports = ({userId}) => {
     const reportTitleAndUrl = [
         { title: "Defaulted Subscription Payment of Subscribers", url: "defaulted-subscription-paymentof-subscriber" },
         { title: "My Active Referrals", url: "my-active-referral" },
@@ -26,7 +26,7 @@ export const Reports = () => {
     const [paymentDueThisMonth, setPaymentDueThisMonth] = useState([]);
     const [index, setIndex] = useState(0);
 
-    const apiUrl = 'active-subscribed-ambassador';
+    const apiUrl = 'defaulted-subscription-paymentof-subscriber';
 
     useEffect(() => {
         firstRenderReport();
@@ -35,11 +35,11 @@ export const Reports = () => {
 
     const firstRenderReport = () => {   
         setReportApiUrl(apiUrl);
-        axios.get(`common/${apiUrl}`).then(response => {
+        axios.post(`common/${apiUrl}`, { userId: userId.id })
+        .then(response => {
             if (response.data.status) {
                 toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
                 setDefaultedSubscriptionPaymentofsubscriber(response.data.data);
-
                 console.log(defaultedSubscriptionPaymentofsubscriber);
             }
         }).catch(error => {
@@ -58,7 +58,8 @@ export const Reports = () => {
         const apiUrl = reportTitleAndUrl[values.report_type].url;
         var urls = apiUrl;
         setReportApiUrl(apiUrl);
-        console.log("API url:", apiUrl)
+        console.log("API url:", apiUrl);
+
         if (values.start_date) {
             urls += '/' + values.start_date;
         }
@@ -66,7 +67,8 @@ export const Reports = () => {
             urls += '/' + values.end_date;
         }
 
-        axios.get(`admin/${urls}`, values).then(response => {
+        axios.post(`common/${urls}`, { userId: userId.id })
+        .then(response => {
             if (response.data.status) {
                 toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
@@ -86,10 +88,10 @@ export const Reports = () => {
                     setDefaultedSubscriptionPaymentofsubscriber('');
                 }
                 if (apiUrl === 'my-active-referral') {
-                    setyActiveReferral('');
+                    setActiveReferral('');
                 }
                 if (apiUrl === 'my-inactive-referral') {
-                    setyInactiveReferral('');
+                    setInactiveReferral('');
                 }
                 if (apiUrl === 'payment-due-this-month') {
                     setPaymentDueThisMonth('');
@@ -108,7 +110,47 @@ export const Reports = () => {
 
     const handleResetButton = (resetForm) => {
         resetForm();
-        firstRenderReport();  
+        const apiUrl = reportTitleAndUrl[index].url;
+        setReportApiUrl(apiUrl);
+
+        axios.post(`common/${apiUrl}`, { userId: userId.id })
+        .then(response => {
+            if (response.data.status) {
+                toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
+                if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
+                    setDefaultedSubscriptionPaymentofsubscriber(response.data.data);
+                }
+                if (apiUrl === 'my-active-referral') {
+                    setActiveReferral(response.data.data);
+                }
+                if (apiUrl === 'my-inactive-referral') {
+                    setInactiveReferral(response.data.data);
+                }
+                if (apiUrl === 'payment-due-this-month') {
+                    setPaymentDueThisMonth(response.data.data);
+                }
+            } else {
+                if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
+                    setDefaultedSubscriptionPaymentofsubscriber('');
+                }
+                if (apiUrl === 'my-active-referral') {
+                    setActiveReferral('');
+                }
+                if (apiUrl === 'my-inactive-referral') {
+                    setInactiveReferral('');
+                }
+                if (apiUrl === 'payment-due-this-month') {
+                    setPaymentDueThisMonth('');
+                }
+            }
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                resetForm();
+                toast.error(error.response.data.message, { autoClose: 3000 });
+            }
+            console.log(error);
+        })
     };
 
   return (
@@ -166,7 +208,9 @@ export const Reports = () => {
 
                                             <div className="flex align-center justify-between mt-6">
                                                 <button type="submit" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Search</button>
-                                                <button type="button" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                                                <button 
+                                                type="button" 
+                                                className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                                                  onClick={() => handleResetButton(resetForm)}
                                                  >Reset</button>
 
@@ -194,9 +238,9 @@ export const Reports = () => {
                                             {reportApiUrl === 'defaulted-subscription-paymentof-subscriber' && defaultedSubscriptionPaymentofsubscriber.length > 0 && defaultedSubscriptionPaymentofsubscriber.map((user, index) => {
                                                     return (
                                                         <tr key={index}>
-                                                            {user.firstname !== '' && <td>{user.firstname ? user.firstname : 'N/A'} </td>}
-                                                            {user.surname !== '' && <td>{user.surname ? user.surname : 'N/A'}</td>}
-                                                            {user.payment_reason !== '' && <td>{user.payment_reason ? user.payment_reason : 'N/A'}</td>}
+                                                            <td>{user.firstname ? user.firstname : 'N/A'} </td>
+                                                            <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                            <td>{user.payment_status ? 'Payment failed' : 'N/A'}</td>
                                                         </tr>
                                                     );
                                                 })
@@ -232,7 +276,7 @@ export const Reports = () => {
                                                         <td>{user.firstname ? user.firstname : 'N/A'} </td>
                                                         <td>{user.surname ? user.surname : 'N/A'}</td>
                                                         <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
-                                                        <td>{user.referral_status ? user.referral_status : 'N/A'}</td>
+                                                        <td>{user.referral_count ? user.referral_count : 'N/A'}</td>
                                                         <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
                                                     </tr>
                                                 </>

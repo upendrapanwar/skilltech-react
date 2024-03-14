@@ -16,7 +16,7 @@ const Dashboard = () => {
     ? JSON.parse(localStorage.getItem("authInfo"))
     : null;
   const location = useLocation();
-  const [cancellationStatus, setCancellationStatus] = useState(null); //Add by me
+  const [cancellationStatus, setCancellationStatus] = useState(null);
   let [myCourses, setMyCourses] = useState("");
   const userData = JSON.parse(localStorage.getItem("userInfo"));
   const dispatch = useDispatch();
@@ -63,7 +63,6 @@ const Dashboard = () => {
 
         if (response.data.status) {
           console.log("referral_code=", response.data.data.referral_code);
-          //referralCode
           setReferralCode(response.data.data.referral_code);
         }
       })
@@ -596,7 +595,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-         <Reports/>
+         <Reports userId={userData}/>
 
           <div className="hvg__card_section mb-4">
             <div className="card">
