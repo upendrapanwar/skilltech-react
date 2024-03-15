@@ -242,7 +242,7 @@ const Dashboard = () => {
 
         if (response.data) {
           if (response.data.status) {
-            setMyCourses(response.data.data);
+            setMyCourses(response.data.data); 
             console.log("setMyCourses#######***** ", response.data.data);
           }
         }
@@ -292,12 +292,12 @@ const Dashboard = () => {
         const signature = merchant_data.signature;
         const timestamp = generateTimestamp();
 
-        console.log("merchant_data", merchant_data)
-        console.log("token", token)
-        console.log("merchantId", merchantId)
-        console.log("timestamp", timestamp)
-        console.log("signature", signature)
-        console.log("orderId", orderId)
+        console.log("merchant_data", merchant_data);
+        console.log("token", token);
+        console.log("merchantId", merchantId);
+        console.log("timestamp", timestamp);
+        console.log("signature", signature);
+        console.log("orderId", orderId);
 
         const url = `https://api.payfast.co.za/subscriptions/${token}/cancel?testing=true`;
         const version = 'v1';
