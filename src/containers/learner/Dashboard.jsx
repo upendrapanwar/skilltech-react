@@ -247,66 +247,41 @@ const Dashboard = () => {
    *
    */
   const handleCancelClick = async (merchantData, orderId) => {
-    try {
-        const merchant_data = JSON.parse(merchantData);
+    const merchant_data = JSON.parse(merchantData);
         const token = merchant_data.token;
         const merchantId = merchant_data.merchant_id;
         const signature = merchant_data.signature;
-        const timestamp = generateTimestamp();
 
-        console.log("merchant_data", merchant_data)
-        console.log("token", token)
-        console.log("merchantId", merchantId)
-        console.log("timestamp", timestamp)
-        console.log("signature", signature)
-        console.log("orderId", orderId)
-
-        const url = `https://api.payfast.co.za/subscriptions/${token}/cancel?testing=true`;
-        const version = 'v1';
-
-        // var myHeaders = new Headers();
-        // myHeaders.append("merchant-id", merchantId);
-        // myHeaders.append("version", version);
-        // myHeaders.append("timestamp", timestamp);
-        // myHeaders.append("signature", signature);
-
-        // var urlencoded = new URLSearchParams();
-        // var requestOptions = {
-        //   method: 'PUT',
-        //   headers: myHeaders,
-        //   body: urlencoded,
-        //   redirect: 'follow'
-
-        // };
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'merchant-id': merchantId,
-            'version': version,
-            'timestamp' : timestamp,
-            'signature': signature
-        };
-
-        const requestOptions = {
-            method: 'PUT',
-            headers: headers
-        };
-
-        const response = await fetch(url, requestOptions);
-        const result = await response.json();
-
-        console.log("PayFast cancel response:", result);
-
-        if (response.status === 200) {
-            console.log("Cancellation successful.");
-            cancelCourseByUser(orderId);
-        } else {
-            console.error("Cancellation failed:", result);
+        const reqData = {
+          token: token,
+          merchantId: merchantId,
+          signature: signature,
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
+        console.log("reqData", reqData);
+    axios
+    .post("common/cancel-payfast-payment", reqData)
+    .then((response) => {
+        toast.dismiss();
+
+        if (response.data && response.data.status) {
+            console.log("Cancel response data:", response.data.data);
+            cancelCourseByUser(orderId);
+            toast.success("Payment cancelled.", {
+                position: "top-center",
+                autoClose: 3000,
+            });
+        }
+    })
+    .catch((error) => {
+        toast.dismiss();
+        if (error.response) {
+            toast.error("Error in cancellation.", {
+                position: "top-center",
+                autoClose: 3000,
+            });
+        }
+    });
+  };
   /***********************************************************************/
   /***********************************************************************/
   /**
@@ -464,7 +439,8 @@ const Dashboard = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary btn-color bt-size"
-                                                            onClick={() => handleCancelClick(item.uuid, item.plan_name)}
+                                                            // onClick={() => handleCancelClick(item.uuid, item.plan_name)}
+                                                            onClick={() => handleCancelClick(item.merchantData, item._id)}
                                                         >
                                                             Remove
                                                         </button>

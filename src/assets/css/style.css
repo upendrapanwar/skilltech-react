@@ -1128,3 +1128,14 @@ footer .footer-content ul li a {
 .bt-size {
   min-width: 120px;
 }
+
+
+.ambassador_reports_search_ft,
+.ambassador_myreport_btn_ft {
+  margin-top: 20px;
+    display: flex;
+    justify-content: end;
+    padding-right: 10px;
+
+}
+.ambassador_myreport_btn_ft button { min-width: none;}

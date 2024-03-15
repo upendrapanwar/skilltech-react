@@ -24,6 +24,7 @@ const Dashboard = () => {
   var cartData = {};
   const navigate = useNavigate();
   let [referralCode, setReferralCode] = useState(false);
+  let [paymentDueThisMonth, setPaymentDueThisMonth] = useState([]);
 
   // ****************************
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +32,22 @@ const Dashboard = () => {
 
   // ********************************
   const referral = sessionStorage.getItem("referralCode");
+  // ********************************
+  //My Courses pagination 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = myCourses.slice(indexOfFirstItem, indexOfLastItem);
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
   // ********************************
   useEffect(() => {
     let tmp = location.pathname.slice(
@@ -46,6 +63,7 @@ const Dashboard = () => {
     }
     getMyCourses();
     getReferralCode();
+    paymentDueToAmbassador();
   }, []);
   toast.configure();
 
@@ -272,11 +290,6 @@ const Dashboard = () => {
   //     .padStart(2, "0")}:00`;
   //   return timestamp;
   // }
-  const generateTimestamp = () => {
-    // Get current date and time in UTC format
-    const now = new Date().toISOString().slice(0, 19);
-    return now;
-}
 
   /***********************************************************************/
   /***********************************************************************/
@@ -285,66 +298,41 @@ const Dashboard = () => {
    *
    */
   const handleCancelClick = async (merchantData, orderId) => {
-    try {
-        const merchant_data = JSON.parse(merchantData);
+    const merchant_data = JSON.parse(merchantData);
         const token = merchant_data.token;
         const merchantId = merchant_data.merchant_id;
         const signature = merchant_data.signature;
-        const timestamp = generateTimestamp();
 
-        console.log("merchant_data", merchant_data);
-        console.log("token", token);
-        console.log("merchantId", merchantId);
-        console.log("timestamp", timestamp);
-        console.log("signature", signature);
-        console.log("orderId", orderId);
-
-        const url = `https://api.payfast.co.za/subscriptions/${token}/cancel?testing=true`;
-        const version = 'v1';
-
-        // var myHeaders = new Headers();
-        // myHeaders.append("merchant-id", merchantId);
-        // myHeaders.append("version", version);
-        // myHeaders.append("timestamp", timestamp);
-        // myHeaders.append("signature", signature);
-
-        // var urlencoded = new URLSearchParams();
-        // var requestOptions = {
-        //   method: 'PUT',
-        //   headers: myHeaders,
-        //   body: urlencoded,
-        //   redirect: 'follow'
-
-        // };
-
-        const headers = {
-            'Content-Type': 'application/json',
-            'merchant-id': merchantId,
-            'version': version,
-            'timestamp' : timestamp,
-            'signature': signature
-        };
-
-        const requestOptions = {
-            method: 'PUT',
-            headers: headers
-        };
-
-        const response = await fetch(url, requestOptions);
-        const result = await response.json();
-
-        console.log("PayFast cancel response:", result);
-
-        if (response.status === 200) {
-            console.log("Cancellation successful.");
-            cancelCourseByUser(orderId);
-        } else {
-            console.error("Cancellation failed:", result);
+        const reqData = {
+          token: token,
+          merchantId: merchantId,
+          signature: signature,
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
+        console.log("reqData", reqData);
+    axios
+    .post("common/cancel-payfast-payment", reqData)
+    .then((response) => {
+        toast.dismiss();
+
+        if (response.data && response.data.status) {
+            console.log("Cancel response data:", response.data.data);
+            cancelCourseByUser(orderId);
+            toast.success("Payment cancelled.", {
+                position: "top-center",
+                autoClose: 3000,
+            });
+        }
+    })
+    .catch((error) => {
+        toast.dismiss();
+        if (error.response) {
+            toast.error("Error in cancellation.", {
+                position: "top-center",
+                autoClose: 3000,
+            });
+        }
+    });
+  };
   /***********************************************************************/
   /***********************************************************************/
   /**
@@ -363,6 +351,7 @@ const Dashboard = () => {
                     position: "top-center",
                     autoClose: 3000,
                 });
+                getMyCourses();
             }
         })
         .catch((error) => {
@@ -376,50 +365,22 @@ const Dashboard = () => {
         });
 };
 
-
-  // const handleCancelClick = async (plan_name) => {
-
-    // let merchantData = localStorage.getItem("merchantData");
-    // let uuid = localStorage.getItem("uuid");
-    // let merchantDataResult = merchantData ? JSON.parse(merchantData) : "";
-    // const timestamps = generateTimestamp();
-    // console.log("update timeStamps", timestamps)
-
-    // console.log("plan name : ", plan_name)
-    // const merchant_id = 10030936;
-    // const signature = merchantDataResult['signature'];
-
-
-    // setIsLoading(true);
-    // setError(null);
-
-    // const PayFsToken = localStorage.getItem("authInfo");
-    // const tokenObject = JSON.parse(PayFsToken);
-    // const token = tokenObject.token;
-
-    // var myHeaders = new Headers();
-    // myHeaders.append("merchant-id", merchant_id);
-    // myHeaders.append("version", "v1");
-    // myHeaders.append("timestamp", timestamps);
-    // myHeaders.append("signature", signature);
-    // // myHeaders.append('Authorization', `Bearer ${token}`)
-
-    // var urlencoded = new URLSearchParams();
-    // var requestOptions = {
-    //   method: 'PUT',
-    //   headers: myHeaders,
-    //   body: urlencoded,
-    //   redirect: 'follow'
-
-    // };
-    // // var url = `https://api.payfast.co.za/subscriptions/${uuId}/cancel?testing=true`
-    // var url = `https://sandbox.payfast.co.za/subscriptions/${uuid}/cancel`
-    // fetch(url, requestOptions)
-    //   .then(response => response.text())
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log('error', error));
-
-  // };
+const paymentDueToAmbassador = () => {
+  axios.post(`common/payment-due-this-month`, { userId: userInfo.id })
+  .then(response => {
+      if (response.data.status) {
+          toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
+              setPaymentDueThisMonth(response.data.data);
+              console.log("paymentDueToAmbassador response", response.data.data)
+      } 
+    }).catch(error => {
+        toast.dismiss();
+        if (error.response) {
+            toast.error(error.response.data.message, { autoClose: 3000 });
+        }
+        console.log(error);
+    })
+  }
 
 
   return (
@@ -457,9 +418,24 @@ const Dashboard = () => {
 
           <div className="card welcome_user_card mb-4">
             <div className="card-body">
-              <p className="mb-0">
-                Referral Code: <strong>{referralCode}</strong>
-              </p>
+            {paymentDueThisMonth && paymentDueThisMonth.map((user) => {
+              return <>
+                <div className="container">
+                <div className="row">
+                  <p className="col-4 mb-0">
+                  Referral Code: <strong>{referralCode}</strong>
+                  </p>
+                  <p className="col-4 mb-0">
+                    Referral Count: <strong>{user.referral_count ? user.referral_count : 'N/A'}</strong>
+                  </p>
+                  <p className="col-4 mb-0">
+                    Due amount: <strong>{user.due_amount ? `R${user.due_amount}` : 'N/A'}</strong>
+                  </p>
+                </div>
+                </div>
+              </>
+            })}
+              
             </div>
           </div>
 
@@ -530,43 +506,51 @@ const Dashboard = () => {
               </div>
               <div className="card-body">
                 <div className="table_view_panel table-responsive-sm">
-                  <table className="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">Course Name</th>
-                        {/* <th scope="col">Payment Status</th> */}
-                        <th scope="col">Start date (MM/DD/YYYY)</th>
-
-                        <th scope="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {myCourses.length > 0 ? (
-                        myCourses.map((item, i) => (
-                          <tr> 
-                            <th scope="row">
-                              {console.log("item=", item)}
-                              {item.course_title}
-                            </th>
-                            {/* <td>{item.payment_status}</td> */}
-                            <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                            <td>
-                              <button
-                                type="button"
-                                className="btn btn-primary btn-color bt-size"
-                                // onClick={() => handleCancelClick(item.uuid, item.plan_name)}
-                                onClick={() => handleCancelClick(item.merchantData, item._id)}
-                              >
-                                Remove
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr></tr>
-                      )}
-                    </tbody>
-                  </table>
+                <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Course Name</th>
+            <th scope="col">Start date (MM/DD/YYYY)</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentItems.length > 0 ? (
+            currentItems.map((item, i) => (
+              <tr key={i}>
+                <th scope="row">{item.course_title}</th>
+                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-color bt-size"
+                    // onClick={() => handleCancelClick(item.merchantData, item._id)}
+                    onClick={() => cancelCourseByUser(item._id)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3">No data available</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <div className="ambassador_myreport_btn_ft">
+        <button
+        className="btn btn-primary btn-color bt-size" 
+        onClick={prevPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <button
+        className="btn btn-primary btn-color bt-size" 
+        onClick={nextPage} disabled={indexOfLastItem >= myCourses.length}>
+          Next
+        </button>
+      </div>
                 </div>
 
                 <div className="amb-btn">
