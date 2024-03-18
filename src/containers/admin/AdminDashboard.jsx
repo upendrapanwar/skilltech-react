@@ -56,6 +56,7 @@ const AdminDashboard = () => {
 
     const [navigateUrl, setNavigateUrl] = useState('/admin/active-subscribed-ambassador');
     const [values, setValues] = useState([]);
+    const [reportTitle, setReportTitle] = useState([]);
     const [reportApiUrl, setReportApiUrl] = useState([]);
     const [activeSubscribedAmbassador, setActiveSubscribedAmbassador] = useState([]);
     const [activeSubscribedSubscriber, setActiveSubscribedSubscriber] = useState([]);
@@ -145,25 +146,17 @@ const AdminDashboard = () => {
                     setActiveSubscribedSubscriber(response.data.data);
                 }
                 if (apiUrl === 'defaulted-subscription-paymentof-ambassador') {
-                    const ambassadorData = response.data.data;
-                    const filtered = ambassadorData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
-                    setDefaultedSubscriptionPaymentofambassador(filtered);
+                    setDefaultedSubscriptionPaymentofambassador(response.data.data);
                 }
 
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
-                    const subscriberData = response.data.data;
-                    const filtered = subscriberData.filter(item => item.userid !== null && item.payment_status === 'cancel payment');
-                    setDefaultedSubscriptionPaymentofsubscriber(filtered);
+                    setDefaultedSubscriptionPaymentofsubscriber(response.data.data);
                 }
                 if (apiUrl === 'subscription-cancelledby-ambassador') {
-                    const cancleByAmb = response.data.data;
-                    const filtered = cancleByAmb.filter(item => item.userId !== null);
-                    setSubscriptionCancelledbyAmbassador(filtered);
+                    setSubscriptionCancelledbyAmbassador(response.data.data);
                 }
                 if (apiUrl === 'subscription-cancelledby-subscriber') {
-                    const cancleBySub = response.data.data;
-                    const filtered = cancleBySub.filter(item => item.userId !== null);
-                    setSubscriptionCancelledbySubscriber(filtered);
+                    setSubscriptionCancelledbySubscriber(response.data.data);
                 }
                 if (apiUrl === 'active-inactive-referral-per-ambassador') {
                     setActiveInactiveReferralPerAmbassador(response.data.data);
@@ -397,7 +390,7 @@ const AdminDashboard = () => {
                                     </Formik>
                                 </div>
                             </div>
-                            <TitleCard title={reportTitleAndUrl[index].title} topMargin="mt-2" >
+                            <TitleCard title={reportTitleAndUrl[index].title || ""} topMargin="mt-2" >
                                 {/* Team Member list in table format loaded constant */}
                                 <div className="overflow-x-auto w-full">
                                     <table className="table w-full">
@@ -414,8 +407,8 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'active-subscribed-ambassador' && activeSubscribedAmbassador.length > 0 && activeSubscribedAmbassador.map((user, index) => {
                                                     return (
                                                         <tr key={index}>
-                                                            {user.firstname !== '' && <td>{user.firstname ? user.firstname.toUpperCase() : 'N/A'} </td>}
-                                                            {user.surname !== '' && <td>{user.surname ? user.surname.toUpperCase() : 'N/A'}</td>}
+                                                            {user.firstname !== '' && <td>{user.firstname ? user.firstname : 'N/A'} </td>}
+                                                            {user.surname !== '' && <td>{user.surname ? user.surname : 'N/A'}</td>}
                                                             {user.referral_code !== '' && <td>{user.referral_code ? user.referral_code : 'N/A'}</td>}
                                                             {user.subscription_date !== '' && <td>{user.subscription_date ? new Date(user.subscription_date).toLocaleDateString() : 'N/A'}</td>}
                                                             {user.subscription_status !== '' && <td>{user.subscription_status ? user.subscription_status : 'N/A'}</td>}
@@ -429,8 +422,8 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'active-subscribed-subscriber' && activeSubscribedSubscriber.length > 0 && activeSubscribedSubscriber.map((user, index) => {
                                                 return (
                                                     <tr key={index}>
-                                                        <td>{user.firstname ? user.firstname.toUpperCase() : 'N/A'} </td>
-                                                        <td>{user.surname ? user.surname.toUpperCase() : 'N/A'}</td>
+                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
+                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
                                                         <td>{user.subscription_date ? new Date(user.subscription_date).toLocaleDateString() : 'N/A'}</td>
                                                         <td>{user.subscription_status ? user.subscription_status : 'N/A'}</td>
                                                     </tr>
@@ -441,10 +434,10 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'defaulted-subscription-paymentof-ambassador' && defaultedSubscriptionPaymentofambassador && defaultedSubscriptionPaymentofambassador.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
-                                                        <td>{item.userid.firstname.toUpperCase()}</td>
-                                                        <td>{item.userid.surname.toUpperCase()}</td>
-                                                        <td>{item.userid.referral_code}</td>
-                                                        <td>{item.payment_status}</td>
+                                                        <td>{item.userid && item.userid.firstname ? item.userid.firstname : 'N/A'}</td>
+                                                        <td>{item.userid && item.userid.surname ? item.userid.surname : 'N/A'}</td>
+                                                        <td>{item.userid && item.userid.referral_code ? item.userid.referral_code : "N/A"}</td>
+                                                        <td>{item.payment_status = "cancel" ? "Payment failed" : ""}</td>
                                                     </tr>
                                                 </>
                                             })}
@@ -452,9 +445,9 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'defaulted-subscription-paymentof-subscriber' && defaultedSubscriptionPaymentofsubscriber && defaultedSubscriptionPaymentofsubscriber.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
-                                                        <td>{item.userid.firstname.toUpperCase()}</td>
-                                                        <td>{item.userid.surname.toUpperCase()}</td>
-                                                        <td>{item.payment_status}</td>
+                                                    <td>{item.userid && item.userid.firstname ? item.userid.firstname : 'N/A'}</td>
+                                                    <td>{item.userid && item.userid.surname ? item.userid.surname : 'N/A'}</td>
+                                                    <td>{item.payment_status === "cancel" ? "Payment failed" : ""}</td>
                                                     </tr>
                                                 </>
                                             })}
@@ -462,10 +455,10 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'subscription-cancelledby-ambassador' && subscriptionCancelledbyAmbassador.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
-                                                        <td>{item.userId.firstname.toUpperCase()}</td>
-                                                        <td>{item.userId.surname.toUpperCase()}</td>
-                                                        <td></td>
-                                                        <td>{item.cancellation_date}</td>
+                                                    <td>{item.userId && item.userId.firstname ? item.userId.firstname : 'N/A'}</td>
+                                                        <td>{item.userId && item.userId.surname ? item.userId.surname : 'N/A'}</td>
+                                                        <td>{item.userId && item.userId.referral_code ? item.userId.referral_code : "N/A"}</td>
+                                                        <td>{item.cancellation_date ? new Date(item.cancellation_date).toLocaleDateString() : 'N/A'}</td>
                                                     </tr>
                                                 </>
                                             })}
@@ -473,9 +466,9 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'subscription-cancelledby-subscriber' && subscriptionCancelledbySubscriber.map((item, index) => {
                                                 return <>
                                                     <tr key={index}>
-                                                        <td>{item.userId.firstname.toUpperCase()}</td>
-                                                        <td>{item.userId.surname.toUpperCase()}</td>                                                
-                                                        <td>{item.cancellation_date}</td>
+                                                    <td>{item.userId && item.userId.firstname ? item.userId.firstname : 'N/A'}</td>
+                                                    <td>{item.userId && item.userId.surname ? item.userId.surname : 'N/A'}</td>
+                                                    <td>{item.cancellation_date ? new Date(item.cancellation_date).toLocaleDateString() : 'N/A'}</td>
                                                     </tr>
                                                 </>
                                             })}
@@ -484,13 +477,13 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'active-inactive-referral-per-ambassador' && activeInactiveReferralPerAmbassador.map((data, index) => {
                                                 return <>
                                                 <tr key={index}>
-                                                    <td>{data.Subscriber_firstname}</td>
-                                                    <td>{data.Subscriber_lastname}</td>
-                                                    <td>{data.Ambassador_referralcode}</td>
-                                                    <td>{data.Ambassador_firstname}</td>
-                                                    <td>{data.Ambassador_lastname}</td>
-                                                    <td>{data.Date_of_use_of_referral_code}</td>
-                                                    <td>{data.HVG_Subscription_status}</td>
+                                                    <td>{data.Subscriber_firstname || "N/A"}</td>
+                                                    <td>{data.Subscriber_lastname || "N/A"}</td>
+                                                    <td>{data.Ambassador_referralcode || "N/A"}</td>
+                                                    <td>{data.Ambassador_firstname || "N/A"}</td>
+                                                    <td>{data.Ambassador_lastname || "N/A"}</td>
+                                                    <td>{data.Date_of_use_of_referral_code || "N/A"}</td>
+                                                    <td>{data.HVG_Subscription_status || "N/A"}</td>
                                                 </tr>
                                                 </>
                                             })}
@@ -498,12 +491,12 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'active-referral-per-ambassador' && activeReferralPerAmbassador.map((data, index) => {
                                                 return <>
                                                 <tr key={index}>
-                                                    <td>{data.Subscriber_firstname}</td>
-                                                    <td>{data.Subscriber_lastname}</td>
-                                                    <td>{data.Ambassador_referralcode}</td>
-                                                    <td>{data.Ambassador_firstname}</td>
-                                                    <td>{data.Ambassador_lastname}</td>
-                                                    <td>{data.Date_of_use_of_referral_code}</td>
+                                                    <td>{data.Subscriber_firstname || "N/A"}</td>
+                                                    <td>{data.Subscriber_lastname || "N/A"}</td>
+                                                    <td>{data.Ambassador_referralcode || "N/A"}</td>
+                                                    <td>{data.Ambassador_firstname || "N/A"}</td>
+                                                    <td>{data.Ambassador_lastname || "N/A"}</td>
+                                                    <td>{data.Date_of_use_of_referral_code || "N/A"}</td>
                                                 </tr>
                                                 </>
                                             })}
@@ -511,12 +504,12 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'inactive-referral-per-ambassador' && inactiveReferralPerAmbassador.map((data, index) => {
                                                 return <>
                                                 <tr key={index}>
-                                                    <td>{data.Subscriber_firstname}</td>
-                                                    <td>{data.Subscriber_lastname}</td>
-                                                    <td>{data.Ambassador_referralcode}</td>
-                                                    <td>{data.Ambassador_firstname}</td>
-                                                    <td>{data.Ambassador_lastname}</td>
-                                                    <td>{data.Date_of_use_of_referral_code}</td>
+                                                    <td>{data.Subscriber_firstname || "N/A"}</td>
+                                                    <td>{data.Subscriber_lastname || "N/A"}</td>
+                                                    <td>{data.Ambassador_referralcode || "N/A"}</td>
+                                                    <td>{data.Ambassador_firstname || "N/A"}</td>
+                                                    <td>{data.Ambassador_lastname || "N/A"}</td>
+                                                    <td>{data.Date_of_use_of_referral_code || "N/A"}</td>
                                                 </tr>
                                                 </>
                                             })}

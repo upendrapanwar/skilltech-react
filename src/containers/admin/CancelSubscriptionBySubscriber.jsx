@@ -87,11 +87,13 @@ const CancelSubscriptionBySubscriber = () => {
           var ambassadorData = response.data.data;
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
-            ambassadorDataArray.push({
-                Subscriber_firstname: value.userId.firstname,
-                Subscriber_lastname: value.userId.surname,
-                cancellation_date: value.cancellation_date,
-            });
+            if (value.userId) {
+              ambassadorDataArray.push({
+                Subscriber_firstname: value.userId.firstname || 'N/A',
+                Subscriber_lastname: value.userId.surname || 'N/A',
+                cancellation_date: value.cancellation_date || 'N/A',
+              });
+            }
           });
           var columnsData = [
             {
@@ -161,11 +163,13 @@ const CancelSubscriptionBySubscriber = () => {
           var ambassadorData = response.data.data;
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
+            if (value.userId) {
             ambassadorDataArray.push({
-              Subscriber_firstname: value.userId.firstname,
-              Subscriber_lastname: value.userId.surname,
-              cancellation_date: value.cancellation_date,
+              Subscriber_firstname: value.userId.firstname || 'N/A',
+              Subscriber_lastname: value.userId.surname || 'N/A',
+              cancellation_date: value.cancellation_date || 'N/A',
             });
+          }
           });
           setOrderDataSet(ambassadorDataArray);
         }

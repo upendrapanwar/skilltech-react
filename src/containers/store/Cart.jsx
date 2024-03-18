@@ -150,7 +150,7 @@ const Cart = () => {
       .get(`common/check-referral-code/${referralCode}?userId=${tmp_userInfo.id}`)
       .then((response) => {
         console.log("REspose:", response)
-        toast.dismiss(); 
+        toast.dismiss();  
 
         if (response.data) {
           console.log("response.data:", response.data)
@@ -199,8 +199,13 @@ const Cart = () => {
         return true;
       }
     }
+
+    const data = {
+      userid: authInfo.id,
+      payment_status: "cancel"
+    }
     await axios
-      .get("common/getSubscriptionId")
+      .post("common/getSubscriptionId", data)
       .then((response) => {
         console.log("subscriptionId", response.data.data);
         

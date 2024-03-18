@@ -46,11 +46,6 @@ const CancelSubscriptionByAmbassador = () => {
     endDate: new Date(),
   });
 
-  const handleDatePickerValueChange = (newValue) => {
-    //console.log("newValue:", newValue);
-    setDateValue(newValue);
-    //updateDashboardPeriod(newValue)
-  };
   const authInfo = JSON.parse(localStorage.getItem("authInfo"));
   const location = useLocation();
   console.log("authInfo=", authInfo);
@@ -86,13 +81,19 @@ const CancelSubscriptionByAmbassador = () => {
           var ambassadorData = response.data.data;
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
-            ambassadorDataArray.push({
-              Ambassador_firstname: value.userId.firstname,
-              Ambassador_lastname: value.userId.surname,
-              referral_code: value.userId.referral_code,
-              subscription_cancellation_date: value.cancellation_date,
+            ambassadorData.forEach(function (value) {
+              if (value.userId) {
+                ambassadorDataArray.push({
+                  Ambassador_firstname: value.userId.firstname || 'N/A',
+                  Ambassador_lastname: value.userId.surname || 'N/A',
+                  referral_code: value.userId.referral_code || 'N/A',
+                  subscription_cancellation_date: value.cancellation_date || 'N/A',
+                });
+              }
             });
+            
           });
+
           var columnsData = [
             {
                 name: "AMBASSADOR FIRST NAME",
@@ -167,12 +168,17 @@ const CancelSubscriptionByAmbassador = () => {
           var ambassadorData = response.data.data;
           let ambassadorDataArray = [];
           ambassadorData.forEach(function (value) {
-            ambassadorDataArray.push({
-              Ambassador_firstname: value.userId.firstname,
-              Ambassador_lastname: value.userId.surname,
-              referral_code: value.userId.referral_code,
-              subscription_cancellation_date: value.cancellation_date,
+            ambassadorData.forEach(function (value) {
+              if (value.userId) {
+                ambassadorDataArray.push({
+                  Ambassador_firstname: value.userId.firstname || 'N/A',
+                  Ambassador_lastname: value.userId.surname || 'N/A',
+                  referral_code: value.userId.referral_code || 'N/A',
+                  subscription_cancellation_date: value.cancellation_date || 'N/A',
+                });
+              }
             });
+            
           });
           setOrderDataSet(ambassadorDataArray);
         }

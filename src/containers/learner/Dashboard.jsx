@@ -296,6 +296,7 @@ const Dashboard = () => {
 
             if (response.data && response.data.status) {
                 console.log("Cancel response data:", response.data.data);
+                getMyCourses();
                 toast.success("Payment cancelled.", {
                     position: "top-center",
                     autoClose: 3000,
@@ -439,8 +440,8 @@ const Dashboard = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary btn-color bt-size"
-                                                            // onClick={() => handleCancelClick(item.uuid, item.plan_name)}
-                                                            onClick={() => handleCancelClick(item.merchantData, item._id)}
+                                                            // onClick={() => handleCancelClick(item.merchantData, item._id)}
+                                                            onClick={() => cancelCourseByUser(item._id)}
                                                         >
                                                             Remove
                                                         </button>

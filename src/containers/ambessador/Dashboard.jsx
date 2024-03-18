@@ -148,7 +148,7 @@ const Dashboard = () => {
       uuid: uuid,
       id:subscriptionId,
       referralCode: referral,
-    };
+    }; 
     console.log("Updated dataArray", dataArray)
 
     axios
@@ -347,11 +347,11 @@ const Dashboard = () => {
 
             if (response.data && response.data.status) {
                 console.log("Cancel response data:", response.data.data);
+                getMyCourses();
                 toast.success("Payment cancelled.", {
                     position: "top-center",
                     autoClose: 3000,
                 });
-                getMyCourses();
             }
         })
         .catch((error) => {

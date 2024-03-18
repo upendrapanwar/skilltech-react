@@ -29,21 +29,21 @@ const routes = [
     icon: <Squares2X2Icon className={iconClasses}/>, 
     name: 'Dashboard',
   },
-  {
-    path: '/admin/leads', // url
-    icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
-    name: 'Leads', // name that appear in Sidebar
-  },
-  {
-    path: '/admin/subscription', // url
-    icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
-    name: 'Subscriptions', // name that appear in Sidebar
-  },
-  {
-    path: '/admin/active-agents', // url
-    icon: <UserIcon className={submenuIconClasses}/>, // icon component
-    name: 'ActiveAgents', // name that appear in Sidebar
-  },
+  // {
+  //   path: '/admin/leads', // url
+  //   icon: <InboxArrowDownIcon className={iconClasses}/>, // icon component
+  //   name: 'Leads', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/admin/subscription', // url
+  //   icon: <CurrencyDollarIcon className={iconClasses}/>, // icon component
+  //   name: 'Subscriptions', // name that appear in Sidebar
+  // },
+  // {
+  //   path: '/admin/active-agents', // url
+  //   icon: <UserIcon className={submenuIconClasses}/>, // icon component
+  //   name: 'ActiveAgents', // name that appear in Sidebar
+  // },
   //{
   //  path: '/admin/charts', // url
   //  icon: <ChartBarIcon className={iconClasses}/>, // icon component

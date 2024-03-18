@@ -104,7 +104,7 @@ const DefaultedPaymentOfSubscriber = () => {
             {
               name: "PAYMENT FAILURE REASON",
               selector: (row, i) => row.payment_status,
-              cell: (row) => <span>{row.payment_status}</span>,
+              cell: (row) => <span>{row.payment_status === "cancel" ? "Payment failed" : "Payment not done"}</span>,
               sortable: true,
             },
           ];
