@@ -298,9 +298,6 @@ const Dashboard = () => {
    */
   const handleCancelClick = async (merchantData, orderId) => {
     let merchantDataData = localStorage.getItem("merchantData");
-    merchantDataData = JSON.parse(merchantDataData);
-    merchantDataData.version = 'v1';
-    merchantDataData = JSON.stringify(merchantDataData);
 
     const merchant_data = JSON.parse(merchantData);
         const token = merchant_data.token;
