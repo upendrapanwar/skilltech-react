@@ -164,7 +164,7 @@ const Dashboard = () => {
 
           //navigate('/login');
         }
-        localStorage.setItem("merchantData", "");
+        // localStorage.setItem("merchantData", "");
       })
       .catch((error) => {
         toast.dismiss();
@@ -219,7 +219,6 @@ const Dashboard = () => {
       uuid: uuid
     };
 
-    //allMerchantData
     axios
       .post("common/save-subscription", dataArray)
       .then((response) => {
@@ -298,6 +297,11 @@ const Dashboard = () => {
    *
    */
   const handleCancelClick = async (merchantData, orderId) => {
+    let merchantDataData = localStorage.getItem("merchantData");
+    merchantDataData = JSON.parse(merchantDataData);
+    merchantDataData.version = 'v1';
+    merchantDataData = JSON.stringify(merchantDataData);
+
     const merchant_data = JSON.parse(merchantData);
         const token = merchant_data.token;
         const merchantId = merchant_data.merchant_id;
@@ -307,6 +311,7 @@ const Dashboard = () => {
           token: token,
           merchantId: merchantId,
           signature: signature,
+          merchantData: merchantDataData,
         }
         console.log("reqData", reqData);
     axios
@@ -314,13 +319,18 @@ const Dashboard = () => {
     .then((response) => {
         toast.dismiss();
 
-        if (response.data && response.data.status) {
+        if (response.data && response.data.status === 'success') {
             console.log("Cancel response data:", response.data.data);
             cancelCourseByUser(orderId);
             toast.success("Payment cancelled.", {
                 position: "top-center",
                 autoClose: 3000,
             });
+        } else {
+          toast.error("Error in cancellation.", {
+            position: "top-center",
+            autoClose: 3000,
+        });
         }
     })
     .catch((error) => {
@@ -524,10 +534,10 @@ const paymentDueToAmbassador = () => {
                   <button
                     type="button"
                     className="btn btn-primary btn-color bt-size"
-                    // onClick={() => handleCancelClick(item.merchantData, item._id)}
-                    onClick={() => cancelCourseByUser(item._id)}
+                    onClick={() => handleCancelClick(item.merchantData, item._id)}
+                    // onClick={() => cancelCourseByUser(item._id)}
                   >
-                    Remove
+                    Cancel
                   </button>
                 </td>
               </tr>

@@ -517,11 +517,11 @@ const AdminDashboard = () => {
                                             {reportApiUrl === 'payment-due-to-ambassador' && paymentDueToAmbassador.map((data, index) => {
                                                 return <>
                                                 <tr key={index}>
-                                                    <td>{data.Ambassador_firstname}</td>
-                                                    <td>{data.Ambassador_lastname}</td>
-                                                    <td>{data.Ambassador_referralcode}</td>
-                                                    <td>{data.referral_count}</td>
-                                                    <td>{data.due_amount}</td>
+                                                    <td>{data.Ambassador_firstname || "N/A"}</td>
+                                                    <td>{data.Ambassador_lastname || "N/A"}</td>
+                                                    <td>{data.Ambassador_referralcode || "N/A"}</td>
+                                                    <td>{data.referral_count || "N/A"}</td>
+                                                    <td>{data.due_amount || "N/A"}</td>
                                                 </tr>
                                                 </>
                                             })}
