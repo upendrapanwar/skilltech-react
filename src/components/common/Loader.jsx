@@ -8,7 +8,7 @@ const Loader = () => {
     alignItems: 'center',
     height: '100vh',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
-  };
+  }; 
 
   return (
     <div style={loaderStyles}>

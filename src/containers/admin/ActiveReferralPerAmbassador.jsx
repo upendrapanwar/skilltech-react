@@ -15,7 +15,7 @@ import EnvelopeIcon from "@heroicons/react/24/outline/EnvelopeIcon";
 import EllipsisVerticalIcon from "@heroicons/react/24/outline/EllipsisVerticalIcon";
 import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
 import Datepicker from "react-tailwindcss-datepicker";
-import SuspenseContent from "../SuspenseContent";
+import SuspenseContent from "../../components/admin/common/SuspenseContent";
 import Nav from "../../components/admin/Nav";
 import { useSelector, useDispatch } from "react-redux";
 import { removeNotificationMessage } from "../../components/admin/common/headerSlice";
@@ -30,6 +30,7 @@ import TitleCard from "../../components/admin/common/TitleCard";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
+import { saveAs } from "file-saver";
 
 const ActiveReferralPerAmbassador = () => {
   const [navigateUrl, setNavigateUrl] = useState([]);
@@ -208,6 +209,27 @@ const ActiveReferralPerAmbassador = () => {
     firstRenderReport();  
   };
 
+  const handleDownloadReport = () => {
+    const formattedData = orderDataSet.map(({ Subscriber_firstname, Subscriber_lastname, referral_code, Date_of_use_of_referral_code, HVG_Subscription_status }) => [
+      Subscriber_firstname,
+      Subscriber_lastname,
+      referral_code,
+      Date_of_use_of_referral_code,
+      HVG_Subscription_status,
+    ]);
+  
+    const csvContent = [
+      ["SUBSCRIBER FIRST NAME", "SUBSCRIBER LAST NAME", "AMBASSADOR REFERRAL CODE USED", "DATE OF USE OF REFERRAL USED", "HVG SUBSCRIPTION STATUS"],
+      ...formattedData
+    ]
+      .map(row => row.join(","))
+      .join("\n");
+  
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "active_referral_per_ambassador.csv");
+  };
+  
+
   return (
     <>
       <div className="drawer drawer-mobile">
@@ -270,24 +292,25 @@ const ActiveReferralPerAmbassador = () => {
                       <div className="flex align-center justify-between mt-6">
                         <button
                           type="submit"
-                          className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                         >
                           Search
                         </button>
                         <button
                           type="button"
-                          className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                           onClick={() => handleResetButton(resetForm)}
                         >
                           Reset
                         </button>
 
-                        {/* <button
+                        <button
                           type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          onClick={handleDownloadReport}
                         >
                           Export
-                        </button> */}
+                        </button>
                       </div>
                     </Form>
                     )}

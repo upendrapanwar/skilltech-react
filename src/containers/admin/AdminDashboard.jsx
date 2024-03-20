@@ -15,7 +15,7 @@ import EnvelopeIcon from '@heroicons/react/24/outline/EnvelopeIcon';
 import EllipsisVerticalIcon from '@heroicons/react/24/outline/EllipsisVerticalIcon';
 import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
 import Datepicker from "react-tailwindcss-datepicker";
-import SuspenseContent from '../SuspenseContent';
+import SuspenseContent from '../../components/admin/common/SuspenseContent';
 import Nav from '../../components/admin/Nav';
 import { useSelector, useDispatch } from 'react-redux'
 import { removeNotificationMessage } from "../../components/admin/common/headerSlice";
@@ -378,7 +378,7 @@ const AdminDashboard = () => {
                                             </div>
 
                                             <div className="flex align-center justify-between mt-6">
-                                                <button type="submit" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Search</button>
+                                                <button type="submit" className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Search</button>
                                                 <button type="button" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                                                  onClick={() => handleResetButton(resetForm)}
                                                  >Reset</button>

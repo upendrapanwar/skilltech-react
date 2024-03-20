@@ -15,7 +15,7 @@ import EnvelopeIcon from "@heroicons/react/24/outline/EnvelopeIcon";
 import EllipsisVerticalIcon from "@heroicons/react/24/outline/EllipsisVerticalIcon";
 import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
 import Datepicker from "react-tailwindcss-datepicker";
-import SuspenseContent from "../SuspenseContent";
+import SuspenseContent from "../../components/admin/common/SuspenseContent";
 import Nav from "../../components/admin/Nav";
 import { useSelector, useDispatch } from "react-redux";
 import { removeNotificationMessage } from "../../components/admin/common/headerSlice";
@@ -30,6 +30,8 @@ import TitleCard from "../../components/admin/common/TitleCard";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
+
+import { saveAs } from "file-saver";
 
 const DefaultedPaymentOfAmbassador = () => {
   const [navigateUrl, setNavigateUrl] = useState([]);
@@ -180,6 +182,26 @@ const DefaultedPaymentOfAmbassador = () => {
     resetForm();
     firstRenderReport();  
   };
+
+  const handleDownloadReport = () => {
+    const formattedData = orderDataSet.map(({ Ambassador_firstname, Ambassador_lastname, referral_code, payment_status }) => [
+      Ambassador_firstname,
+      Ambassador_lastname,
+      referral_code,
+      payment_status === "cancel" ? "Payment failed" : "Payment not done",
+    ]);
+  
+    const csvContent = [
+      ["AMBASSADOR FIRST NAME", "AMBASSADOR LAST NAME", "AMBASSADOR REFERRAL CODE", "PAYMENT FAILURE REASON"],
+      ...formattedData
+    ]
+      .map(row => row.join(","))
+      .join("\n");
+  
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "defaulted_payment_of_ambassador.csv");
+  };
+  
   
   return (
     <>
@@ -243,24 +265,25 @@ const DefaultedPaymentOfAmbassador = () => {
                       <div className="flex align-center justify-between mt-6">
                         <button
                           type="submit"
-                          className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                         >
                           Search
                         </button>
                         <button
                           type="button"
-                          className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                           onClick={() => handleResetButton(resetForm)}
                         >
                           Reset
                         </button>
 
-                        {/* <button
+                        <button
                           type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          onClick={handleDownloadReport}
                         >
                           Export
-                        </button> */}
+                        </button>
                       </div>
                     </Form>
                     )}

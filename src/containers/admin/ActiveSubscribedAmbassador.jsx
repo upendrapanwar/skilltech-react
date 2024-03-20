@@ -15,7 +15,7 @@ import EnvelopeIcon from "@heroicons/react/24/outline/EnvelopeIcon";
 import EllipsisVerticalIcon from "@heroicons/react/24/outline/EllipsisVerticalIcon";
 import ArrowPathIcon from "@heroicons/react/24/outline/ArrowPathIcon";
 import Datepicker from "react-tailwindcss-datepicker";
-import SuspenseContent from "../SuspenseContent";
+import SuspenseContent from "../../components/admin/common/SuspenseContent";
 import Nav from "../../components/admin/Nav";
 import { useSelector, useDispatch } from "react-redux";
 import { removeNotificationMessage } from "../../components/admin/common/headerSlice";
@@ -30,6 +30,7 @@ import TitleCard from "../../components/admin/common/TitleCard";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
 import "react-data-table-component-extensions/dist/index.css";
+import { saveAs } from "file-saver";
 
 const ActiveSubscribedAmbassador = () => {
   const [navigateUrl, setNavigateUrl] = useState([]);
@@ -40,15 +41,6 @@ const ActiveSubscribedAmbassador = () => {
   const tableData = {};
   const [index, setIndex] = useState(0);
 
-  // const periodOptions = [
-  //     { name: "Today", value: "TODAY" },
-  //     { name: "Yesterday", value: "YESTERDAY" },
-  //     { name: "This Week", value: "THIS_WEEK" },
-  //     { name: "Last Week", value: "LAST_WEEK" },
-  //     { name: "This Month", value: "THIS_MONTH" },
-  //     { name: "Last Month", value: "LAST_MONTH" },
-  // ]
-
   const dispatch = useDispatch();
   const statsData = [];
 
@@ -57,11 +49,6 @@ const ActiveSubscribedAmbassador = () => {
     endDate: new Date(),
   });
 
-  const handleDatePickerValueChange = (newValue) => {
-    //console.log("newValue:", newValue);
-    setDateValue(newValue);
-    //updateDashboardPeriod(newValue)
-  };
   const authInfo = JSON.parse(localStorage.getItem("authInfo"));
   const location = useLocation();
   console.log("authInfo=", authInfo);
@@ -220,6 +207,28 @@ const ActiveSubscribedAmbassador = () => {
     firstRenderReport();  
   };
 
+  const handleDownloadReport = () => {
+    const formattedData = orderDataSet.map(({ firstname, surname, referral_code, subscription_date, subscription_status, ambassador_date }) => [
+      firstname,
+      surname,
+      referral_code,
+      subscription_date,
+      subscription_status,
+      ambassador_date,
+    ]);
+  
+    const csvContent = [
+      ["AMBASSADOR FIRST NAME", "AMBASSADOR LAST NAME", "AMBASSADOR REFERRAL CODE", "DATE OF HVG SUBSCRIPTION", "SUBSCRIPTION STATUS", "DATE OF AMBASSADOR SIGN UP"],
+      ...formattedData
+    ]
+      .map(row => row.join(","))
+      .join("\n");
+  
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "active_subscribed_ambassador.csv");
+  };
+  
+
 
   return (
     <>
@@ -283,24 +292,25 @@ const ActiveSubscribedAmbassador = () => {
                       <div className="flex align-center justify-between mt-6">
                         <button
                           type="submit"
-                          className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                         >
                           Search
                         </button>
                         <button
                           type="button"
-                          className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          className="btn btn-primary mr-2 inline-block px-4 py-3 text-sm font-semibold text-center  text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
                           onClick={() => handleResetButton(resetForm)}
                         >
                           Reset
                         </button>
 
-                        {/* <button
+                        <button
                           type="button"
                           className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700"
+                          onClick={handleDownloadReport}
                         >
                           Export
-                        </button> */}
+                        </button>
                       </div>
                     </Form>
                        )}

@@ -7,18 +7,18 @@ import axios from 'axios';
 import config from './config.json';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import SuspenseContent from './containers/SuspenseContent';
+// import ErrorBoundary from './components/utility/ErrorBoundary';
 
 const root = createRoot(document.getElementById('root'));
 axios.defaults.baseURL = config.apiURI;
 
 root.render(
   <BrowserRouter>
-    <Suspense fallback={<SuspenseContent />}>
       <Provider store={store}>
+      {/* <ErrorBoundary> */}
         <App />
+      {/* </ErrorBoundary> */}
       </Provider>
-    </Suspense>
   </BrowserRouter>
 );
 

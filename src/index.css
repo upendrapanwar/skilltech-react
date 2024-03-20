@@ -31,3 +31,12 @@
   height: 120px;
   animation: spin 2s linear infinite;
 }
+
+
+.data-table-extensions > .data-table-extensions-action > button.download {
+  display: none !important;
+}
+
+.data-table-extensions > .data-table-extensions-action > button.print {
+  display: none !important;
+}
