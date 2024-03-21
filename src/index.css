@@ -40,3 +40,15 @@
 .data-table-extensions > .data-table-extensions-action > button.print {
   display: none !important;
 }
+
+.hero .admin-logo {
+  width: 150px !important;
+  height: 100px !important;
+}
+
+.hero .admin-logo img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}

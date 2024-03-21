@@ -29,35 +29,57 @@ const AmbassadorSubscription = () => {
   }, []);
   toast.configure();
 
-  const generateReferralCode = () => {
-    //ex: HG00123
-    var strDate = new Date(); // By default Date empty constructor give you Date.now
-    var shortYear = strDate.getFullYear();
-    // Add this line
-    var twoDigitYear = shortYear.toString().substr(-2);
-    let referralCode = twoDigitYear;
-    const dataArray = {
-      prefix: "HG",
-      referralCode: referralCode,
-    };
-    axios
-      .get("common/get-referral-code")
-      .then((response) => {
-        toast.dismiss();
+  // const generateReferralCode = () => {
+  //   //ex: HG00123
+  //   var strDate = new Date(); // By default Date empty constructor give you Date.now
+  //   var shortYear = strDate.getFullYear();
+  //   // Add this line
+  //   var twoDigitYear = shortYear.toString().substr(-2);
+  //   let referralCode = twoDigitYear;
+  //   const dataArray = {
+  //     prefix: "HG",
+  //     referralCode: referralCode,
+  //   };
+  //   axios
+  //     .get("common/get-referral-code")
+  //     .then((response) => {
+  //       toast.dismiss();
 
+  //       if (response.data.status) {
+  //         var pad = "000";
+  //         var n = response.data.data;
+  //         var result = (pad + n).slice(-pad.length);
+  //         referralCode = "HG" + result + twoDigitYear;
+  //         console.log("Referral code generated:", referralCode);
+  //         setReferralCode(referralCode);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error", error);
+  //     });
+  // };
+  
+  const generateReferralCode = async () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear().toString().substr(-2);
+    let referralCode = `HG${year}`;
+    
+    try {
+        const response = await axios.get("common/get-referral-code");
+        toast.dismiss();
+        
         if (response.data.status) {
-          var pad = "000";
-          var n = response.data.data;
-          var result = (pad + n).slice(-pad.length);
-          referralCode = "HG" + result + twoDigitYear;
-          console.log("Referral code generated:", referralCode);
-          setReferralCode(referralCode);
+            const ambassadorCount = response.data.data + 1;
+            referralCode += ambassadorCount.toString();
+            console.log("Referral code generated:", referralCode);
+            setReferralCode(referralCode);
         }
-      })
-      .catch((error) => {
+    } catch (error) {
         console.log("Error", error);
-      });
-  };
+    }
+};
+
+
   /**
    * Manages certificate upload
    *
