@@ -220,9 +220,7 @@ const CoursesDetails = () => {
     const handleBackToBrowse = () => {
         navigate('/browse-courses');
     }
-    const handleSubscribeNow = () => {
-        navigate('/learner/subscription');
-    }
+
     // search users by user input
     const handleSearchInput = event => {
         setSearchUser(event.target.value);
@@ -236,6 +234,14 @@ const CoursesDetails = () => {
         
         setMyApi(newData); // and set it to state
         console.log('api length', coursedData.length)
+    };
+
+    const handleSubscribeNow = () => {
+        if(userInfo && userInfo.name){
+            dispatch(addToCart({id, title, image, price, paymentType}));
+        } else {
+            navigate('/login');
+        }
     };
     
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -327,7 +333,11 @@ const CoursesDetails = () => {
                                     </button>
                                 </span>
                                 <span className="amb-btn mt-4">
-                                    <button type="button" className="btn btn-primary btn-color bt-size" onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}>Add to cart
+                                    <button type="button" 
+                                    className="btn btn-primary btn-color bt-size" 
+                                    // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
+                                    onClick={() => handleSubscribeNow()}
+                                    >Subscribe Now
                                         <span className="arrow-btn">
                                             <img src ={solarArrowUpBroken} alt=""/>
                                         </span>

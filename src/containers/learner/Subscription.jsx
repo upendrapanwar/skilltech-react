@@ -39,6 +39,8 @@ const Subscription = () => {
   let [signature, setSignature] = useState(null);
   let [userid, setUserid] = useState(userInfo.id);
   let [profileData, setProfileData] = useState({}); 
+  let [otherOptionSelected, setOtherOptionSelected] = useState(false);
+  let [otherOptionValue, setOtherOptionValue] = useState(''); 
 
   //let [identifier, setIdentifier] = useState(null);
   let [allmerchantData, setAllMerchantData] = useState(null);
@@ -109,6 +111,25 @@ const Subscription = () => {
             }
         })
     }*/
+  }
+
+  const handleChange = (e) => {
+    const { value, checked } = e.target;
+        
+    if (value === 'other_option') {
+      setOtherOptionSelected(checked);
+    }
+  };
+  
+
+  const handleOtherOption = (e) => {
+    const { name, value } = e.target;
+    if (name === 'how_did_you_hear_about_us' && value === 'other_option') {
+      setOtherOptionSelected(true);
+    } else {
+      setOtherOptionSelected(false);
+    }
+    setOtherOptionValue(value);
   }
   /***********************************************************************/
   /***********************************************************************/
@@ -248,7 +269,7 @@ const Subscription = () => {
   const handleSubmit = (values, { setSubmitting }) => {
     console.log("Just checking handleSubmit***************************");
     console.log("values=", values);
-    setLoading(true);
+    // setLoading(true);
     
 
     // let communication = [];
@@ -276,7 +297,7 @@ const Subscription = () => {
         if (response.data.status) {
           let authInfo = {
             id: response.data.data["_id"], 
-            isSubscriberRegister: "yes",
+            isSubscriberRegister: "yes", 
           };
           localStorage.setItem("authInfo", JSON.stringify(authInfo));
           //let merchantData = '';
@@ -287,6 +308,7 @@ const Subscription = () => {
             position: "top-center",
             autoClose: 3000,
           });
+          dispatch(addToCart({id, title, image, price, paymentType}));
           navigate("/cart");
          
         }
@@ -366,24 +388,22 @@ const Subscription = () => {
                     qualification: profileData.qualification || "",
                     ecommercePolicy: profileData.ecommercePolicy || "",
                     privacy: profileData.privacy || "",
-                    opt_in_promotional: profileData.opt_in_promotional || "",
-                    deals_promotion: profileData.deals_promotion || "",
-                    in_loop: profileData.in_loop || "",
+                    monthly_newsletters: profileData.opt_in_promotional.receive_monthly_newsletters || "",
+                    deals_promotion: profileData.opt_in_promotional.exclusive_deals_promotions || "",
+                    in_loop: profileData.opt_in_promotional.keep_in_loop || "",
                     method_of_communication: Array.isArray(profileData.method_of_communication)
                     ? profileData.method_of_communication
                     : [],
                     how_did_you_hear_about_us: Array.isArray(profileData.how_did_you_hear_about_us)
                     ? profileData.how_did_you_hear_about_us
                     : [],
-                    // how_did_you_hear_about_us: Array.isArray(profileData.how_did_you_hear_about_us)
-                    // ? profileData.how_did_you_hear_about_us
-                    // : [profileData.how_did_you_hear_about_us] || [],
                   }} 
                   onSubmit={(values, { setSubmitting }) => {
                     console.log("Form values:", values);
                     console.log("This is in onSumit line");
                     setSubmitting(true);
                     handleSubmit(values, setSubmitting);
+                    handleChange();
                     //resetForm(true);
                   }}
                   validationSchema={SubscriptionSchema}
@@ -931,70 +951,56 @@ const Subscription = () => {
                                   .<span>*</span>
                                 </p>
 
-                                <label className="radio-inline">
-                                  <input
-                                    type="checkbox"
-                                    id="ecommercePolicy"
-                                    name="ecommercePolicy"
-                                    onChange={handleChange}
-                                    onClick={handleRefferedBy}
-                                    onBlur={handleBlur}
-                                    value="true"
-                                    checked={values.ecommercePolicy}
-                                  />
-                                  I have read and accept the e-commerce policy.
-                                  <span>*</span>
-                                </label>
+                                <div className="row">
+                                  <div className="form-group col-md-12">
+                                  <label className="radio-inline">
+                                      <input
+                                        type="checkbox"
+                                        id="ecommercePolicy"
+                                        name="ecommercePolicy"
+                                        onChange={handleChange}
+                                        onClick={handleRefferedBy}
+                                        onBlur={handleBlur}
+                                        value="true"
+                                        checked={values.ecommercePolicy}
+                                      />
+                                      I have read and accept the e-commerce policy.
+                                      <span>*</span>
+                                    </label>
+                                    {touched.ecommercePolicy && errors.ecommercePolicy ? (
+                                      <small className="text-danger">
+                                        {errors.ecommercePolicy}
+                                      </small>
+                                    ) : null}
+                                  </div>
+                                  <div className="form-group col-md-12">
+                                    <label className="radio-inline">
+                                      <input
+                                        type="checkbox"
+                                        id="privacy"
+                                        name="privacy"
+                                        onChange={handleChange}
+                                        onClick={handleRefferedBy}
+                                        onBlur={handleBlur}
+                                        value="true"
+                                        checked={values.privacy}
+                                      />
+                                      I have read and accept the POPI website
+                                      privacy policy<span>*</span>
+                                    </label>
+                                    {touched.privacy && errors.privacy ? (
+                                      <small className="text-danger">
+                                        {errors.privacy}
+                                      </small>
+                                    ) : null}
+                                  </div>
+                                </div>
                               </div>
-                              {/*<div className="col-md-3">
-                                                                <label className="radio-inline">
-                                                                    <input type="radio" id="noprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
-                                                                </label>
-                                                            </div>*/}
                             </div>
-                            {touched.ecommercePolicy &&
-                            errors.ecommercePolicy ? (
-                              <small className="text-danger">
-                                {errors.ecommercePolicy}
-                              </small>
-                            ) : null}
                           </div>
                         </div>
                       </div>
-                      <div className="avg__form_panel">
-                        <div className="row form-row">
-                          <div className="form-group col-md-12">
-                            <div className="row">
-                              <div className="form-group col-md-12">
-                                <label className="radio-inline">
-                                  <input
-                                    type="checkbox"
-                                    id="yesprivacy"
-                                    name="privacy"
-                                    onChange={handleChange}
-                                    onClick={handleRefferedBy}
-                                    onBlur={handleBlur}
-                                    value="true"
-                                    checked={values.privacy}
-                                  />
-                                  I have read and accept the POPI website
-                                  privacy policy<span>*</span>
-                                </label>
-                              </div>
-                              {/*<div className="col-md-3">
-                                                                <label className="radio-inline">
-                                                                    <input type="radio" id="noprivacy" name="privacy" onChange={handleChange} onClick={handleRefferedBy} onBlur={handleBlur} value="no" />No
-                                                                </label>
-                                                            </div>*/}
-                            </div>
-                            {touched.privacy && errors.privacy ? (
-                              <small className="text-danger">
-                                {errors.privacy}
-                              </small>
-                            ) : null}
-                          </div>
-                        </div>
-                      </div>
+                      
                       <div className="avg__form_panel">
                         <div className="row form-row">
                           <p style={txtunderline} className="mb-2">
@@ -1016,13 +1022,13 @@ const Subscription = () => {
                                 <label className="radio-inline">
                                   <input
                                     type="radio"
-                                    id="opt_in_promotional"
-                                    name="opt_in_promotional"
+                                    id="yes_monthly_newsletters"
+                                    name="monthly_newsletters"
                                     onChange={handleChange}
                                     onClick={handleRefferedBy}
                                     onBlur={handleBlur}
                                     value="yes"
-                                    checked={values.opt_in_promotional === "yes"}
+                                    checked={values.monthly_newsletters === "yes"}
                                     
                                   />
                                   Yes
@@ -1032,28 +1038,24 @@ const Subscription = () => {
                                 <label className="radio-inline">
                                   <input
                                     type="radio"
-                                    id="opt_in_promotional"
-                                    name="opt_in_promotional"
+                                    id="no_monthly_newsletters"
+                                    name="monthly_newsletters"
                                     onChange={handleChange}
                                     onClick={handleRefferedBy}
                                     onBlur={handleBlur}
                                     value="no"
-                                    checked={values.opt_in_promotional === "no"}
+                                    checked={values.monthly_newsletters === "no"}
                                   />
                                   No
                                 </label>
                               </div>
                             </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                {touched.opt_in_promotional &&
-                                errors.opt_in_promotional ? (
+                                {touched.monthly_newsletters &&
+                                errors.monthly_newsletters ? (
                                   <small className="text-danger">
-                                    {errors.opt_in_promotional}
+                                    {errors.monthly_newsletters}
                                   </small>
                                 ) : null}
-                              </div>
-                            </div>
                           </div>
                           <p>
                             I'd like to receive information about deals and
@@ -1145,6 +1147,7 @@ const Subscription = () => {
                           <div />
                         </div>
                       </div>
+
                       <div className="avg__form_panel">
                         <p>How did you hear about High Vista Guild?</p>
 
@@ -1221,7 +1224,41 @@ const Subscription = () => {
                                   I stumbled on it while browsing
                                 </label>
                               </div>
-                            </div>
+                              <div className="col-md-5">
+                                <label className="radio-inline">
+                                  <input
+                                    type="checkbox"
+                                    id="other_option"
+                                    name="how_did_you_hear_about_us"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value="other_option"
+                                    checked={values.how_did_you_hear_about_us.includes("other_option")}
+                                  />
+                                  Other
+                                </label>
+                              </div>
+                              </div>
+                              {otherOptionSelected && (
+                                <div className="row">
+                                  <div className="col-md-12">
+                                    <textarea
+                                      className="form-control"
+                                      name="other_option_text"
+                                      value={otherOptionValue}
+                                      onChange={handleOtherOption}
+                                      placeholder="Please specify..."
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                              {touched.how_did_you_hear_about_us &&
+                                errors.how_did_you_hear_about_us ? (
+                                  <small className="text-danger">
+                                    {errors.how_did_you_hear_about_us}
+                                  </small>
+                                ) : null}
+                            
                           </div>
                         </div>
                       </div>
@@ -1231,7 +1268,7 @@ const Subscription = () => {
                           type="submit"
                           className="btn btn-primary btn-color bt-size mt-4 mb-4"
                           data-id={isSubmitting}
-                          onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
+                          // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
                         >
                           Complete My Order and Pay!
                           <span className="arrow-btn">

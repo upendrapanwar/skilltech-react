@@ -106,7 +106,7 @@ const Header = () => {
                   <div className="bar3"></div>
                 </button>
               </div>
-              <nav className="navbar navbar-expand-md main-navbar ">
+              <nav className="navbar navbar-expand-md main-navbar">
                 <div className="main-menu">
                   <div
                     className="collapse navbar-collapse justify-content-between p-2"
@@ -133,7 +133,7 @@ const Header = () => {
                             </Link>
                           </li>
                         </>
-                      )}
+                      )} 
 
                       <li className="nav-item">
                         <Link className="nav-link" to="/courses-details">
@@ -168,6 +168,21 @@ const Header = () => {
                                         
                                             </div>
                                         </li> */}
+
+                      {userInfo && userInfo.name ? (
+                      ''
+                      ) : (
+                      <>
+                       <li className="nav-item">
+                        <Link className="nav-link" to="/contact-us">
+                          Contact Us
+                        </Link>
+                      </li>
+                       <li className="nav-item">
+                           <p>Have and account already?</p>
+                       </li>
+                      </>
+                      )}
 
                       <li className="nav-item dropdown login-btn">
                         {userInfo && userInfo.name ? (
@@ -249,11 +264,17 @@ const Header = () => {
                           </>
                         )}
                       </li>
+
+                      {userInfo && userInfo.name ? (
                       <li className="nav-item">
-                        <Link className="nav-link" to="/contact-us">
-                          Contact Us
-                        </Link>
+                      <Link className="nav-link" to="/contact-us">
+                        Contact Us
+                      </Link>
                       </li>
+                      ) : (
+                      ''
+                      )}
+                      
                       <li className="nav-item">
                         <Link className="nav-link" to="/cart">
                           <ShoppingCart id="cartIcon" />

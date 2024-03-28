@@ -17,9 +17,9 @@ export default Yup.object().shape({
     race: Yup.string().required("Race is required"),
     gender: Yup.string().required("Gender is required"),
     qualification: Yup.string().required("Qualification is required"),
-    opt_in_promotional: Yup.string().required("Field is required"),
-    privacy: Yup.boolean().oneOf([true],"Field is required"),
-    ecommercePolicy: Yup.boolean().oneOf([true],"Field is required"),
+    privacy: Yup.boolean().oneOf([true],"Privacy policy consent is required"),
+    ecommercePolicy: Yup.boolean().oneOf([true],"E-commerce policy consent is required"),
+    monthly_newsletters: Yup.string().required("Field is required"),
     deals_promotion: Yup.string().required("Field is required"),
     in_loop: Yup.string().required("Field is required"),
 

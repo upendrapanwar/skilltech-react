@@ -509,7 +509,7 @@ const Cart = () => {
               </button>
             </span>
 
-            {userid &&
+            {/* {userid &&
               isLoggedIn !== null &&
               cart?.map((item) => (
                 <CartItem
@@ -521,7 +521,19 @@ const Cart = () => {
                   quantity={item.quantity}
                   paymentType={item.paymentType}
                 />
-              ))}
+              ))} */}
+              {cart?.map((item) => (
+                <CartItem
+                  key={item.id}
+                  id={item.id}
+                  image={item.image}
+                  title={item.title}
+                  price={item.price}
+                  quantity={item.quantity}
+                  paymentType={item.paymentType}
+                />
+                ))}
+
             {tmp_userInfo && userid && isLoggedIn !== null && setShowReferral && (
               tmp_userInfo.role === "subscriber" ?
               <>

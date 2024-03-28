@@ -534,7 +534,7 @@ const paymentDueToAmbassador = () => {
                     onClick={() => handleCancelClick(item.merchantData, item._id)}
                     // onClick={() => cancelCourseByUser(item._id)}
                   >
-                    Cancel
+                    Unsubscribe
                   </button>
                 </td>
               </tr>
