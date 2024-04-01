@@ -59,9 +59,19 @@ const Login = () => {
           localStorage.setItem("isLoggedIn", 1);
           resetForm();
 
+          // if (
+          //   response.data.data.role === "subscriber" ||
+          //   response.data.data.role === "learner"
+          // ) {
+          //   navigate("/learner/dashboard");
+          // }
           if (
-            response.data.data.role === "subscriber" ||
             response.data.data.role === "learner"
+          ) {
+            navigate("/learner/subscription");
+          }
+          if (
+            response.data.data.role === "subscriber"
           ) {
             navigate("/learner/dashboard");
           }

@@ -237,10 +237,18 @@ const CoursesDetails = () => {
     };
 
     const handleSubscribeNow = () => {
+        toast.dismiss();
         if(userInfo && userInfo.name){
-            dispatch(addToCart({id, title, image, price, paymentType}));
+            if(cart.length === 0){
+                dispatch(addToCart({id, title, image, price, paymentType}));
+            } else {
+                toast.error("Already added one package", {
+                    position: "top-center",
+                    autoClose: 3000,
+                  });
+            }
         } else {
-            navigate('/login');
+            navigate('/signup');
         }
     };
     

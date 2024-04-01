@@ -15,15 +15,15 @@ const CartItem = ({id, image, title, price, quantity=0}) => {
           <small>R</small>
           <strong>{price}</strong>
         </p>
-        <div className='cartItem__incrDec'>
+        {/* <div className='cartItem__incrDec'>
           <button onClick={() => dispatch(decrementQuantity(id))}>-</button>
           <p>{quantity}</p>
           <button onClick={() => dispatch(incrementQuantity(id))}>+</button>
-        </div>
+        </div> */}
         <button
           className='cartItem__removeButton' 
           onClick={() => dispatch(removeItem(id))}>
-            Remove
+          Remove
         </button>
       </div>
     </div>

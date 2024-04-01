@@ -17,7 +17,7 @@
   .cartItem__info > button{
     border: unset;
     margin-top: 10px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     border-radius: 5px;
     background-color: transparent;
   }
@@ -29,6 +29,7 @@
   }
   
   .cartItem__title{
+    margin-top: 20px;
     font-size: 20px;
     font-weight: 450;
   }

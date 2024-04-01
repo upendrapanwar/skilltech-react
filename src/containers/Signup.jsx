@@ -64,7 +64,22 @@ const Signup = () => {
                     isSubscriberRegister: ''
                 };
                 localStorage.setItem('authInfo', JSON.stringify(authInfo));
-                navigate('/learner/subscription');          
+                // let authInfo = {
+                //     expTime: response.data.data.authData.expTime,
+                //     id: response.data.data.data["_id"],
+                //     token: response.data.data.authData.token,
+                //   };
+                //   let userInfo = {
+                //     id: response.data.data.data["_id"],
+                //     name:
+                //       response.data.data.data.firstname + " " + response.data.data.data.surname,
+                //     email: response.data.data.data.email,
+                //     role: response.data.data.data.role,
+                //   };
+                //   localStorage.setItem("userInfo", JSON.stringify(userInfo));
+                //   localStorage.setItem("authInfo", JSON.stringify(authInfo));
+                //   localStorage.setItem("isLoggedIn", 1);
+                navigate('/login');          
             }
         }).catch(error => {
             toast.dismiss();

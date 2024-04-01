@@ -81,7 +81,6 @@ const CancelSubscriptionByAmbassador = () => {
           setUserReport(response.data.data);
           var ambassadorData = response.data.data;
           let ambassadorDataArray = [];
-          ambassadorData.forEach(function (value) {
             ambassadorData.forEach(function (value) {
               if (value.userId) {
                 ambassadorDataArray.push({
@@ -92,8 +91,6 @@ const CancelSubscriptionByAmbassador = () => {
                 });
               }
             });
-            
-          });
 
           var columnsData = [
             {
@@ -244,9 +241,15 @@ const CancelSubscriptionByAmbassador = () => {
                       end_date: "",
                     }}
                     validationSchema={ReportSchema}
+                    // onSubmit={(values, { resetForm }) => {
+                    //   handleSubmit(values, { resetForm });
+                    // }}
                     onSubmit={(values, { resetForm }) => {
-                      handleSubmit(values, { resetForm });
-                    }}
+                      const endDate = new Date(values.end_date);
+                      endDate.setDate(endDate.getDate() + 1);
+                      const adjustedValues = { ...values, end_date: endDate.toISOString().slice(0, 10) };
+                      handleSubmit(adjustedValues, { resetForm });
+                  }}
                   >
                     {({ resetForm }) => (
                     <Form className="flex w-[100%] justify-between align-center py-3 rounded-sl bg-base-100 rounded px-2">

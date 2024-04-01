@@ -530,7 +530,7 @@ const paymentDueToAmbassador = () => {
                 <td>
                   <button
                     type="button"
-                    className="btn btn-primary btn-color bt-size"
+                    className="btn btn-primary btn-color bt-size-auto"
                     onClick={() => handleCancelClick(item.merchantData, item._id)}
                     // onClick={() => cancelCourseByUser(item._id)}
                   >

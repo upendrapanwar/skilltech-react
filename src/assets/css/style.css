@@ -121,6 +121,7 @@ section#shadow-host-companion {
   right: 15px;
   top: 5px;
 }
+.bt-size-auto { min-width: auto; padding: 0.375rem 1.2rem 0.375rem 1.2rem;}
 
 /* Section Heading */
 
@@ -171,6 +172,11 @@ section#shadow-host-companion {
 .hvg__header .hvg__innerHeader {
   background-color: #fff;
 }
+.hvg__header .hvg__innerHeader > .container {
+  max-width: 1200px;
+}
+
+
 .hvg__header .header_panel {
   display: flex;
   justify-content: space-between;
@@ -185,6 +191,17 @@ section#shadow-host-companion {
 .radio-inline input {
   margin-right: 5px;
 }
+
+.hvg__header .main-menu ul li.nav-item.nav_link_already {
+  text-align: right;
+  line-height: 1.2;
+  padding-right: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.hvg__header .main-menu ul li.nav-item.nav_link_already p { margin-bottom: 0; line-height: 1.1; font-size: 16px;}
+
 .hvg__header .main-menu ul li a.nav-link {
   margin-left: 6px;
   margin-right: 6px;
@@ -1140,4 +1157,8 @@ footer .footer-content ul li a {
 }
 .ambassador_myreport_btn_ft button { min-width: none;}
 
+.btn-disabled {
+  background-color: grey;
+  pointer-events: none;
+}
 

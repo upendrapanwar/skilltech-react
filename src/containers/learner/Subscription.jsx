@@ -113,24 +113,17 @@ const Subscription = () => {
     }*/
   }
 
-  const handleChange = (e) => {
-    const { value, checked } = e.target;
-        
-    if (value === 'other_option') {
-      setOtherOptionSelected(checked);
-    }
+  const handleOtherOptionChange = (e) => {
+    const { checked } = e.target;
+    setOtherOptionSelected(checked);
   };
   
-
   const handleOtherOption = (e) => {
-    const { name, value } = e.target;
-    if (name === 'how_did_you_hear_about_us' && value === 'other_option') {
-      setOtherOptionSelected(true);
-    } else {
-      setOtherOptionSelected(false);
-    }
+    const { value } = e.target;
     setOtherOptionValue(value);
-  }
+    console.log("OtherOptionValue", otherOptionValue)
+  };
+  
   /***********************************************************************/
   /***********************************************************************/
   /**
@@ -267,29 +260,10 @@ const Subscription = () => {
    *
    */
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log("Just checking handleSubmit***************************");
+    values.how_did_you_hear_about_us = [...values.how_did_you_hear_about_us, otherOptionValue]
     console.log("values=", values);
-    // setLoading(true);
+    setLoading(true);
     
-
-    // let communication = [];
-    // const com = values.method_of_communication;
-    // if (com.includes("email")) {
-    //   communication.push({ email: values.email });
-    // }
-    // if (com.includes("whatsapp")) {
-    //   communication.push({ whatsapp: values.mobile_number });
-    // }
-    // if (com.includes("sms")) {
-    //   communication.push({ sms: values.mobile_number });
-    // }
-    // if (com.includes("phone_call")) {
-    //   communication.push({ phone_call: values.mobile_number });
-    // }
-    // values.method_of_communication = communication;
-    // console.log("COMMUNICATION", communication);
-
-
     axios
       .post("common/subscription", values)
       .then((response) => {
@@ -300,10 +274,6 @@ const Subscription = () => {
             isSubscriberRegister: "yes", 
           };
           localStorage.setItem("authInfo", JSON.stringify(authInfo));
-          //let merchantData = '';
-          //let paymentType = '';
-          //let orderItemName = 'Order#';
-          //const passPhrase = process.env.REACT_APP_PASSPHRASE;
           toast.success(response.data.message, {
             position: "top-center",
             autoClose: 3000,
@@ -348,13 +318,13 @@ const Subscription = () => {
             </Helmet>
             }*/}
       <Header />
-<div className="hvg__main_container">
-      <section className="regitration-section">
-        <div className="container">
-           <div className="mt-4 text-center mb-4">
+      <div className="hvg__main_container">
+        <section className="regitration-section">
+          <div className="container">
+            <div className="mt-4 text-center mb-4">
                 <div className="ambeReg-heading">
                   <h1>Subscription Registration Form</h1>
-                </div>
+              </div>
           </div>
           <div className="row">
             <div className="ambeReg-wrapper col-md-8 mx-auto">
@@ -386,11 +356,12 @@ const Subscription = () => {
                     race: profileData.race || "",
                     gender: profileData.gender || "",
                     qualification: profileData.qualification || "",
-                    ecommercePolicy: profileData.ecommercePolicy || "",
-                    privacy: profileData.privacy || "",
+                    ecommercePolicy: false,
+                    privacy: false,
                     monthly_newsletters: profileData.opt_in_promotional.receive_monthly_newsletters || "",
                     deals_promotion: profileData.opt_in_promotional.exclusive_deals_promotions || "",
-                    in_loop: profileData.opt_in_promotional.keep_in_loop || "",
+                    in_loop: profileData.in_loop || "",
+                    // in_loop: profileData.opt_in_promotional.keep_in_loop || "",
                     method_of_communication: Array.isArray(profileData.method_of_communication)
                     ? profileData.method_of_communication
                     : [],
@@ -400,10 +371,8 @@ const Subscription = () => {
                   }} 
                   onSubmit={(values, { setSubmitting }) => {
                     console.log("Form values:", values);
-                    console.log("This is in onSumit line");
                     setSubmitting(true);
                     handleSubmit(values, setSubmitting);
-                    handleChange();
                     //resetForm(true);
                   }}
                   validationSchema={SubscriptionSchema}
@@ -417,6 +386,7 @@ const Subscription = () => {
                     handleSubmit,
                     isValid,
                     isSubmitting,
+                    dirty,
                   }) => (
                     <form onSubmit={handleSubmit}>
                       <div className="avg__form_panel">
@@ -911,6 +881,8 @@ const Subscription = () => {
                                   Telephone
                                 </label>
                               </div>
+                            </div>
+                          </div>
                               <div className="col-md-3">
                                 {touched.method_of_communication &&
                                 errors.method_of_communication ? (
@@ -919,10 +891,9 @@ const Subscription = () => {
                                   </small>
                                 ) : null}
                               </div>
-                            </div>
-                          </div>
                         </div>
                       </div>
+                      <br />
                       <div className="avg__form_panel">
                         <div className="row form-row">
                           <div className="form-group col-md-12">
@@ -1230,10 +1201,10 @@ const Subscription = () => {
                                     type="checkbox"
                                     id="other_option"
                                     name="how_did_you_hear_about_us"
-                                    onChange={handleChange}
+                                    onChange={handleOtherOptionChange}
                                     onBlur={handleBlur}
-                                    value="other_option"
-                                    checked={values.how_did_you_hear_about_us.includes("other_option")}
+                                    value={otherOptionValue}
+                                    checked={otherOptionSelected}
                                   />
                                   Other
                                 </label>
@@ -1262,13 +1233,14 @@ const Subscription = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="avg__form_panel">
                         <button
                           type="submit"
-                          className="btn btn-primary btn-color bt-size mt-4 mb-4"
+                          // className="btn btn-primary btn-color bt-size mt-4 mb-4"
+                          className={`btn btn-primary btn-color bt-size mt-4 mb-4 ${isValid ? '' : 'btn-disabled'}`}
+                          disabled={!(dirty && isValid)}
+                          // style={{ backgroundColor: isValid ? '' : 'grey' }}
                           data-id={isSubmitting}
-                          // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
                         >
                           Complete My Order and Pay!
                           <span className="arrow-btn">
