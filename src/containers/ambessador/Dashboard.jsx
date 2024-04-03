@@ -425,24 +425,19 @@ const paymentDueToAmbassador = () => {
 
           <div className="card welcome_user_card mb-4">
             <div className="card-body">
-            {paymentDueThisMonth && paymentDueThisMonth.map((user) => {
-              return <>
                 <div className="container">
                 <div className="row">
                   <p className="col-4 mb-0">
                   Referral Code: <strong>{referralCode}</strong>
                   </p>
                   <p className="col-4 mb-0">
-                    Referral Count: <strong>{user.referral_count ? user.referral_count : 'N/A'}</strong>
+                    Referral Count: <strong>{paymentDueThisMonth.referral_count ? paymentDueThisMonth.referral_count : 'N/A'}</strong>
                   </p>
                   <p className="col-4 mb-0">
-                    Due amount: <strong>{user.due_amount ? `R${user.due_amount}` : 'N/A'}</strong>
+                    Due amount: <strong>{paymentDueThisMonth.due_amount ? `R${paymentDueThisMonth.due_amount}` : 'N/A'}</strong>
                   </p>
                 </div>
                 </div>
-              </>
-            })}
-              
             </div>
           </div>
 
@@ -514,51 +509,51 @@ const paymentDueToAmbassador = () => {
               <div className="card-body">
                 <div className="table_view_panel table-responsive-sm">
                 <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Course Name</th>
-            <th scope="col">Start date (MM/DD/YYYY)</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.length > 0 ? (
-            currentItems.map((item, i) => (
-              <tr key={i}>
-                <th scope="row">{item.course_title}</th>
-                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                <td>
+                  <thead>
+                    <tr>
+                      <th scope="col">Course Name</th>
+                      <th scope="col">Start date (MM/DD/YYYY)</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentItems.length > 0 ? (
+                      currentItems.map((item, i) => (
+                        <tr key={i}>
+                          <th scope="row">{item.course_title}</th>
+                          <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-primary btn-color bt-size-auto"
+                              onClick={() => handleCancelClick(item.merchantData, item._id)}
+                              // onClick={() => cancelCourseByUser(item._id)}
+                            >
+                              Unsubscribe
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="3">No data available</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+                <div className="ambassador_myreport_btn_ft">
                   <button
-                    type="button"
-                    className="btn btn-primary btn-color bt-size-auto"
-                    onClick={() => handleCancelClick(item.merchantData, item._id)}
-                    // onClick={() => cancelCourseByUser(item._id)}
-                  >
-                    Unsubscribe
+                  className="btn btn-primary btn-color bt-size" 
+                  onClick={prevPage} disabled={currentPage === 1}>
+                    Previous
                   </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No data available</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-      <div className="ambassador_myreport_btn_ft">
-        <button
-        className="btn btn-primary btn-color bt-size" 
-        onClick={prevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <button
-        className="btn btn-primary btn-color bt-size" 
-        onClick={nextPage} disabled={indexOfLastItem >= myCourses.length}>
-          Next
-        </button>
-      </div>
+                  <button
+                  className="btn btn-primary btn-color bt-size" 
+                  onClick={nextPage} disabled={indexOfLastItem >= myCourses.length}>
+                    Next
+                  </button>
                 </div>
+              </div>
 
                 <div className="amb-btn">
                   <button
