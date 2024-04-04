@@ -23,12 +23,21 @@ const Header = () => {
    *
    */
   const getTotalQuantity = () => {
-    let total = 0;
-    cart.forEach((item) => {
-      total += item.quantity;
-    });
-    return total;
+      let total = 0;
+      cart.forEach((item) => {
+        total += item.quantity;
+      });
+      return total;
   };
+  // const getTotalQuantity = () => {
+  //   if(userInfo){
+  //     let total = 0;
+  //     cart.forEach((item) => {
+  //       total += item.quantity;
+  //     });
+  //     return total;
+  //   }
+  // };
   /***********************************************************************/
   /***********************************************************************/
   /**

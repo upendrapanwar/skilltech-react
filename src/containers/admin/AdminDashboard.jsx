@@ -24,7 +24,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import ReportSchema from "../../validation-schemas/ReportSchema";
 import TitleCard from "../../components/admin/common/TitleCard";
-
+import { saveAs } from "file-saver";
 
 const AdminDashboard = () => {
 
@@ -68,6 +68,7 @@ const AdminDashboard = () => {
     const [activeReferralPerAmbassador, setActiveReferralPerAmbassador] = useState([]);
     const [inactiveReferralPerAmbassador, setInactiveReferralPerAmbassador] = useState([]);
     const [paymentDueToAmbassador, setPaymentDueToAmbassador] = useState([]);
+    const [bulkPaymentData, setBulkPaymentData] = useState([]);
     const [index, setIndex] = useState(0);
     const dispatch = useDispatch()
     const statsData = [];
@@ -316,7 +317,38 @@ const AdminDashboard = () => {
     console.log("subscriptionCancelledbyAmbassador", subscriptionCancelledbyAmbassador)
     console.log("subscriptionCancelledbySubscriber", subscriptionCancelledbySubscriber)
     console.log("ActiveInactiveReferralPerAmbassador", activeInactiveReferralPerAmbassador)
-    console.log("paymentDueToAmbassador", paymentDueToAmbassador)
+    console.log("paymentDueToAmbassador", paymentDueToAmbassador);
+
+    const handleDownloadReport = () => {
+        axios.get(`/admin/bulk-payment-report`)
+        .then(response => {
+            if (response.data.status) {
+                toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
+                setBulkPaymentData(response.data.data);
+                console.log("bulkPaymentData response", response.data.data)
+            } 
+        }).catch(error => {
+            toast.dismiss();
+            if (error.response) {
+                toast.error(error.response.data.message, { autoClose: 3000 });
+            }
+            console.log(error);
+        })
+
+        //Code to download CSV file
+        const formattedData = bulkPaymentData.map(({ recipient_name, recipient_account, recipient_acount_type, branch_code, amount, own_reference, recipient_reference, email_1_notify, email_1_address, email_1_subject, email_2_notify, email_2_address, email_2_subject, email_3_notify, email_3_address, email_3_subject, email_4_notify, email_4_address, email_4_subject, email_5_notify, email_5_address, email_5_subject, fax_1_notify, fax_1_code, fax_1_number, fax_1_subject, fax_2_notify, fax_2_code, fax_2_number, fax_2_subject, sms_1_notify, sms_1_code, sms_1_number, sms_2_notify, sms_2_code, sms_2_number }) => [ 
+            recipient_name, recipient_account, recipient_acount_type, branch_code, amount, own_reference, recipient_reference, email_1_notify, email_1_address, email_1_subject, email_2_notify, email_2_address, email_2_subject, email_3_notify, email_3_address, email_3_subject, email_4_notify, email_4_address, email_4_subject, email_5_notify, email_5_address, email_5_subject, fax_1_notify, fax_1_code, fax_1_number, fax_1_subject, fax_2_notify, fax_2_code, fax_2_number, fax_2_subject, sms_1_notify, sms_1_code, sms_1_number, sms_2_notify, sms_2_code, sms_2_number ]);
+        
+        const csvContent = [
+            ["RECIPIENT NAME","RECIPIENT ACCOUNT","RECIPIENT ACCOUNT TYPE","BRANCH CODE","AMOUNT","OWN REFERENCE","RECIPIENT REFERENCE","EMAIL 1 NOTIFY","EMAIL 1 ADDRESS","EMAIL 1 SUBJECT","EMAIL 2 NOTIFY","EMAIL 2 ADDRESS","EMAIL 2 SUBJECT","EMAIL 3 NOTIFY","EMAIL 3 ADDRESS","EMAIL 3 SUBJECT","EMAIL 4 NOTIFY","EMAIL 4 ADDRESS","EMAIL 4 SUBJECT","EMAIL 5 NOTIFY","EMAIL 5 ADDRESS","EMAIL 5 SUBJECT","FAX 1 NOTIFY","FAX 1 CODE","FAX 1 NUMBER","FAX 1 SUBJECT","FAX 2 NOTIFY","FAX 2 CODE","FAX 2 NUMBER","FAX 2 SUBJECT","SMS 1 NOTIFY","SMS 1 CODE","SMS 1 NUMBER","SMS 2 NOTIFY","SMS 2 CODE","SMS 2 NUMBER"],
+          ...formattedData
+        ]
+          .map(row => row.join(","))
+          .join("\n");
+      
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        saveAs(blob, `bulk_payment_report_of_ambassador.csv`);
+      };
 
     return (
 
@@ -329,7 +361,10 @@ const AdminDashboard = () => {
 
                         {/* report section */}
                         <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
+                            <div className="row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div className="text-xl font-semibold py-1 px-2">Report</div>
+                            <button type="button" onClick={handleDownloadReport} className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Bulk Payment CSV Export</button>
+                            </div>
                             <div className="divider mt-2"></div>
                             <div className="">
                                 <div className="flex w-[100%] align-center">
@@ -390,7 +425,6 @@ const AdminDashboard = () => {
                                                  onClick={() => handleResetButton(resetForm)}
                                                  >Reset</button>
 
-                                                {/* <button type="submit" className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Export</button> */}
                                             </div>
                                         </Form>
                                          )}

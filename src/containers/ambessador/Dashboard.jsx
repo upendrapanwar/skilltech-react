@@ -431,10 +431,10 @@ const paymentDueToAmbassador = () => {
                   Referral Code: <strong>{referralCode}</strong>
                   </p>
                   <p className="col-4 mb-0">
-                    Referral Count: <strong>{paymentDueThisMonth.referral_count ? paymentDueThisMonth.referral_count : 'N/A'}</strong>
+                    Referral Count: <strong>{paymentDueThisMonth.referral_count ? paymentDueThisMonth.referral_count : '0'}</strong>
                   </p>
                   <p className="col-4 mb-0">
-                    Due amount: <strong>{paymentDueThisMonth.due_amount ? `R${paymentDueThisMonth.due_amount}` : 'N/A'}</strong>
+                    Due amount: <strong>{paymentDueThisMonth.due_amount ? `R${paymentDueThisMonth.due_amount}` : '0'}</strong>
                   </p>
                 </div>
                 </div>

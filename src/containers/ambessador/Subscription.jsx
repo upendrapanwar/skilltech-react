@@ -20,6 +20,8 @@ const AmbassadorSubscription = () => {
   let [userid, setUserid] = useState(userInfo.id);
   let [uploadCertificate, setUploadCertificate] = useState(null);
   let [uploadBankProof, setUploadBankProof] = useState(null);
+  let [otherOptionSelected, setOtherOptionSelected] = useState(false);
+  let [otherOptionValue, setOtherOptionValue] = useState(''); 
 
   console.log("userid", userid);
 
@@ -141,6 +143,7 @@ const AmbassadorSubscription = () => {
    *
    */
   const handleSubmit = (values, { setSubmitting }) => {
+    values.refer_friend = [...values.refer_friend, otherOptionValue]
     console.log("Check handle submit")
     setLoading(true);
     //console.log("uploadBankProof",uploadBankProof);
@@ -197,6 +200,18 @@ const AmbassadorSubscription = () => {
   };
   /***********************************************************************/
   /***********************************************************************/
+  const handleOtherOptionChange = (e) => {
+    const { checked } = e.target;
+    setOtherOptionSelected(checked);
+  };
+  
+  const handleOtherOption = (e) => {
+    const { value } = e.target;
+    setOtherOptionValue(value);
+    console.log("OtherOptionValue", otherOptionValue)
+  };
+
+
   return (
     <>
       {loading === true ? <Loader /> : ""}
@@ -674,8 +689,45 @@ const AmbassadorSubscription = () => {
                                         value="my_facebook_page"
                                       />
                                       My Facebook page
+                                    </label> 
+                                  </div>
+                                  {/* <div className="form-group col-md-6">
+                                    {touched.refer_friend &&
+                                    errors.refer_friend ? (
+                                      <small className="text-danger">
+                                        {errors.refer_friend}
+                                      </small>
+                                    ) : null}
+                                  </div> */}
+
+                                  <div className="col-md-4">
+                                    <label className="radio-inline">
+                                    <input
+                                      type="checkbox"
+                                      id="other_option"
+                                      name="how_did_you_hear_about_us"
+                                      onChange={handleOtherOptionChange}
+                                      onBlur={handleBlur}
+                                      value={otherOptionValue}
+                                      checked={otherOptionSelected}
+                                    />
+                                    Other
                                     </label>
                                   </div>
+                                </div>
+                                  {otherOptionSelected && (
+                                    <div className="row">
+                                      <div className="col-md-12">
+                                        <textarea
+                                          className="form-control"
+                                          name="other_option_text"
+                                          value={otherOptionValue}
+                                          onChange={handleOtherOption}
+                                          placeholder="Please specify..."
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
                                   <div className="form-group col-md-6">
                                     {touched.refer_friend &&
                                     errors.refer_friend ? (
@@ -684,7 +736,6 @@ const AmbassadorSubscription = () => {
                                       </small>
                                     ) : null}
                                   </div>
-                                </div>
                               </div>
                             </div>
                           </div>

@@ -173,11 +173,17 @@ export const Reports = ({userId}) => {
                                             start_date: '',
                                             end_date: '',
                                             report_type: null
-                                        }}
+                                        }} 
                                         // validationSchema={ReportSchema}
 
+                                        // onSubmit={(values, { resetForm }) => {
+                                        //     handleSubmit(values, { resetForm });
+                                        // }}
                                         onSubmit={(values, { resetForm }) => {
-                                            handleSubmit(values, { resetForm });
+                                            const endDate = new Date(values.end_date);
+                                            endDate.setDate(endDate.getDate() + 1);
+                                            const adjustedValues = { ...values, end_date: endDate.toISOString().slice(0, 10) };
+                                            handleSubmit(adjustedValues, { resetForm });
                                         }}
                                     >
                                         {({ resetForm }) => (

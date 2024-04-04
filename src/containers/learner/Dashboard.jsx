@@ -402,6 +402,8 @@ const Dashboard = () => {
                                 </p>
                                 <p>To qualify for the referral fee, you need to be registered on our ambassador programme.
                                 </p>
+                                <p>For more information on the benefits of becoming an Ambassador, click on the <strong>'Become an Ambassador'</strong> link located at the top of the page.
+                                </p>
                                 <p>To become a High Vista Ambassador, select the option below.
                                 </p>
                                 <div className="amb-btn">

@@ -26,7 +26,7 @@ const Nav = () => {
 
                 <li className="mb-2 font-semibold text-xl">
                     
-                    <Link to={'/app/welcome'}><img className="mask mask-squircle w-10" src={logo} alt="DashWind Logo"/>Skilltech</Link> </li>
+                    <Link to={'/admin/admin-dashboard'}><img className="mask mask-squircle w-10" src={logo} alt="DashWind Logo"/>High Vista Guild</Link> </li>
                 {
                     routes.map((route, k) => {
                         return(
