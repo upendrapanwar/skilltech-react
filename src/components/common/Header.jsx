@@ -8,6 +8,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../../assets/css/style.css";
 import "../../assets/css/all.css";
+import solarArrowUpBroken from '../../assets/images/solar_arrow-up-broken.svg';
+import CartItem from "../../components/cart/CartItem";
 
 const Header = () => {
   const [toggle, setToggle] = useState(false);
@@ -29,6 +31,8 @@ const Header = () => {
       });
       return total;
   };
+  
+
   // const getTotalQuantity = () => {
   //   if(userInfo){
   //     let total = 0;
@@ -89,6 +93,10 @@ const Header = () => {
     } else {
       navigate("/learner/updateprofile");
     }
+  };
+
+  const handleSidebar = () => {
+     navigate('/cart');
   };
 
   return (
@@ -284,12 +292,52 @@ const Header = () => {
                       ''
                       )}
                       
-                      <li className="nav-item">
+                      {/* <li className="nav-item">
                         <Link className="nav-link" to="/cart">
                           <ShoppingCart id="cartIcon" />
                           <span>{getTotalQuantity() || 0}</span>
                         </Link>
-                      </li>
+                      </li> */}
+                      <nav id="navigation" class="mini-cart" role="navigation">
+                          <ul class="menu">
+                              <li>
+                                  <Link class="nav-link" to="/cart">
+                                      <ShoppingCart id="cartIcon" />
+                                      <span>{getTotalQuantity() || 0}</span>
+                                  </Link>
+                                  <ul class="dropdown">        
+                                  <span className="caretIcon"><i class="fa fa-caret-up" aria-hidden="true"></i></span>
+                                      <div class="woocom-cart">
+                                      <div className="sidebar-cartItem-size">
+                                        {cart?.map((item) => (
+                                                <CartItem
+                                                  key={item.id}
+                                                  id={item.id}
+                                                  image={item.image}
+                                                  title={item.title}
+                                                  price={item.price}
+                                                  quantity={item.quantity}
+                                                  paymentType={item.paymentType}
+                                                />
+                                                ))}
+                                        </div>
+                                        <div className="text-center btn-cartItem-size">
+                                        <button type="button" 
+                                        className="btn btn-primary btn-color bt-size" 
+                                        onClick={handleSidebar}
+                                        >Go to Cart
+                                            <span className="arrow-btn">
+                                                <img src ={solarArrowUpBroken} alt=""/>
+                                            </span>
+                                        </button>
+                                        </div>
+                                      </div>
+                                  </ul>
+                              </li>
+                          </ul>
+                      </nav>
+
+
                     </ul>
                   </div>
                 </div>

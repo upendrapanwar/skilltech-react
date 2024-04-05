@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "react-data-table-component-extensions/dist/index.css";
 import { addToCart } from '../../redux/cartSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
+import CartItem from "../../components/cart/CartItem";
 
 const CoursesDetails = () => {
     const locations = useLocation();
@@ -33,6 +34,7 @@ const CoursesDetails = () => {
     const [searchUser, setSearchUser] = useState("");
     const [totalPost, setTotalPost] = useState(0);
     const [open, setOpen] = useState(false);
+    // const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const dispatch = useDispatch();
@@ -169,7 +171,7 @@ const CoursesDetails = () => {
                                 </figure>
                                 <div className="course-details">
                                     <h4>{item.fullname}</h4>
-                                    <div className="course_footer d-flex justify-content-between align-items-center">
+                                    <div className="course_footer d-flex justify-content-center align-items-center">
                                         {/*<span className="amb-btn mt-4">
                                             <button type="button" className="btn btn-primary btn-color bt-size">REGISTER NOW
                                                 <span className="arrow-btn">
@@ -236,9 +238,23 @@ const CoursesDetails = () => {
         console.log('api length', coursedData.length)
     };
 
+
+    // const openNav = () => {
+    //     setSidebarOpen(true);
+    //   };
+    
+    //   const closeNav = () => {
+    //     setSidebarOpen(false);
+    //   };
+
+    //   const handleSidebar = () => {
+    //    navigate('/cart');
+    //   };
+
+      
+
     const handleSubscribeNow = () => {
         toast.dismiss();
-        if(userInfo && userInfo.name){
             if(cart.length === 0){
                 dispatch(addToCart({id, title, image, price, paymentType}));
             } else {
@@ -247,10 +263,24 @@ const CoursesDetails = () => {
                     autoClose: 3000,
                   });
             }
-        } else {
-            navigate('/signup');
-        }
     };
+    // const handleSubscribeNow = () => {
+    //     toast.dismiss();
+    //     if(userInfo && userInfo.name){
+    //         if(cart.length === 0){
+    //             dispatch(addToCart({id, title, image, price, paymentType}));
+    //         } else {
+    //             toast.error("Already added one package", {
+    //                 position: "top-center",
+    //                 autoClose: 3000,
+    //               });
+    //         }
+    //     } else {
+    //         dispatch(addToCart({id, title, image, price, paymentType}));
+    //         // openNav();
+    //         // navigate('/signup');
+    //     }
+    // };
     
     const paginate = pageNumber => setCurrentPage(pageNumber);
     let price = 500;
@@ -358,11 +388,51 @@ const CoursesDetails = () => {
                 </div>
             </div>
             
+            {/* <div>
+            <Sidebar handleSidebar={handleSidebar} cartData={cart} isOpen={sidebarOpen} onClose={closeNav} />
+            {sidebarOpen && (
+                <div className="overlay" onClick={closeNav}></div>
+            )}
+            </div> */}
+
             <Footer />
         </>
     )
-    
-    
 }
 
 export default CoursesDetails;
+
+
+// function Sidebar({ handleSidebar, cartData, isOpen, onClose }) {
+//     return (
+//         <>
+//       <div id="mySidebar" className="sidebar" style={{ width: isOpen ? '550px' : '0' }}>
+//         <a href="javascript:void(0)" className="closebtn" onClick={onClose}>×</a>
+//         <div className="sidebar-cartItem">
+//         {cartData?.map((item) => (
+//                 <CartItem
+//                   key={item.id}
+//                   id={item.id}
+//                   image={item.image}
+//                   title={item.title}
+//                   price={item.price}
+//                   quantity={item.quantity}
+//                   paymentType={item.paymentType}
+//                 />
+//                 ))}
+//         </div>
+//         <div className="text-center btn-cartItem">
+//         <button type="button" 
+//         className="btn btn-primary btn-color bt-size" 
+//         onClick={handleSidebar}
+//         >Proceed to Cart
+//             <span className="arrow-btn">
+//                 <img src ={solarArrowUpBroken} alt=""/>
+//             </span>
+//         </button>
+//         </div>
+//       </div>
+//       </>
+//     );
+//   }
+

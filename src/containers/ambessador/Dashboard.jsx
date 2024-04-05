@@ -526,8 +526,8 @@ const paymentDueToAmbassador = () => {
                             <button
                               type="button"
                               className="btn btn-primary btn-color bt-size-auto"
-                              onClick={() => handleCancelClick(item.merchantData, item._id)}
-                              // onClick={() => cancelCourseByUser(item._id)}
+                              // onClick={() => handleCancelClick(item.merchantData, item._id)}
+                              onClick={() => cancelCourseByUser(item._id)}
                             >
                               Unsubscribe
                             </button>
