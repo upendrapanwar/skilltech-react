@@ -17,10 +17,11 @@ export default Yup.object().shape({
     race: Yup.string().required("Race is required"),
     gender: Yup.string().required("Gender is required"),
     qualification: Yup.string().required("Qualification is required"),
-    privacy: Yup.boolean().oneOf([true],"Privacy policy consent is required"),
-    ecommercePolicy: Yup.boolean().oneOf([true],"E-commerce policy consent is required"),
-    monthly_newsletters: Yup.string().required("Field is required"),
-    deals_promotion: Yup.string().required("Field is required"),
-    in_loop: Yup.string().required("Field is required"),
+    privacy: Yup.boolean().oneOf([true],"Failing to provide consent prevents The High Vista Guild from processing your subscription."),
+    ecommercePolicy: Yup.boolean().oneOf([true],"Failing to provide consent prevents The High Vista Guild from processing your subscription."),
+    userConsent: Yup.boolean().oneOf([true],"Failing to provide consent prevents The High Vista Guild from processing your subscription."),
+    // monthly_newsletters: Yup.string().required("Field is required"),
+    // deals_promotion: Yup.string().required("Field is required"),
+    // in_loop: Yup.string().required("Field is required"),
 
 })

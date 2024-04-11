@@ -279,6 +279,12 @@ const Subscription = () => {
             autoClose: 3000,
           });
           dispatch(addToCart({id, title, image, price, paymentType}));
+          
+          //Change the role in localstorage
+          let userInfoData = JSON.parse(localStorage.getItem('userInfo'));
+          userInfoData.role = 'subscriber';
+          localStorage.setItem('userInfo', JSON.stringify(userInfoData));
+
           navigate("/cart");
          
         }
@@ -356,12 +362,15 @@ const Subscription = () => {
                     race: profileData.race || "",
                     gender: profileData.gender || "",
                     qualification: profileData.qualification || "",
-                    ecommercePolicy: false,
-                    privacy: false,
-                    monthly_newsletters: profileData.opt_in_promotional.receive_monthly_newsletters || "",
-                    deals_promotion: profileData.opt_in_promotional.exclusive_deals_promotions || "",
-                    in_loop: profileData.in_loop || "",
-                    // in_loop: profileData.opt_in_promotional.keep_in_loop || "",
+                    ecommercePolicy: profileData.policy_consent.ecommercePolicy || false,
+                    privacy: profileData.policy_consent.privacy || false,
+                    userConsent: profileData.policy_consent.userConsent || false,
+                    // ecommercePolicy: false,
+                    // privacy: false,
+                    // userConsent: false,
+                    // monthly_newsletters: profileData.opt_in_promotional.receive_monthly_newsletters || "",
+                    // deals_promotion: profileData.opt_in_promotional.exclusive_deals_promotions || "",
+                    // in_loop: profileData.in_loop || "",
                     method_of_communication: Array.isArray(profileData.method_of_communication)
                     ? profileData.method_of_communication
                     : [],
@@ -894,6 +903,7 @@ const Subscription = () => {
                         </div>
                       </div>
                       <br />
+
                       <div className="avg__form_panel">
                         <div className="row form-row">
                           <div className="form-group col-md-12">
@@ -938,11 +948,11 @@ const Subscription = () => {
                                       I have read and accept the e-commerce policy.
                                       <span>*</span>
                                     </label>
-                                    {touched.ecommercePolicy && errors.ecommercePolicy ? (
+                                    {/* {touched.ecommercePolicy && errors.ecommercePolicy ? (
                                       <small className="text-danger">
                                         {errors.ecommercePolicy}
                                       </small>
-                                    ) : null}
+                                    ) : null} */}
                                   </div>
                                   <div className="form-group col-md-12">
                                     <label className="radio-inline">
@@ -959,9 +969,36 @@ const Subscription = () => {
                                       I have read and accept the POPI website
                                       privacy policy<span>*</span>
                                     </label>
-                                    {touched.privacy && errors.privacy ? (
+                                    {/* {touched.privacy && errors.privacy ? (
                                       <small className="text-danger">
                                         {errors.privacy}
+                                      </small>
+                                    ) : null} */}
+                                  </div>
+                                  <div className="form-group col-md-12">
+                                    <label className="radio-inline content-para">
+                                      <input
+                                        type="checkbox"
+                                        id="userConsent"
+                                        name="userConsent"
+                                        onChange={handleChange}
+                                        onClick={handleRefferedBy}
+                                        onBlur={handleBlur}
+                                        value="true"
+                                        checked={values.userConsent}
+                                      />
+                                      I hereby agree and authorise The High Vista Guild, and its affiliates, as well as any third-party processor or operator, to process my personal information for the purpose of enrolling me as a subscriber for online training and refer-a-friend programs, as well as to comply with any legal obligations. I am aware that I may withdraw my consent, by using the <strong>Data Subject Consent Withdrawal Form</strong> as provided for under Legal Information. The form must be emailed to popi@skilltechsa.co.za.
+                                      <span>*</span>
+                                    </label>
+                                    {/* {touched.userConsent && errors.userConsent ? (
+                                      <small className="text-danger">
+                                        {errors.userConsent}
+                                      </small>
+                                    ) : null} */}
+                                    
+                                    {touched.ecommercePolicy && errors.ecommercePolicy || touched.privacy && errors.privacy || touched.userConsent && errors.userConsent ? (
+                                      <small className="text-danger">
+                                        {errors.ecommercePolicy || errors.privacy || errors.userConsent}
                                       </small>
                                     ) : null}
                                   </div>
@@ -972,7 +1009,7 @@ const Subscription = () => {
                         </div>
                       </div>
                       
-                      <div className="avg__form_panel">
+                      {/* <div className="avg__form_panel">
                         <div className="row form-row">
                           <p style={txtunderline} className="mb-2">
                             {" "}
@@ -1117,10 +1154,13 @@ const Subscription = () => {
                           </div>
                           <div />
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="avg__form_panel">
-                        <p>How did you hear about High Vista Guild?</p>
+                      <p className="mb-2">
+                          <strong>5. How did you hear about High Vista Guild?</strong>
+                          <span>*</span>
+                        </p>
 
                         <div className="row form-row">
                           <div className="form-group col-md-12">
@@ -1236,9 +1276,9 @@ const Subscription = () => {
                       <div className="avg__form_panel">
                         <button
                           type="submit"
-                          // className="btn btn-primary btn-color bt-size mt-4 mb-4"
                           className={`btn btn-primary btn-color bt-size mt-4 mb-4 ${isValid ? '' : 'btn-disabled'}`}
                           disabled={!(dirty && isValid)}
+                          // disabled={!isValid}
                           // style={{ backgroundColor: isValid ? '' : 'grey' }}
                           data-id={isSubmitting}
                         >

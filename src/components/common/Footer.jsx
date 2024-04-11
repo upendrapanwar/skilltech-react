@@ -71,9 +71,9 @@ const Footer = () => {
                       Become an ambassador
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link to="/premium-courses">Premium Courses</Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link to="#">FAQs</Link>
                   </li>

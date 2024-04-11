@@ -375,7 +375,7 @@ const CoursesDetails = () => {
                                     className="btn btn-primary btn-color bt-size" 
                                     // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
                                     onClick={() => handleSubscribeNow()}
-                                    >Subscribe Now
+                                    >Add to cart
                                         <span className="arrow-btn">
                                             <img src ={solarArrowUpBroken} alt=""/>
                                         </span>

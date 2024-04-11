@@ -559,7 +559,7 @@ const Home = () => {
           </div>
 
           <div className="container">
-          <div className="row home_course_container">
+          {/* <div className="row home_course_container">
             <div className="col-md-6">
               <div className="catimg-wrapper">
                 <div className="table-pie-image mt-2">
@@ -586,7 +586,6 @@ const Home = () => {
                   selection without any additional charges. Interested in this rewarding journey? Go to
                   "Become a High Vista Ambassador".
                   </p>
-                  {/*<p className="priceperMonth"><span>R500 /</span> per month</p>*/}
                 </div>
                 <div className="amb-btn mt-4">
                   <button
@@ -600,12 +599,9 @@ const Home = () => {
                     </span>
                   </button>
                 </div>
-                {/*<div className="amb-btn mt-4">
-                                                <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleSubscribeNow}>Subscribe Now<span className="arrow-btn"><img src ={solarArrowUpBroken}  alt="My Happy SVG"/></span></button>
-                                            </div>*/}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div>
           <Modal

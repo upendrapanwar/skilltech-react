@@ -196,7 +196,7 @@ const Header = () => {
                         </Link>
                       </li>
                        <li className="nav-item nav_link_already">
-                           <p className="mb-0">Have and account<br/>already?</p>
+                           <p className="mb-0">Have an account<br/>already?</p>
                        </li>
                       </>
                       )}

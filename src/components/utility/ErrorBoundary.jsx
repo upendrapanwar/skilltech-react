@@ -1,11 +1,10 @@
-// ErrorBoundary.jsx
 import React, { useState, useEffect } from 'react';
 
 function ErrorBoundary({ children }) {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    const handleGlobalError = (message, source, lineno, colno, error) => {
+    const handleGlobalError = (error) => {
       console.error('Global Error:', error);
       // You can handle or log the error here
       setHasError(true);

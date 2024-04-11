@@ -431,7 +431,7 @@ const AdminDashboard = () => {
                                     </Formik>
                                 </div>
                             </div>
-                            <TitleCard title={reportTitleAndUrl[index].title || ""} topMargin="mt-2" >
+                            <TitleCard title={reportTitleAndUrl[index]?.title || ""} topMargin="mt-2" >
                                 {/* Team Member list in table format loaded constant */}
                                 <div className="overflow-x-auto w-full">
                                     <table className="table w-full">

@@ -24,6 +24,7 @@ const Dashboard = () => {
   var cartData = {};
   const navigate = useNavigate();
   let [referralCode, setReferralCode] = useState(false);
+  let [referralsThisMonth, setReferralsThisMonth] = useState(false);
   let [paymentDueThisMonth, setPaymentDueThisMonth] = useState([]);
 
   // ****************************
@@ -64,6 +65,7 @@ const Dashboard = () => {
     getMyCourses();
     getReferralCode();
     paymentDueToAmbassador();
+    getReferralsThisMonth();
   }, []);
   toast.configure();
 
@@ -293,6 +295,35 @@ const Dashboard = () => {
   /***********************************************************************/
   /***********************************************************************/
   /**
+   * Get all Referrals this month
+   *
+   */
+  const getReferralsThisMonth = () => {
+    axios 
+      .get("common/get-referrals-this-month/" + userData.id)
+      .then((response) => {
+        toast.dismiss();
+
+        if (response.data) {
+          if (response.data.status) {
+            setReferralsThisMonth(response.data.data); 
+            console.log("getReferralsThisMonth response", response.data.data);
+          }
+        }
+      })
+      .catch((error) => {
+        toast.dismiss();
+        if (error.response) {
+          toast.error("Code is not available", {
+            position: "top-center",
+            autoClose: 3000,
+          });
+        }
+      });
+  };
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
    * Cancel course by user
    *
    */
@@ -511,6 +542,7 @@ const paymentDueToAmbassador = () => {
                 <table className="table table-striped">
                   <thead>
                     <tr>
+                      <th scope="col">Index</th>
                       <th scope="col">Course Name</th>
                       <th scope="col">Start date (MM/DD/YYYY)</th>
                       <th scope="col">Action</th>
@@ -520,16 +552,17 @@ const paymentDueToAmbassador = () => {
                     {currentItems.length > 0 ? (
                       currentItems.map((item, i) => (
                         <tr key={i}>
+                          <td>{i + 1 + (currentPage - 1) * itemsPerPage}</td>
                           <th scope="row">{item.course_title}</th>
                           <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                           <td>
                             <button
                               type="button"
                               className="btn btn-primary btn-color bt-size-auto"
-                              // onClick={() => handleCancelClick(item.merchantData, item._id)}
-                              onClick={() => cancelCourseByUser(item._id)}
+                              onClick={() => handleCancelClick(item.merchantData, item._id)}
+                              // onClick={() => cancelCourseByUser(item._id)}
                             >
-                              Unsubscribe
+                              Unsubscribe 
                             </button>
                           </td>
                         </tr>
@@ -590,46 +623,47 @@ const paymentDueToAmbassador = () => {
               </div>
               <div className="card-body">
                 <div className="table_view_panel table-responsive-sm">
-                  <table className="table table-striped">
-                    <thead>
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Index</th>
+                      <th scope="col">Subscriber First Name</th>
+                      <th scope="col">Subscriber Last Name</th>
+                      <th scope="col">Date of use of referral code</th>
+                      <th scope="col">Referral Status (by Subscriber)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {referralsThisMonth.length > 0 ? (
+                      referralsThisMonth.map((item, i) => (
+                        <tr key={i}>
+                          <td>{i + 1}</td>
+                          <td>{item.firstname}</td>
+                          <td>{item.surname}</td>
+                          <td>{new Date(item.referral_used_date).toLocaleDateString()}</td>
+                          <td>
+                            {item.referral_status === "Active" ? (
+                                <span className="badge badge-success">
+                                Active
+                                </span>
+                            ) : (
+                                <span className="badge badge-danger">
+                                In-active
+                                </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
                       <tr>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Date of sign up</th>
-                        <th scope="col">Date of sign up</th>
-                        <th scope="col">Current Status</th>
+                        <td colSpan="4">No data available</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>
-                          <span className="badge badge-success">Active</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>
-                          <span className="badge badge-success">Banned</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>
-                          <span className="badge badge-danger">
-                            Subscription failed
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                    )}
+                  </tbody>
+
+                </table>
                 </div>
-                <div className="amb-btn mt-4">
+                {/* <div className="amb-btn mt-4">
                   <h4 className="mb-3">Detailed reports</h4>
                   <button
                     type="button"
@@ -640,7 +674,7 @@ const paymentDueToAmbassador = () => {
                       <img src={solarArrowUpBroken} alt="" />
                     </span>
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

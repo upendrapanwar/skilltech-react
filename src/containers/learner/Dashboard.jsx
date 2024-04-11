@@ -320,28 +320,28 @@ const Dashboard = () => {
      * Handle complete regsitration
      * 
      */
-    const completeRegistration = () => {
-        setLoading(true);
-        const dataArray = { 'userid': userid };
-        axios.post('common/complete-registration', dataArray).then(response => {
-            toast.dismiss();
-            if (response.data.status) {
-                if (response.data.message === "Error while saving.") {
-                    toast.success('Please complete your registration', { position: "top-center", autoClose: 3000 });
-                }
-                //navigate('/login');
-            }
-        }).catch(error => {
-            toast.dismiss();
-            if (error.response) {
-                toast.error('Please complete your registration', { position: "top-center", autoClose: 3000 });
-            }
-        }).finally(() => {
-            setTimeout(() => {
-                setLoading(false);
-            }, 300);
-        });
-    }
+    // const completeRegistration = () => {
+    //     setLoading(true);
+    //     const dataArray = { 'userid': userid };
+    //     axios.post('common/complete-registration', dataArray).then(response => {
+    //         toast.dismiss();
+    //         if (response.data.status) {
+    //             if (response.data.message === "Error while saving.") {
+    //                 toast.success('Please complete your registration', { position: "top-center", autoClose: 3000 });
+    //             }
+    //             //navigate('/login');
+    //         }
+    //     }).catch(error => {
+    //         toast.dismiss();
+    //         if (error.response) {
+    //             toast.error('Please complete your registration', { position: "top-center", autoClose: 3000 });
+    //         }
+    //     }).finally(() => {
+    //         setTimeout(() => {
+    //             setLoading(false);
+    //         }, 300);
+    //     });
+    // }
     /***********************************************************************/
     /***********************************************************************/
     /**
@@ -407,7 +407,24 @@ const Dashboard = () => {
                                 <p>To become a High Vista Ambassador, select the option below.
                                 </p>
                                 <div className="amb-btn">
-                                    <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleRedirect}>Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span></button>
+                                  {myCourses.length === 0 ? 
+                                    <button 
+                                    type="button" 
+                                    className="btn btn-primary btn-color bt-size btn-disabled"
+                                    disabled= {true}
+                                    onClick={handleRedirect}
+                                    >
+                                      Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span>
+                                    </button>
+                                    : 
+                                    <button 
+                                    type="button" 
+                                    className="btn btn-primary btn-color bt-size" 
+                                    onClick={handleRedirect}
+                                    >
+                                      Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span>
+                                    </button>
+                                  }
                                 </div>
                             </div>
                         </div>

@@ -3,6 +3,7 @@ import { Formik, Form, ErrorMessage, Field, resetForm } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import TitleCard from '../../components/admin/common/TitleCard';
+import ReportSchema from "../../validation-schemas/ReportSchema";
 
 export const Reports = ({userId}) => {
     const reportTitleAndUrl = [
@@ -174,7 +175,7 @@ export const Reports = ({userId}) => {
                                             end_date: '',
                                             report_type: null
                                         }} 
-                                        // validationSchema={ReportSchema}
+                                        validationSchema={ReportSchema}
 
                                         // onSubmit={(values, { resetForm }) => {
                                         //     handleSubmit(values, { resetForm });
@@ -193,13 +194,13 @@ export const Reports = ({userId}) => {
                                             <div className="flex flex-col col-3">
                                                 <label htmlFor="start_date">Start Date: </label><br />
                                                 <Field name="start_date" type="date" className="form-control input input-bordered w-full max-w-xs" />
-                                                <ErrorMessage name="start_date" component="div" className="text-red-500 text-sm" />
+                                                <ErrorMessage name="start_date" component="div" className="text-danger text-sm" />
                                             </div>
 
                                             <div className="flex flex-col col-3">
                                                 <label htmlFor="end_date">End Date: </label><br />
                                                 <Field name="end_date" type="date" className="form-control input input-bordered w-full max-w-xs" />
-                                                <ErrorMessage name="end_date" component="div" className="text-red-500 text-sm" />
+                                                <ErrorMessage name="end_date" component="div" className="text-danger text-sm" />
                                             </div>
                                             <div className="flex flex-col col-6">
                                                 <label htmlFor="report_type">Report Type: </label>
@@ -210,7 +211,7 @@ export const Reports = ({userId}) => {
                                                     <option value={2}> My Inactive Referrals</option>
                                                     {/* <option value={3}> Payment due to me this month</option> */}
                                                 </Field>
-                                                <ErrorMessage name="report_type" component="div" className="text-red-500 text-sm" />
+                                                <ErrorMessage name="report_type" component="div" className="text-danger text-sm" />
                                             </div>
                                             </div>
                                             </div>
@@ -235,7 +236,7 @@ export const Reports = ({userId}) => {
                             </div>
                             <div className="card">
                                 <div className="card-header">
-                                    <strong>{reportTitleAndUrl[index].title}</strong>
+                                    <strong>{reportTitleAndUrl[index]?.title || ""}</strong>
                                 </div>
                                 <div className="card-body">
                                 <div className="table_view_panel table-responsive-sm">

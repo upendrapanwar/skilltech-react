@@ -167,6 +167,12 @@ const AmbassadorSubscription = () => {
             position: "top-center",
             autoClose: 3000,
           });
+          
+          //Change the role in localstorage
+          let userInfoData = JSON.parse(localStorage.getItem('userInfo'));
+          userInfoData.role = 'ambassador';
+          localStorage.setItem('userInfo', JSON.stringify(userInfoData));
+          
           console.log("Response data after becoming ambassador", response.data);
           sendEmailToAmbassador();
           navigate("/ambessador/dashboard");

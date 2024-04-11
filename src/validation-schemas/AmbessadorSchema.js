@@ -12,7 +12,7 @@ export default Yup.object().shape({
     account_holder_name: Yup.string().required("Account Holder Name is required"),
     //account_holder_surname: Yup.string().required("Account Holder Surname is required"),
     bank: Yup.string().required("Bank name is required"),
-    branch: Yup.string(),
+    branch: Yup.string().required("Branch is required"),
     branch_code: Yup.string().required("Branch code is required"),
     type_of_account: Yup.string().required("Type of account is required"),
     account_number: Yup.string().required("Account number is required"),
