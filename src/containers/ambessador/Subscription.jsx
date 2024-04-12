@@ -163,16 +163,16 @@ const AmbassadorSubscription = () => {
       .then((response) => { 
         toast.dismiss();
         if (response.data.status) {
-          toast.success(response.data.message, {
-            position: "top-center",
-            autoClose: 3000,
-          });
           
           //Change the role in localstorage
           let userInfoData = JSON.parse(localStorage.getItem('userInfo'));
           userInfoData.role = 'ambassador';
           localStorage.setItem('userInfo', JSON.stringify(userInfoData));
           
+          toast.success(response.data.message, {
+            position: "top-center",
+            autoClose: 3000,
+          });
           console.log("Response data after becoming ambassador", response.data);
           sendEmailToAmbassador();
           navigate("/ambessador/dashboard");

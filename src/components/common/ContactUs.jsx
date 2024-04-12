@@ -14,10 +14,7 @@ const ContactUs = () => {
     let [loading, setLoading] = useState('false');
     const [message, setMessage] =  useState(false);
 
-    /**
-     * Handle after form submission
-     * 
-     */
+
     const handleSubmit = (values, { resetForm }) => { 
         setLoading(true); 
         console.log("handleSumit is working");
@@ -238,13 +235,14 @@ const ContactUs = () => {
                                     <p>Block E, Building 7, Centurion Gate Bussiness Park, 124 Akkerboom Street, Centurion, 0157</p>
                                     <br />
                                     <h4>Contact Details</h4><br />
-                                    <div className="d-flex ">
+                                    <div className="d-flex align-item-center contact-color">
                                     &nbsp;&nbsp;<i className="fa fa-phone mr-1"></i>
-                                        <Link to="#"><p>&nbsp;&nbsp;(012) 110-4205</p></Link>
+                                        {/* <Link to="#"><p>&nbsp;&nbsp;(012) 110-4205</p></Link> */}
+                                        <Link to="#">&nbsp;&nbsp;(012) 110-4205</Link>
                                     </div>
-                                    <div className="d-flex">
+                                    <div className="d-flex align-item-center contact-color">
                                         &nbsp;&nbsp;<i className="fa fa-envelope mr-1"></i>
-                                        <p><Link to="#"><p>&nbsp;&nbsp;guild@skilltechsa.com</p></Link></p>
+                                        <Link to="#">&nbsp;&nbsp;guild@skilltechsa.com</Link>
                                     </div>
                                 </div>
                             </div>

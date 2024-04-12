@@ -99,6 +99,10 @@ const Header = () => {
      navigate('/cart');
   };
 
+  const handleVistaDetails = (title) => {
+    navigate("/courses-details", { state: { title: title } }); 
+  };
+
   return (
     <React.Fragment>
       <header className="hvg__header">
@@ -152,7 +156,7 @@ const Header = () => {
                         </>
                       )} 
 
-                      <li className="nav-item">
+                      <li className="nav-item" onClick={() => handleVistaDetails("Become a High Vista Guild Ambassador")}>
                         <Link className="nav-link" to="/courses-details">
                           Become an Ambassador
                         </Link>

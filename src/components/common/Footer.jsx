@@ -11,9 +11,13 @@ const Footer = () => {
    */
   const handleSignUpAmbassador = (e) => {
     e.preventDefault();
-    if (userInfo) {
-      navigate("/learner/subscription");
-    } else {
+    if(userInfo && userInfo.role === 'subscriber') {
+      navigate('/ambessador/ambassador-subscription'); 
+    }
+    else if(userInfo && userInfo.role === 'learner') {
+      navigate('/learner/subscription'); 
+    }  
+    else {
       navigate("/signup");
     }
   };
@@ -21,12 +25,13 @@ const Footer = () => {
   /***********************************************************************/
   const handleRoleBasedRegistrationRedirect = (e) => {
     e.preventDefault();
-    if(userInfo && userInfo.role === 'ambassador') {
+    if(userInfo && userInfo.role === 'subscriber') {
         navigate('/ambessador/ambassador-subscription'); 
     }
-    if(userInfo && userInfo.role === 'ambassador') {
+    else if(userInfo && userInfo.role === 'learner') {
         navigate('/learner/subscription'); 
-    } else {
+    } 
+    else {
         navigate('/signup');
     }
 }

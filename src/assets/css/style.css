@@ -683,6 +683,10 @@ section#shadow-host-companion {
   color: #134573;
 }
 
+.create-content .contact-color a {
+  color: #fff;
+}
+
 /* footer css */
 
 footer {
@@ -964,6 +968,12 @@ footer .footer-content ul li a {
 
 .regitration-section .form-wrapper .amb-note {
   color: #1a1a1a !important;
+}
+
+.about-section{
+  background-color: #f3f3f3;
+  padding-top: 35px;
+  padding-bottom: 35px;
 }
 
 .hvg__subscribeForm_wrapper {
@@ -1342,3 +1352,7 @@ footer .footer-content ul li a {
 .woocom-cart .cartItem .cartItem__info .cartItem__removeButton { margin-top: 0; }
 .woocom-cart .cartItem .cartItem__info .cartItem__removeButton  img { width: 26px;}
 
+.aboutus-img{
+  margin-top: 110px;
+  max-width: 350px;
+}

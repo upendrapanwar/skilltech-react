@@ -378,6 +378,9 @@ const Subscription = () => {
                     ? profileData.how_did_you_hear_about_us
                     : [],
                   }} 
+
+                  validateOnChange={false}
+                  validateOnBlur={true}
                   onSubmit={(values, { setSubmitting }) => {
                     console.log("Form values:", values);
                     setSubmitting(true);
@@ -1276,11 +1279,12 @@ const Subscription = () => {
                       <div className="avg__form_panel">
                         <button
                           type="submit"
-                          className={`btn btn-primary btn-color bt-size mt-4 mb-4 ${isValid ? '' : 'btn-disabled'}`}
-                          disabled={!(dirty && isValid)}
+                          className={'btn btn-primary btn-color bt-size mt-4 mb-4'}
+                          // className={`btn btn-primary btn-color bt-size mt-4 mb-4 ${isValid ? '' : 'btn-disabled'}`}
+                          // disabled={!(dirty && isValid)}
+                          data-id={isSubmitting}
                           // disabled={!isValid}
                           // style={{ backgroundColor: isValid ? '' : 'grey' }}
-                          data-id={isSubmitting}
                         >
                           Complete My Order and Pay!
                           <span className="arrow-btn">

@@ -82,7 +82,7 @@ const Home = () => {
    *
    */
   const handleVistaDetails = (title) => {
-    navigate("/courses-details", { state: { title: title } });
+    navigate("/courses-details", { state: { title: title } }); 
   };
   /***********************************************************************/
   /***********************************************************************/

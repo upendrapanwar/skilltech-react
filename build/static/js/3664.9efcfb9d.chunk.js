@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkdev=self.webpackChunkdev||[]).push([[3664],{3664:(e,s,a)=>{a.d(s,{A:()=>c});a(2483);const c=a.p+"static/media/high-vista-guild.b4204485e78cef2e435d0aebb4a6e766.svg"}}]);
-//# sourceMappingURL=3664.9efcfb9d.chunk.js.map

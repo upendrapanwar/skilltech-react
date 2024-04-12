@@ -35,6 +35,7 @@ const CoursesDetails = () => {
     const [totalPost, setTotalPost] = useState(0);
     const [open, setOpen] = useState(false);
     // const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [showAmbassadorOption, setShowAmbassadorOption] = useState(false);
     const navigate = useNavigate();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const CoursesDetails = () => {
     console.log('locations=',locations);   
     useEffect(() => {
         getAllCourses();
-        
+        setShowAmbassadorOption(locations.state.title === "Become a High Vista Guild Ambassador" ? true : false)
     }, [course]);
     toast.configure();
 
@@ -264,6 +265,7 @@ const CoursesDetails = () => {
                   });
             }
     };
+
     // const handleSubscribeNow = () => {
     //     toast.dismiss();
     //     if(userInfo && userInfo.name){
@@ -281,6 +283,10 @@ const CoursesDetails = () => {
     //         // navigate('/signup');
     //     }
     // };
+
+    const handleButtonClick = () => {
+        setShowAmbassadorOption(true); // Show the Ambassador option when the button is clicked
+    };
     
     const paginate = pageNumber => setCurrentPage(pageNumber);
     let price = 500;
@@ -288,7 +294,10 @@ const CoursesDetails = () => {
     //let title = 'High Vista Package';
     let title = (locations && locations.state != null) ? locations.state.title : 'Subscription Package'; 
     let image = grid1;
-    let paymentType = 'subscription';                        
+    let paymentType = 'subscription';
+    
+    
+
     return (
         
         <>
@@ -303,8 +312,13 @@ const CoursesDetails = () => {
                         <div className="banner-content">
                             <div className="banner-heading col-md-6">
                                 <div className="row">
-                                    {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") ?
-                                    <h1>The High Vista Course Package</h1> : <h1>Become a High Vista Guild Ambassador</h1>
+                                    {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
+                                    <h1>Become a High Vista Guild Subscriber</h1> : 
+                                    <>
+                                    {showAmbassadorOption && (
+                                    <h1>Become a High Vista Guild Ambassador</h1>
+                                    )}
+                                    </>
                                     }
                                 </div>
                             </div>
@@ -322,8 +336,13 @@ const CoursesDetails = () => {
                                     <div className="col-md-6">
                                         <div className="catimg-wrapper">
                                             <div className="table-pie-image mt-2">
-                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") ?
-                                                <img src={highVista} alt=""/> : <img src={authenticBookClub} alt=""/>
+                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
+                                                <img src={highVista} alt=""/> : 
+                                                <>
+                                                {showAmbassadorOption && (
+                                                <img src={authenticBookClub} alt=""/>
+                                                )}
+                                                </>
                                             }
                                                 
                                             </div>
@@ -334,20 +353,68 @@ const CoursesDetails = () => {
                                     <div className="col-md-6 ">
                                         <div className="courseCat-content">
                                             <div className="table-heading">
-                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") ?
-                                                <><h3>Become a High Vista Guild Subscriber</h3>
-                                                <p className="pb-2">
+                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
+                                                <>
+                                                <h3>Become a High Vista Guild Subscriber</h3>
+                                                {/* <p className="pb-2">
                                                 At the High Vista Guild, we believe in the power of lifelong learning. That's why
                                                 we've developed 10 unique online short courses, tailor-made with your interests in
                                                 mind. Whether you're looking at starting your own business, unleashing the power
                                                 of social media income, epic event planning or mastering the art of blogging, our
                                                 courses have something for everyone.
-                                                </p></> : <><h3>Become a High Vista Guild Ambassador</h3>
-                                                <p className="pb-2">Sign up for the High Vista Course Programme and choose to become an Ambassador! As an ambassador, you earn commission on every student who subscribes for the High Vista Guild course programme for as long as they stay are a subscriber.Subscribe now for the High Vista course programme to nlock access to the Ambassador programme</p></>
+                                                </p> */}
+                                                <p className="pb-2 content-para">
+                                                A Subscription to the High Vista Guild online courses is R500 (five hundred rand) per month.
+                                                <br /><br />
+                                                A recurrent charge will be run on the Subscribers elected credit or debit card that simply levies the charge against the Subscribers card. The Subscribers card details are provided at the point of registration as a Subscriber, and then charged on a monthly basis going forward.
+                                                <br /><br />
+                                                Your subscription unlocks a continuously growing library of online courses, offering endless learning opportunities. 
+                                                </p>
+                                                </> 
+                                                : <>
+                                                <h3>Become a High Vista Guild Ambassador</h3>
+                                                {showAmbassadorOption && (
+                                                <p className="pb-2">Sign up for the High Vista Course Programme and choose to become an Ambassador! As an ambassador, you earn commission on every student who subscribes for the High Vista Guild course programme for as long as they stay are a subscriber.Subscribe now for the High Vista course programme to nlock access to the Ambassador programme</p>
+                                                )}
+                                                </>
                                             }
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
+                                    <>
+                                    <div className="col-md-12">
+                                    <p className="pb-2 content-para">
+                                    We encourage our subscribers to stay engaged and revisit our platform regularly to discover the latest additions tailored for an evolving learning experience.
+                                            <br /><br />
+                                    Anyone can become a subscriber, including students, gap year participants, current learners, employed individuals, and those currently seeking employment. Regardless of your current status or circumstances, everyone is encouraged to become a subscriber and benefit from our online training.
+                                                <br /><br />
+                                                <strong>Do you want to earn while you learn?</strong> Becoming a subscriber is the first step towards unlocking a treasure trove of learning opportunities. You have the chance to elevate your experience by becoming an Ambassador <strong>at no extra cost</strong>.
+                                                <br /><br />
+                                                For further details on the benefits of becoming an Ambassador, simply click on the link located at the bottom of the page or select Become and Ambassador on the top menu of the page.
+                                                <br /><br />
+                                                Below is a list of some of the programmes you will have access to.
+                                                </p>    
+                                    </div>
+                                    <div className="amb-btn">
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button 
+                                    type="button" 
+                                    className="btn btn-primary btn-color bt-size"
+                                    onClick={handleButtonClick}
+                                    >
+                                      Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span>
+                                    </button>
+                                    </div>
+                                    </>
+                                    : 
+                                    <>
+                                    {showAmbassadorOption && (
+                                        ""
+                                    )}
+                                    </>
+                                    }
                                 </div>
                                 
                             </div>
@@ -363,24 +430,28 @@ const CoursesDetails = () => {
                         </div>
                         <div className="course-details">
                             <div className="course_footer d-flex align-items-center">
-                                <span className="amb-btn mt-4">
+                                {/* <span className="amb-btn mt-4">
                                     <button type="button" className="btn btn-primary btn-color bt-size" onClick={handleBackToBrowse}>Back to browse
                                         <span className="arrow-btn">
                                             <img src ={solarArrowUpBroken} alt=""/>
                                         </span>
                                     </button>
-                                </span>
-                                <span className="amb-btn mt-4">
-                                    <button type="button" 
-                                    className="btn btn-primary btn-color bt-size" 
-                                    // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
-                                    onClick={() => handleSubscribeNow()}
-                                    >Add to cart
-                                        <span className="arrow-btn">
-                                            <img src ={solarArrowUpBroken} alt=""/>
-                                        </span>
-                                    </button>
-                                </span>
+                                </span> */}
+                                {userInfo && userInfo.id && userInfo.role !=='learner' ? 
+                                    <span className="amb-btn mt-4">
+                                        <button type="button" 
+                                        className="btn btn-primary btn-color bt-size" 
+                                        // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
+                                        onClick={() => handleSubscribeNow()}
+                                        >Add to cart
+                                            <span className="arrow-btn">
+                                                <img src ={solarArrowUpBroken} alt=""/>
+                                            </span>
+                                        </button>
+                                    </span>
+                                    :
+                                    ""
+                                }
                             </div>
                         </div>
                         
