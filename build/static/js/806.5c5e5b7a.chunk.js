@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkdev=self.webpackChunkdev||[]).push([[806],{3806:(e,c,s)=>{s.d(c,{A:()=>d});s(2483);const d=s.p+"static/media/4-410x260_1.81e9f3ec5dc464466de4c530411ea108.svg"}}]);
-//# sourceMappingURL=806.5c5e5b7a.chunk.js.map

@@ -1,5 +1,14 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import ecommerceConditionPDF from "../../assets/pdf/Skill_Tech_Solutions-Sale_of_Digital_E-Commerce_Products _2024.pdf";
+import privecyConditionPDF from "../../assets/pdf/Skill_Tech_Solutions-Website_Privacy_Policy_2023.pdf";
+import copyOfGuidePDF from "../../assets/pdf/Request_for_a_copy_of_the_Guide.pdf";
+import accessToRecordPDF from "../../assets/pdf/Request_for_Access_to_Record.pdf";
+import correctionDeletionOfPiPDF from "../../assets/pdf/Request_for_Correction,_Deletion,_Destroying_of_PI.pdf";
+import feesPayablePDF from "../../assets/pdf/Outcome_of_Request_and_Fees_Payable.pdf";
+import ObjectioOfPiPDF from "../../assets/pdf/Objection_to_Processing_of_PI.pdf";
+import dataConsentWithdrawlFormPDF from "../../assets/pdf/Data_Subject_Consent_Withdrawal_Form_V1.pdf";
+import dataConsentFormPDF from "../../assets/pdf/Data_Subject_Consent_Form_V1.pdf";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -35,7 +44,7 @@ const Footer = () => {
         navigate('/signup');
     }
 }
-
+ 
   return (
     <React.Fragment>
       <footer className="footer_section">
@@ -45,16 +54,43 @@ const Footer = () => {
               <div className="footer-content">
                 <h4>Legal Information</h4>
                 <p className="fContent">
-                  + Sale of Digital E-Commerce Product <br />
-                  + Website Privecy Policy <br />
-                  + PAIA Manuel <br />
-                  + Request for a Copy of the Guide <br />
-                  + Request for Access to Record <br />
-                  + Objection to Processing of PI <br />
-                  + Request for Correction, Deletion, Destruction of PI <br />
-                  + Request Fees Payable <br />
-                  + Data Subject Consent Form <br />+ Data Subject Consent
-                  Withdrawal Form
+                  <a
+                  href={ecommerceConditionPDF}
+                  target="_blank"
+                  >+ Sale of Digital E-Commerce Product</a><br />
+                  <a
+                  href={privecyConditionPDF}
+                  target="_blank"
+                  >+ Website Privecy Policy</a><br />
+                  <a
+                  href={accessToRecordPDF }
+                  target="_blank"
+                  >+ PAIA Manuel</a><br />
+                  <a
+                  href={copyOfGuidePDF  }
+                  target="_blank"
+                  >+ Request for a Copy of the Guide</a><br />
+                  <a
+                  href={ObjectioOfPiPDF }
+                  target="_blank"
+                  >+ Objection to Processing of PI</a><br />
+                  <a
+                  href={correctionDeletionOfPiPDF }
+                  target="_blank"
+                  >+ Request for Correction, Deletion, Destruction of PI</a><br />
+                  <a
+                  href={feesPayablePDF }
+                  target="_blank"
+                  >+ Request Fees Payable</a><br />
+                  <a
+                  href={dataConsentFormPDF }
+                  target="_blank"
+                  >+ Data Subject Consent Form</a><br />
+                  <a
+                  href={dataConsentWithdrawlFormPDF }
+                  target="_blank"
+                  >+ Data Subject Consent Withdrawal Form</a><br />
+                   
                 </p>
               </div>
             </div>

@@ -1097,6 +1097,10 @@ footer .footer-content ul li a {
   }
 }
 
+.footer-content .fContent a {
+  color: #fff;
+}
+
 @media only screen and (max-width: 767px) {
   .hvg__header .header_panel {
     display: block;
