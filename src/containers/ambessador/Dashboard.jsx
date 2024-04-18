@@ -446,7 +446,7 @@ const paymentDueToAmbassador = () => {
           <div className="card welcome_user_card mb-4">
             <div className="card-body">
               <p className="mb-0">
-                Welcome to, <strong>{userInfo.name}</strong>{" "}
+                Welcome, <strong>{userData.name}</strong>{" "}
                 <span className="user_icon">
                   <i className="far fa-smile"></i>
                 </span>

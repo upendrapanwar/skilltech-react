@@ -289,7 +289,7 @@ const CoursesDetails = () => {
     };
     
     const paginate = pageNumber => setCurrentPage(pageNumber);
-    let price = 500;
+    let price = 10;
     let id = '9999';
     //let title = 'High Vista Package';
     let title = (locations && locations.state != null) ? locations.state.title : 'Subscription Package'; 

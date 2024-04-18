@@ -57,38 +57,47 @@ const Footer = () => {
                   <a
                   href={ecommerceConditionPDF}
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Sale of Digital E-Commerce Product</a><br />
                   <a
                   href={privecyConditionPDF}
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Website Privecy Policy</a><br />
                   <a
                   href={accessToRecordPDF }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ PAIA Manuel</a><br />
                   <a
                   href={copyOfGuidePDF  }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Request for a Copy of the Guide</a><br />
                   <a
                   href={ObjectioOfPiPDF }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Objection to Processing of PI</a><br />
                   <a
                   href={correctionDeletionOfPiPDF }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Request for Correction, Deletion, Destruction of PI</a><br />
                   <a
                   href={feesPayablePDF }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Request Fees Payable</a><br />
                   <a
                   href={dataConsentFormPDF }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Data Subject Consent Form</a><br />
                   <a
                   href={dataConsentWithdrawlFormPDF }
                   target="_blank"
+                  rel="noopener noreferrer"
                   >+ Data Subject Consent Withdrawal Form</a><br />
                    
                 </p>

@@ -46,7 +46,7 @@ const Subscription = () => {
   let [allmerchantData, setAllMerchantData] = useState(null);
 
   //Variables for High Vista Package
-    let price = 500;
+    let price = 10;
     let id = '9999';
     //let title = 'High Vista Package';
     let title = (locations && locations.state != null) ? locations.state.title : 'Subscription Package'; 

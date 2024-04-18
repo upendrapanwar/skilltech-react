@@ -68,7 +68,6 @@ const AmbassadorSubscription = () => {
     
     try {
         const response = await axios.get("common/get-referral-code");
-        toast.dismiss();
         
         if (response.data.status) {
             const ambassadorCount = response.data.data + 1;
@@ -163,12 +162,16 @@ const AmbassadorSubscription = () => {
       .then((response) => { 
         toast.dismiss();
         if (response.data.status) {
-          
-          //Change the role in localstorage
-          let userInfoData = JSON.parse(localStorage.getItem('userInfo'));
+          let authInfo = {
+            id: response.data.data["_id"], 
+            isSubscriberRegister: "yes", 
+          };
+          localStorage.setItem("authInfo", JSON.stringify(authInfo));
+
+          let userInfoData = JSON.parse(localStorage.getItem('userInfo')); 
           userInfoData.role = 'ambassador';
           localStorage.setItem('userInfo', JSON.stringify(userInfoData));
-          
+
           toast.success(response.data.message, {
             position: "top-center",
             autoClose: 3000,
