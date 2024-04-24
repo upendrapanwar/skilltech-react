@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ecommerceConditionPDF from "../../assets/pdf/Skill_Tech_Solutions-Sale_of_Digital_E-Commerce_Products _2024.pdf";
 import privecyConditionPDF from "../../assets/pdf/Skill_Tech_Solutions-Website_Privacy_Policy_2023.pdf";
@@ -12,38 +12,19 @@ import dataConsentFormPDF from "../../assets/pdf/Data_Subject_Consent_Form_V1.pd
 
 const Footer = () => {
   const navigate = useNavigate();
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  useEffect(() => {}, []);
-  /**
-   * Handle signup as ambassador
-   *
-   */
-  const handleSignUpAmbassador = (e) => {
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    if (refresh) {
+      setRefresh(false);
+    }
+  }, [refresh]);
+
+  const handleVistaDetails = (e, title) => {
     e.preventDefault();
-    if(userInfo && userInfo.role === 'subscriber') {
-      navigate('/ambessador/ambassador-subscription'); 
-    }
-    else if(userInfo && userInfo.role === 'learner') {
-      navigate('/learner/subscription'); 
-    }  
-    else {
-      navigate("/signup");
-    }
+    navigate("/courses-details", { state: { title: title } }); 
+    setRefresh(true);
   };
-  /***********************************************************************/
-  /***********************************************************************/
-  const handleRoleBasedRegistrationRedirect = (e) => {
-    e.preventDefault();
-    if(userInfo && userInfo.role === 'subscriber') {
-        navigate('/ambessador/ambassador-subscription'); 
-    }
-    else if(userInfo && userInfo.role === 'learner') {
-        navigate('/learner/subscription'); 
-    } 
-    else {
-        navigate('/signup');
-    }
-}
  
   return (
     <React.Fragment>
@@ -114,10 +95,16 @@ const Footer = () => {
                     <Link to="/about-us">About Us</Link>
                   </li>
                   <li>
-                    <Link to="#" onClick={handleRoleBasedRegistrationRedirect}>Subscribe Now</Link>
+                    <Link to="" 
+                      onClick={(e) =>
+                      handleVistaDetails(e, "The High Vista Course Package")}
+                      >Subscribe Now
+                    </Link>
                   </li>
                   <li>
-                    <Link to="" onClick={handleSignUpAmbassador}>
+                    <Link to="" onClick={(e) =>
+                      handleVistaDetails(e, "Become a High Vista Guild Ambassador")
+                    }>
                       Become an ambassador
                     </Link>
                   </li>
@@ -125,7 +112,7 @@ const Footer = () => {
                     <Link to="/premium-courses">Premium Courses</Link>
                   </li> */}
                   <li>
-                    <Link to="#">FAQs</Link>
+                    <Link to="/faqs">FAQs</Link>
                   </li>
                 </ul>
               </div>

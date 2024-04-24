@@ -22,6 +22,7 @@ const PremiumCourses = lazy(() => import('./containers/store/PremiumCourses'));
 const UpdateProfile = lazy(() => import('./containers/learner/UpdateProfile'));
 const AmbassadorUpdateProfile = lazy(() => import('./containers/ambessador/UpdateProfile'));
 const AboutUs = lazy(() => import('./components/common/AboutUs'));
+const FAQs = lazy(() => import('./components/common/FAQs'));
 const HowItWorks = lazy(() => import('./components/common/HowItWorks'));
 const ContactUs = lazy(() => import('./components/common/ContactUs'));
 
@@ -88,6 +89,7 @@ export const PrivateRoutes = () => {
         <Route path='/cart' element={<Cart/>} />
         <Route path='/premium-courses' element={<PremiumCourses/>} />
         <Route path='/about-us' element={<AboutUs/>} />
+        <Route path='/faqs' element={<FAQs/>} />
         <Route path='/how-it-works' element={<HowItWorks/>} />
         <Route path='/contact-us' element={<ContactUs/>} />
         <Route path='/learner/dashboard' element={<LearnerDashboard/>} />
