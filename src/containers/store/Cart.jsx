@@ -192,7 +192,7 @@ const Cart = () => {
       return true;
     }
     if (redirect === "pay_now") {
-      var returnVal = completeRegistration();
+      var returnVal = completeRegistration(); 
       if (typeof returnVal === "undefined") {
         console.log("returnVal=", returnVal);
         navigate("/learner/subscription");
@@ -308,7 +308,6 @@ const Cart = () => {
       totalQuantity += item.quantity;
       totalPrice += item.price * item.quantity;
     });
-
     return { totalPrice, totalQuantity };
   };
   /***********************************************************************/
@@ -362,7 +361,7 @@ const Cart = () => {
       .then((response) => {
         toast.dismiss();
         //console.log('response=',response.data);
-        console.log('signature=',response.data.data);
+        console.log('generateSignature=',response.data.data);
         //merchantData.push({'signature':response.data.data})
 
         setSignature(response.data.data);
@@ -421,6 +420,8 @@ const Cart = () => {
     // Remove last ampersand
     pfParamString_updated = pfParamString.slice(0, -1);
     console.log("pfParamString=", pfParamString_updated);
+    console.log('signature',signature);
+    console.log('merchantData',merchantData);
 
     //console.log('sandboxurl=',process.env.REACT_APP_SANDBOX_PAYFAST_URL);
     //axios.defaults.baseURL = '';

@@ -60,6 +60,9 @@ const routes = [
   //  name: 'Calendar', // name that appear in Sidebar
   //},
 
+
+
+//REPORTS
   {
     path: '', //no url needed as this has submenu
     icon: <ChartBarIcon className={iconClasses}/>, // icon component
@@ -117,6 +120,10 @@ const routes = [
       },
     ]
   },
+
+
+
+
   //{
   //  path: '', //no url needed as this has submenu
   //  icon: <DocumentDuplicateIcon className={`${iconClasses} inline` }/>, // icon component

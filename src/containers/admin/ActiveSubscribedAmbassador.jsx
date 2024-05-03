@@ -106,7 +106,7 @@ const ActiveSubscribedAmbassador = () => {
               cell: (row) => <span>{row.surname}</span>,
               sortable: true,
             },  
-            {
+            { 
               name: "AMBASSADOR REFERRAL CODE",
               selector: (row, i) => row.referral_code,
               cell: (row) => <span>{row.referral_code}</span>,
@@ -245,7 +245,7 @@ const ActiveSubscribedAmbassador = () => {
             {/* report section */}
             <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
               <div className="text-xl font-semibold py-1 px-2">
-                Active Subcripton of Ambassador
+                Active Subscription of Ambassador
               </div>
               <div className="divider mt-2"></div>
               <div className="">
