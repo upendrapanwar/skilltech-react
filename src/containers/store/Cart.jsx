@@ -293,6 +293,8 @@ const Cart = () => {
     identifierData.then((result) => {});
     //navigate('/learner/subscription');
 
+    console.log("Merchant data***************", merchantData);
+    console.log("passPhrase***************", passPhrase);
    
   };
   /***********************************************************************/
@@ -356,6 +358,7 @@ const Cart = () => {
       passPhrase: passPhrase,
       testMode: true,
     };
+    console.log("dataArray*****************", dataArray);
     await axios
       .post("common/generate-signature", dataArray)
       .then((response) => {

@@ -41,6 +41,7 @@ const Subscription = () => {
   let [profileData, setProfileData] = useState({}); 
   let [otherOptionSelected, setOtherOptionSelected] = useState(false);
   let [otherOptionValue, setOtherOptionValue] = useState(''); 
+  let [idCheckStatus, setIdCheckStatus] = useState(null); // null = not checked, true = exists, false = available
 
   //let [identifier, setIdentifier] = useState(null);
   let [allmerchantData, setAllMerchantData] = useState(null);
@@ -58,6 +59,8 @@ const Subscription = () => {
   const dispatch = useDispatch();
 
   console.log("userid=", userInfo.id);
+  
+
   useEffect(() => {
     //const script = document.createElement('script');
     //script.src = 'https://sandbox.payfast.co.za/onsite/engine.js';
@@ -67,8 +70,7 @@ const Subscription = () => {
     //document.body.appendChild(script);
 
     console.log("isSubscriberRegister", userInfo.isSubscriberRegister);
-    getProfileDetails();
-    
+    getProfileDetails();    
     // if (userInfo.isSubscriberRegister === null) {
     //   completeRegistration();
     // }
@@ -253,6 +255,49 @@ const Subscription = () => {
         });
     }*/
   }
+
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
+   * Check South African Id
+   *
+   */
+  // const checkSouthAfricanId = (southAfricanId) => {
+  //   axios.get(`user/check-southafrican-id/${southAfricanId}`)
+  //     .then(response => {
+  //       if (response.data.status) {
+  //         setSouthAfricanId(response.data.data);
+  //         console.log("Response Data for checkSouthAfricanId: ", response.data.status);
+  //         console.log("checkSouthAfricanId: ", southAfricanId);
+  //       } else {
+  //         setSouthAfricanId(null);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       toast.dismiss(); 
+  //       if (error.response) {
+  //         toast.error('Code is not available', { position: "top-center", autoClose: 3000 });
+  //       }
+  //     });
+  // };
+  const checkSouthAfricanId = (southAfricanId) => {
+    axios
+      .get(`user/check-southafrican-id/${southAfricanId}`)
+      .then((response) => {
+        if (response.data.status) {
+          setIdCheckStatus(true);
+        } 
+        // else {
+        //   setIdCheckStatus(false);
+        // }
+      })
+      .catch((error) => {
+        setIdCheckStatus(null);
+        console.error("Error checking South African ID:", error);
+      });
+  };
+    
+
   /***********************************************************************/
   /***********************************************************************/
   /**
@@ -469,7 +514,14 @@ const Subscription = () => {
                               placeholder=""
                               aria-describedby="idnumberHelp"
                               onChange={handleChange}
-                              onBlur={handleBlur}
+                              // onBlur={handleBlur}
+                              onBlur={(e) => {
+                                handleBlur(e);
+                                const inputValue = e.target.value;
+                                if (inputValue) {
+                                  checkSouthAfricanId(inputValue);
+                                }
+                              }}
                               value={values.id_number}
                             />
                             {touched.id_number && errors.id_number ? (
@@ -477,6 +529,15 @@ const Subscription = () => {
                                 {errors.id_number}
                               </small>
                             ) : null}
+                           { idCheckStatus ? (
+                                <small className= "text-danger">
+                                  ID already exists
+                                </small>
+                              ) : 
+                                (<small className= "text-success">
+                                  ID available
+                                </small>)
+                            }
                           </div>
                         </div>
                       </div>

@@ -3,7 +3,9 @@ import * as Yup from 'yup';
 export default Yup.object().shape({
     firstname: Yup.string().matches(/^[A-Za-z ]*$/, 'Please enter valid First name').required("First name is required").max(80, 'First name is too long - should be 80 chars maximum.'),
     surname: Yup.string().matches(/^[A-Za-z ]*$/, 'Please enter valid Surname').required("Surname is required").max(80, 'Surname is too long - should be 80 chars maximum.'),
-    id_number: Yup.number().typeError('Please enter valid ID Number').required("ID Number is required"),
+    id_number: Yup.string()
+        .matches(/^\d{11}$/, 'ID Number must be exactly 11 digits')
+        .required("ID Number is required"),
     email: Yup.string().email().required("Email is required"),
     mobile_number: Yup.number().typeError('Please enter valid Mobile Number').required("Mobile Number is required"),
     street: Yup.string().required("House or Unit Number is required"),
