@@ -27,6 +27,7 @@ import TitleCard from "../../components/admin/common/TitleCard";
 import { saveAs } from "file-saver";
 import DataTable from "react-data-table-component";
 import DataTableExtensions from "react-data-table-component-extensions";
+import "react-data-table-component-extensions/dist/index.css";
 
 const AdminDashboard = () => {
 
@@ -60,20 +61,20 @@ const AdminDashboard = () => {
     /***********************************************************************/
     const ambassadorFirstName = {
         name: "AMBASSADOR FIRST NAME",
-        selector: (row, i) => row.firstname || row.Ambassador_firstname,
-        cell: (row) => <span>{row.firstname || row.Ambassador_firstname}</span>,
+        selector: (row, i) => row.Ambassador_firstname,
+        cell: (row) => <span>{row.Ambassador_firstname}</span>,
         sortable: true,
       }
     const ambassadorLastName = {
         name: "AMBASSADOR LAST NAME",
-        selector: (row, i) => row.surname || row.Ambassador_lastname,
-        cell: (row) => <span>{row.surname || row.Ambassador_lastname}</span>,
+        selector: (row, i) => row.Ambassador_lastname,
+        cell: (row) => <span>{row.Ambassador_lastname}</span>,
         sortable: true,
       }
     const ambassadorReferralCode = { 
         name: "AMBASSADOR REFERRAL CODE",
-        selector: (row, i) => row.referral_code || row.Ambassador_referralcode,
-        cell: (row) => <span>{row.referral_code || row.Ambassador_referralcode}</span>,
+        selector: (row, i) => row.referral_code,
+        cell: (row) => <span>{row.referral_code}</span>,
         sortable: true,
       }
     const ambassadorReferralCodeUsed = {
@@ -167,15 +168,15 @@ const AdminDashboard = () => {
 
       const subscriberFirstName = {
         name: "SUBSCRIBER FIRST NAME",
-        selector: (row, i) => row.firstname || row.Subscriber_firstname,
-        cell: (row) => <span>{row.firstname || row.Subscriber_firstname}</span>,
+        selector: (row, i) => row.Subscriber_firstname,
+        cell: (row) => <span>{row.Subscriber_firstname}</span>,
         sortable: true,
       }
 
       const subscriberLastName = {
         name: "SUBSCRIBER LAST NAME",
-        selector: (row, i) => row.surname || row.Subscriber_lastname,
-        cell: (row) => <span>{row.surname || row.Subscriber_lastname}</span>,
+        selector: (row, i) => row.Subscriber_lastname,
+        cell: (row) => <span>{row.Subscriber_lastname}</span>,
         sortable: true,
       }
 
@@ -398,7 +399,14 @@ const AdminDashboard = () => {
 
 
     const handleResetButton = (resetForm) => {
-        resetForm();
+        // resetForm();
+        resetForm({
+            values: {
+                start_date: '',
+                end_date: '',
+                report_type: '' // Reset report_type to empty string
+            }
+        });
         const apiUrl = reportTitleAndUrl[index].url;
         setReportApiUrl(apiUrl);
         setNavigateUrl(`/admin/${apiUrl}`);
@@ -533,7 +541,6 @@ const AdminDashboard = () => {
      
 
     return (
-
         <>
             <div className="drawer drawer-mobile">
                 <input id="left-sidebar-drawer" type="checkbox" className="drawer-toggle" />
@@ -544,7 +551,9 @@ const AdminDashboard = () => {
                         {/* report section */}
                         <div className="bg-zinc-50 px-3 py-3 rounded-xl bg-white shadow-mx border border-zinc-200">
                             <div className="row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <div className="text-xl font-semibold py-1 px-2">Report</div>
+                            <div className="text-xl font-semibold py-1 px-2">
+                                {reportTitleAndUrl[index].title }
+                                </div>
                             <button type="button" onClick={handleDownloadReport} className="btn btn-primary inline-block px-4 py-3 text-sm font-semibold text-center text-white uppercase transition duration-200 ease-in-out bg-indigo-600 rounded-md cursor-pointer hover:bg-indigo-700">Bulk Payment CSV Export</button>
                             </div>
                             <div className="divider mt-2"></div>
@@ -618,6 +627,7 @@ const AdminDashboard = () => {
                                     </Formik>
                                 </div>
                             </div>
+
                             <div className="overflow-x-auto w-full">
                                 <DataTableExtensions
                                     columns={columns}

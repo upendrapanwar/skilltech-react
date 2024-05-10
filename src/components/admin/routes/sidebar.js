@@ -63,63 +63,63 @@ const routes = [
 
 
 //REPORTS
-  {
-    path: '', //no url needed as this has submenu
-    icon: <ChartBarIcon className={iconClasses}/>, // icon component
-    name: 'Reports', // name that appear in Sidebar
-    submenu : [
-      {
-        path: '/admin/active-subscribed-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Active Subscritpion of Ambassador',
-      },
-      {
-        path: '/admin/active-subscribed-subscriber',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Active Subscription of Subscriber',
-      },
-      {
-        path: '/admin/defaulted-subscription-paymentof-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Defaulted Subscription payment of Ambassador',
-      },
-      {
-        path: '/admin/defaulted-subscription-paymentof-subscriber',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Defaulted Subscription pyament of Subscriber',
-      },
-      {
-        path: '/admin/subscription-cancelledby-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Cancellation of Subscription-by Ambassador',
-      },
-      {
-        path: '/admin/subscription-cancelledby-subscriber',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Cancellation of Subscriptioin-by Subscriber',
-      },
-      {
-        path: '/admin/active-inactive-referral-per-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Referral Per Ambassador',
-      },
-      {
-        path: '/admin/active-referral-per-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Active Referral Per Ambassador',
-      },
-      {
-        path: '/admin/inactive-referral-per-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Inactive Referral Per Ambassador',
-      },
-      {
-        path: '/admin/payment-due-to-ambassador',
-        icon: <DocumentIcon className={submenuIconClasses}/>,
-        name: 'Payment due to ambassador',
-      },
-    ]
-  },
+  // {
+  //   path: '', //no url needed as this has submenu
+  //   icon: <ChartBarIcon className={iconClasses}/>, // icon component
+  //   name: 'Reports', // name that appear in Sidebar
+  //   submenu : [
+  //     {
+  //       path: '/admin/active-subscribed-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Active Subscritpion of Ambassador',
+  //     },
+  //     {
+  //       path: '/admin/active-subscribed-subscriber',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Active Subscription of Subscriber',
+  //     },
+  //     {
+  //       path: '/admin/defaulted-subscription-paymentof-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Defaulted Subscription payment of Ambassador',
+  //     },
+  //     {
+  //       path: '/admin/defaulted-subscription-paymentof-subscriber',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Defaulted Subscription pyament of Subscriber',
+  //     },
+  //     {
+  //       path: '/admin/subscription-cancelledby-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Cancellation of Subscription-by Ambassador',
+  //     },
+  //     {
+  //       path: '/admin/subscription-cancelledby-subscriber',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Cancellation of Subscriptioin-by Subscriber',
+  //     },
+  //     {
+  //       path: '/admin/active-inactive-referral-per-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Referral Per Ambassador',
+  //     },
+  //     {
+  //       path: '/admin/active-referral-per-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Active Referral Per Ambassador',
+  //     },
+  //     {
+  //       path: '/admin/inactive-referral-per-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Inactive Referral Per Ambassador',
+  //     },
+  //     {
+  //       path: '/admin/payment-due-to-ambassador',
+  //       icon: <DocumentIcon className={submenuIconClasses}/>,
+  //       name: 'Payment due to ambassador',
+  //     },
+  //   ]
+  // },
 
 
 

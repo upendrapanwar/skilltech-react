@@ -34,12 +34,18 @@
 
 
 .data-table-extensions > .data-table-extensions-action > button.download {
-  display: none !important;
+  display: none !important; 
 }
-
 .data-table-extensions > .data-table-extensions-action > button.print {
   display: none !important;
 }
+.data-table-extensions > .data-table-extensions-filter > .filter-text {
+  color: #954242 !important;
+}
+.data-table-extensions > .data-table-extensions-filter > .icon {
+  background-image: url(../src/assets/images/search-symbols.png) !important;
+}
+
 
 .hero .admin-logo {
   width: 150px !important;

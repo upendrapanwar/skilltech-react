@@ -305,6 +305,11 @@ const Subscription = () => {
    *
    */
   const handleSubmit = (values, { setSubmitting }) => {
+    if (idCheckStatus) {
+      console.log("ID already exists");
+      return;
+    }
+  
     values.how_did_you_hear_about_us = [...values.how_did_you_hear_about_us, otherOptionValue]
     console.log("values=", values);
     setLoading(true);
@@ -529,14 +534,14 @@ const Subscription = () => {
                                 {errors.id_number}
                               </small>
                             ) : null}
-                           { idCheckStatus ? (
+                            {idCheckStatus ? (
                                 <small className= "text-danger">
                                   ID already exists
                                 </small>
-                              ) : 
-                                (<small className= "text-success">
-                                  ID available
-                                </small>)
+                              ) : null
+                                // (<small className= "text-success">
+                                //   ID available
+                                // </small>)
                             }
                           </div>
                         </div>
