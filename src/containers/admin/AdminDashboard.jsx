@@ -115,7 +115,7 @@ const AdminDashboard = () => {
         cell: (row) => <span>{row.payment_status === "cancel" ? "Payment failed" : "Payment not done"}</span>,
         sortable: true,
       }
-    const subscriptionStatus = {
+    const subscriptionStatus = { 
         name: "SUBSCRIPTION STATUS",
         selector: (row, i) => row.subscription_status,
         cell: (row) => <span>{row.subscription_status}</span>,
