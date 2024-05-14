@@ -22,6 +22,7 @@ import "react-data-table-component-extensions/dist/index.css";
 import { addToCart } from '../../redux/cartSlice';
 import { useNavigate, useLocation } from 'react-router-dom';
 import CartItem from "../../components/cart/CartItem";
+import ambassador_layout from '../../assets/images/Ambassador-layout.png';
 
 const CoursesDetails = () => {
     const locations = useLocation();
@@ -416,12 +417,23 @@ const CoursesDetails = () => {
                                     </>
                                     }
                                 </div>
-                                
                             </div>
                         </div>
-                        
                     </div>
                 </div>
+                
+                <div className="courseCat-grid-section mt-5">
+                    <div className="container">
+                        <div className="hvg__card_section mb-0">
+                            <div className="card">
+                                <div className="card-body" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    <img src={ambassador_layout} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="courseCat-grid-section mt-5">
                     <div className="container">
                     

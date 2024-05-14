@@ -136,7 +136,7 @@ const Home = () => {
       title:
         "How do I switch from being a Subscriber to becoming an Ambassador?",
       description:
-        `fter successfully completing your subscription and payment, you'll be directed to your Subscriber Dashboard. From there, simply navigate to the bottom of the page and click on the <strong>'Become an Ambassador'</strong> link to fill out the Ambassador Registration form. Additionally, if you'd like more information on the perks of becoming an Ambassador, you can find the <strong>'Become an Ambassador'</strong> link at the top of the page for quick access. Simply navigate to the bottom of the page and click on the <strong>'Become an Ambassador'</strong> link to fill out the Ambassador Registration form.`,
+        `After successfully completing your subscription and payment, you'll be directed to your Subscriber Dashboard. From there, simply navigate to the bottom of the page and click on the <strong>'Become an Ambassador'</strong> link to fill out the Ambassador Registration form. Additionally, if you'd like more information on the perks of becoming an Ambassador, you can find the <strong>'Become an Ambassador'</strong> link at the top of the page for quick access. Simply navigate to the bottom of the page and click on the <strong>'Become an Ambassador'</strong> link to fill out the Ambassador Registration form.`,
     },
     {
       id: 7,

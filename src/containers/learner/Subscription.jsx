@@ -418,7 +418,7 @@ const Subscription = () => {
                     // ecommercePolicy: false,
                     // privacy: false,
                     // userConsent: false,
-                    // monthly_newsletters: profileData.opt_in_promotional.receive_monthly_newsletters || "",
+                    promotional_consent: profileData.promotional_consent || "",
                     // deals_promotion: profileData.opt_in_promotional.exclusive_deals_promotions || "",
                     // in_loop: profileData.in_loop || "",
                     method_of_communication: Array.isArray(profileData.method_of_communication)
@@ -1056,7 +1056,7 @@ const Subscription = () => {
                                         value="true"
                                         checked={values.userConsent}
                                       />
-                                      I hereby agree and authorise The High Vista Guild, and its affiliates, as well as any third-party processor or operator, to process my personal information for the purpose of enrolling me as a subscriber for online training and refer-a-friend programs, as well as to comply with any legal obligations. I am aware that I may withdraw my consent, by using the <strong>Data Subject Consent Withdrawal Form</strong> as provided for under Legal Information. The form must be emailed to popi@skilltechsa.co.za.
+                                      By agreeing to the terms of this consent form, I hereby voluntarily authorize the company to process my personal information (including my name, credit card & banking details, physical address, telephone numbers & any other information I have provided to the company). Processing shall include the collection, receipt, recording, organisation, collation, storage, updating or modification, retrieval, alteration, consultation, use; dissemination by means of transmission, distribution or making available in any other form; or merging, linking, as well as blocking, degradation, erasure or destruction of information. This consent is effective immediately & will endure until the relationship between myself and the company has been terminated. I am aware that I may withdraw my consent, by using <strong>the Data Subject Consent Withdrawal Form</strong> as provided for under Legal Information. The form must be emailed to <a>popi@skilltechsa.co.za</a>.
                                       <span>*</span>
                                     </label>
                                     {/* {touched.userConsent && errors.userConsent ? (
@@ -1226,8 +1226,68 @@ const Subscription = () => {
                       </div> */}
 
                       <div className="avg__form_panel">
+                        <div className="row form-row">
+                          <p style={txtunderline} className="mb-2">
+                            {" "}
+                            <strong>
+                              5. Opt-in for our newsletter, exclusive
+                              promotions, updates, and webinar notifications:
+                            </strong>
+                          </p>
+                          <p>
+                          I hereby agree and authorise The High Vista Guild, and its affiliates, as well as any third-party processor or operator, to process my personal information for the purpose of conducting customer satisfaction surveys, sending service updates and information about deals and promotions, newsletters, as well as information about upcoming courses, webinars and events (with an option to opt-out). I am aware that I may withdraw my consent, or opt out at any time, by using <strong>the Data Subject Consent Withdrawal Form</strong> as provided for under Legal Information. The form must be emailed to <a>popi@skilltechsa.co.za</a>. 
+                            <span>*</span>
+                          </p>
+
+                          <div className="form-group col-md-6">
+                            <div className="row">
+                              <div className="col-md-3">
+                                <label className="radio-inline">
+                                  <input
+                                    type="radio"
+                                    id="yes_promotional_consent"
+                                    name="promotional_consent"
+                                    onChange={handleChange}
+                                    onClick={handleRefferedBy}
+                                    onBlur={handleBlur}
+                                    value="yes"
+                                    checked={values.promotional_consent === "yes"}
+                                    
+                                  />
+                                  Yes
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <label className="radio-inline">
+                                  <input
+                                    type="radio"
+                                    id="no_promotional_consent"
+                                    name="promotional_consent"
+                                    onChange={handleChange}
+                                    onClick={handleRefferedBy}
+                                    onBlur={handleBlur}
+                                    value="no"
+                                    checked={values.promotional_consent === "no"}
+                                  />
+                                  No
+                                </label>
+                              </div>
+                            </div>
+                                {touched.promotional_consent &&
+                                errors.promotional_consent ? (
+                                  <small className="text-danger">
+                                    {errors.promotional_consent}
+                                  </small>
+                                ) : null}
+                          </div>
+                          <div />
+                        </div>
+                      </div>
+
+
+                      <div className="avg__form_panel">
                       <p className="mb-2">
-                          <strong>5. How did you hear about High Vista Guild?</strong>
+                          <strong>6. How did you hear about High Vista Guild?</strong>
                           <span>*</span>
                         </p>
 

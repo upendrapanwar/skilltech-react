@@ -70,41 +70,68 @@ const FAQs = () => {
             <div className="about-section">
                 <div className="container">
                     <div className="hvg__card_section mb-0">
-                        {/* <div className="card">
+                        <div className="card">
                             <div className="card-body">
-                                <div className="row">
-                                    <div className="col-md-8">
+                                <p style={{ textAlign: 'center' }}><u><strong>Frequently Asked Questions</strong></u></p>
+                                <br /><br />
                                         <p className="pb-2 content-para">
-                                            <strong>The High Vista Guild is committed to its core vision of providing every South African with an authentic and accessible chance to generate a sustainable income for themselves.</strong>
+                                            <strong>What does a Subscription cost?</strong>
                                             <br /><br />
-                                            The name <strong>'High Vista Guild'</strong> combines the concepts of <strong>‘High Vista’</strong>, an expansive, elevated view reminiscent of an eagle soaring over vast landscapes, with <strong>'Guild,'</strong> representing a group of people sharing a common goal or interest that sets standards for quality, protects the interests of its members, hold each other accountable, as well as provide a platform for collaboration and support to achieve common objectives. It's not about doing it alone but doing it together.
+                                            A Subscription to the High Vista Guild online courses is <strong>R500</strong> (five hundred rand) per month.
                                             <br /><br />
-                                            <strong>Do you want to earn while you learn?</strong> Becoming a subscriber is the first step towards unlocking a treasure trove of learning opportunities. You have the chance to elevate your experience by becoming an Ambassador <strong>at no extra cost</strong>.
+                                            Become a <strong>Guild Ambassador</strong> and you will not only cover the cost of your monthly subscription fee, but also generate an additional limitless and sustainable monthly passive income for yourself. For more information on becoming and Ambassador simply navigate to the <strong>'Become an Ambassador'</strong> link at the top of the page.
                                             <br /><br />
-                                            The <strong>‘High Vista Guild’</strong> is an initiative meticulously designed to address two pivotal points and presents an idea that's a blend of a smart refer-a-friend approach, with a genuine chance at transformation.
-                                            <br />
-                                            <li>Firstly, we're opening new pathways to transformative online training, designed to reshape your future.</li>
-                                            <li>Secondly, and here's the exciting part, you can expand your circle and unlock a new income stream for yourself without leaving your current job. </li>
+                                            A recurrent charge will be run on the Subscribers elected credit or debit card that simply levies the charge against the Subscribers card. The Subscribers card details are provided at the point of registration as a Subscriber, and then charged on a monthly basis going forward.
                                         </p>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <img className="aboutus-img" src={logo} alt="" />
-                                    </div>
-                                    <div className="col-md-12">
+                                        <br /><br />
                                         <p className="pb-2 content-para">
-                                            Many live paycheque to paycheque, covering the basics, with little room to dream bigger. The struggle is real, and the solutions aren't always readily available. We need a game-changer. We need a roadmap to guide us.
+                                            <strong>What is included in your monthly Subscription?</strong>
                                             <br /><br />
-                                            At the <strong>‘High Vista Guild’</strong>, we've harnessed our extensive knowledge, skills, and industry experience—including learnership and diploma training, Broad Based Black Economic Empowerment, Skills Development Facilitation, Employment Equity, and Human Resources Management—to create a groundbreaking solution. Designed for both the employed and unemployed, our innovative approach not only facilitates personal upskilling but also opens the door to earning a passive income. Join us in transforming your career trajectory and financial future, today."
-                                            <br /><br />
-                                            For more information on this innovative and exciting opportunity, please contact one of our friendly call centre agents on 012 110 4205.
+                                            Your subscription unlocks a continuously growing library of online courses, offering endless learning opportunities. We encourage our subscribers to stay engaged and revisit our platform regularly to discover the latest additions tailored for an evolving learning experience.
                                         </p>
-                                    </div>
-                                    <div className="col-md-12">
-                                        <img style={{ display: "block", margin: "auto" }} src={demo_video_image} alt="" />
-                                    </div>
-                                </div>
+                                        <br /><br />
+                                        <p className="pb-2 content-para">
+                                            <strong>Who can become a Subscriber?</strong>
+                                            <br /><br />
+                                            <strong>Anyone!</strong> Our subscription is inclusive and welcomes individuals from all walks of life, including students, gap year participants, current learners, employed individuals, and those currently seeking employment. Regardless of your current status or circumstances, everyone is encouraged to become a subscriber and benefit from our online training.
+                                        </p>
+                                        <br /><br />
+                                        <p className="pb-2 content-para">
+                                            <strong>Who can become an Ambassador?</strong>
+                                            <br /><br />
+                                            <strong>Any Subscriber!</strong> We offer all subscribers the opportunity to become an Ambassador. This means that any subscriber can seamlessly transition to an Ambassador, at no additional cost, leveraging their existing benefits as a Subscriber, while also gaining the added benefits of being an Ambassador.
+                                            <br /><br />
+                                            For further details on the benefits of becoming an Ambassador, refer to the <i>'Why Become an Ambassador'</i> FAQ below or simply click on the <strong>'Become an Ambassador'</strong> link located at the top of the page.
+                                        </p>
+                                        <br /><br />
+                                        <p className="pb-2 content-para">
+                                            <strong>Why become an Ambassador?</strong>
+                                            <br /><br />
+                                            Joining our Ambassador program not only unlocks exclusive premium content at no extra cost but also empowers you with a personalized referral code. Share this code with your network—family, friends, colleagues, or acquaintances—and for every new subscriber you bring on board using your referral code, enjoy a 50% commission from their subscription fee directly into your pocket, for as long as they remain subscribed. It's a win-win opportunity to enrich your learning experience and boost your earnings effortlessly.
+                                        </p>
+                                        <br /><br />
+                                        <p className="pb-2 content-para">
+                                            <strong>How do I switch from being a Subscriber to becoming an Ambassador?</strong>
+                                            <br /><br />
+                                            After successfully completing your subscription and payment, you'll be directed to your Subscriber Dashboard. From there, simply navigate to the bottom of the page and click on the <strong>'Become an Ambassador'</strong> link to fill out the Ambassador Registration form. Additionally, if you'd like more information on the perks of becoming an Ambassador, you can find the <strong>'Become an Ambassador'</strong> link at the top of the page for quick access. Simply navigate to the bottom of the page and click on the <strong>'Become an Ambassador'</strong> link to fill out the Ambassador Registration form.
+                                        </p>
+                                        <br /><br />
+                                        <p className="pb-2 content-para">
+                                            <strong>What does it cost to become an Ambassador?</strong>
+                                            <br /><br />
+                                            Becoming an Ambassador comes at no extra cost to you, with an array of additional benefits. Simply <u>continue paying your monthly subscription fee</u> and enjoy the added perks of being an Ambassador. Elevate your experience with exclusive Ambassador privileges while seamlessly integrating your Ambassador status into your existing subscription plan. It's an opportunity to maximize your benefits without any additional financial commitment.
+                                            <br /><br />
+                                            When registering as an Ambassador, please ensure to provide accurate banking details to ensure prompt and hassle-free processing of referral fees. This will help us avoid any delays or issues with payments.
+                                        </p>
+                                        <br /><br />
+                                        <p className="pb-2 content-para">
+                                            <strong>Can I cancel my Subscription?</strong>
+                                            <br /><br />
+                                            Although cancellation of your subscription is an option, it's important to note that if you made the switch to becoming an Ambassador <u>you will forfeit</u> the exclusive benefits associated with being an Ambassador. This includes the financial benefit of earning 50% commission on referral subscription fees generated by both new and existing subscribers who used your referral code. We encourage thoughtful consideration before making any changes to your membership status to ensure you continue to enjoy the full spectrum of benefits.
+                                        </p>
+                                        <br /><br />
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

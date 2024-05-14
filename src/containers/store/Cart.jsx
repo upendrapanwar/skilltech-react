@@ -403,9 +403,9 @@ const Cart = () => {
     merchantData["signature"] = signature;
 
     //merchantData['subscription_type'] = 2;
-    merchantData["subscription_notify_email"] = true;
-    merchantData["subscription_notify_webhook"] = true;
-    merchantData["subscription_notify_buyer"] = true;
+    // merchantData["subscription_notify_email"] = true;
+    // merchantData["subscription_notify_webhook"] = true;
+    // merchantData["subscription_notify_buyer"] = true;
     console.log("dataArray=====>", merchantData);
 
     var dataArray = merchantData;
