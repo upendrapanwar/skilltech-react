@@ -201,8 +201,8 @@ const Cart = () => {
     }
 
     const data = {
-      userid: authInfo.id,
-      payment_status: "cancel"
+      userid: tmp_userInfo.id,
+      // payment_status: "cancel" 
     }
     await axios
       .post("common/getSubscriptionId", data)

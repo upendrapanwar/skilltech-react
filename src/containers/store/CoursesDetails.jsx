@@ -422,6 +422,10 @@ const CoursesDetails = () => {
                     </div>
                 </div>
                 
+                {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
+                "" :
+                <>
+                {showAmbassadorOption && (
                 <div className="courseCat-grid-section mt-5">
                     <div className="container">
                         <div className="hvg__card_section mb-0">
@@ -433,6 +437,10 @@ const CoursesDetails = () => {
                         </div>
                     </div>
                 </div>
+                )}
+                </>
+                }
+
 
                 <div className="courseCat-grid-section mt-5">
                     <div className="container">
