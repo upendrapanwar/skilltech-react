@@ -12,6 +12,7 @@ import { Helmet } from "react-helmet";
 import axios from "axios";
 import { getDiscount } from "../../redux/cartSlice";
 import { toast } from "react-toastify";
+import Loader from "../../components/common/Loader";
 
 const Cart = () => {
   let authInfo = JSON.parse(localStorage.getItem("authInfo"));
@@ -204,6 +205,7 @@ const Cart = () => {
       userid: tmp_userInfo.id,
       // payment_status: "cancel" 
     }
+    
     await axios
       .post("common/getSubscriptionId", data)
       .then((response) => {
@@ -221,7 +223,8 @@ const Cart = () => {
             autoClose: 3000,
           });
         }
-      });
+      })
+      
     console.log('spayId=',spayId);
 
     let merchantData = "";

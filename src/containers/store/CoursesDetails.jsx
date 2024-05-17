@@ -16,6 +16,7 @@ import PODCASTING_101_FROM_IDEA_TO_EARBUDS_START_YOUR_SHOW from '../../assets/im
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import "react-data-table-component-extensions/dist/index.css";
@@ -37,6 +38,7 @@ const CoursesDetails = () => {
     const [open, setOpen] = useState(false);
     // const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showAmbassadorOption, setShowAmbassadorOption] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
     const navigate = useNavigate();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const dispatch = useDispatch();
@@ -45,6 +47,7 @@ const CoursesDetails = () => {
     console.log('locations=',locations);   
     useEffect(() => {
         getAllCourses();
+        getMyCourses();
         setShowAmbassadorOption(locations.state.title === "Become a High Vista Guild Ambassador" ? true : false)
     }, [course]);
     toast.configure();
@@ -217,6 +220,36 @@ const CoursesDetails = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
+
+    /**
+     * Get my courses
+     * 
+     */
+    const getMyCourses = () => {
+        axios
+          .get("common/get-my-courses/" + userInfo.id)
+          .then((response) => {
+            toast.dismiss();
+    
+            if (response.data) {
+              if (response.data.data.length === 1) {
+                setIsSubscribed(true);
+                console.log("setMyCourses#######***** ", response.data.data);
+              }
+            }
+          })
+          .catch((error) => {
+            toast.dismiss();
+            if (error.response) {
+              toast.error("Code is not available", {
+                position: "top-center",
+                autoClose: 3000,
+              });
+            }
+          });
+      };
+    /***********************************************************************/
+    /***********************************************************************/ 
     
     const indexOfLastPost = currentPage * postsPerPage; 
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -257,13 +290,17 @@ const CoursesDetails = () => {
 
     const handleSubscribeNow = () => {
         toast.dismiss();
-            if(cart.length === 0){
-                dispatch(addToCart({id, title, image, price, paymentType}));
-            } else {
-                toast.error("Already added one package", {
-                    position: "top-center",
-                    autoClose: 3000,
-                  });
+            if(isSubscribed){
+                Swal.fire("Package is already subscribed!");
+            } else{
+                if(cart.length === 0){
+                    dispatch(addToCart({id, title, image, price, paymentType}));
+                } else {
+                    toast.error("Already added one package", {
+                        position: "top-center",
+                        autoClose: 3000,
+                      });
+                }
             }
     };
 
@@ -458,10 +495,10 @@ const CoursesDetails = () => {
                                     </button>
                                 </span> */}
                                 {userInfo && userInfo.id && userInfo.role !=='learner' ? 
-                                    <span className="amb-btn mt-4">
+                                    <span className="amb-btn mt-2">
                                         <button type="button" 
                                         className="btn btn-primary btn-color bt-size" 
-                                        // onClick={() => dispatch(addToCart({id, title, image, price, paymentType}))}
+                                        // disabled={isSubscribed}
                                         onClick={() => handleSubscribeNow()}
                                         >Add to cart
                                             <span className="arrow-btn">
@@ -474,7 +511,6 @@ const CoursesDetails = () => {
                                 }
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>

@@ -1407,7 +1407,7 @@ const Subscription = () => {
                           type="submit"
                           className={'btn btn-primary btn-color bt-size mt-4 mb-4'}
                           // className={`btn btn-primary btn-color bt-size mt-4 mb-4 ${isValid ? '' : 'btn-disabled'}`}
-                          // disabled={!(dirty && isValid)}
+                          // disabled={!(dirty && isValid)} 
                           data-id={isSubmitting}
                           // disabled={!isValid}
                           // style={{ backgroundColor: isValid ? '' : 'grey' }}

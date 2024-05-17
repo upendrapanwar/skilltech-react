@@ -1360,3 +1360,8 @@ footer .footer-content ul li a {
   margin-top: 110px;
   max-width: 350px;
 }
+
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+  background-color: rgba(12, 59, 103, 0.8) !important;
+}

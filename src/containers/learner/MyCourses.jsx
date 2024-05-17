@@ -87,7 +87,7 @@ const MyCourses = () => {
         
             <>
                 {loading === true ? <Loader /> : ''}
-               
+                
                 <Header />
                 <div className="hvg__page_banner">
                 <div className="banner-thumnail">
