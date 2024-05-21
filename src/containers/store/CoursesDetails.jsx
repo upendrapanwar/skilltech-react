@@ -47,9 +47,10 @@ const CoursesDetails = () => {
     console.log('locations=',locations);   
     useEffect(() => {
         getAllCourses();
-        getMyCourses();
-        setShowAmbassadorOption(locations.state.title === "Become a High Vista Guild Ambassador" ? true : false)
-    }, [course]);
+        if(userInfo){
+            getMyCourses();
+        }
+    }, []);
     toast.configure();
 
     /***********************************************************************/
@@ -225,7 +226,7 @@ const CoursesDetails = () => {
      * Get my courses
      * 
      */
-    const getMyCourses = () => {
+    const getMyCourses = () => { 
         axios
           .get("common/get-my-courses/" + userInfo.id)
           .then((response) => {
@@ -323,7 +324,7 @@ const CoursesDetails = () => {
     // };
 
     const handleButtonClick = () => {
-        setShowAmbassadorOption(true); // Show the Ambassador option when the button is clicked
+        navigate('/become-ambassador');
     };
     
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -350,14 +351,7 @@ const CoursesDetails = () => {
                         <div className="banner-content">
                             <div className="banner-heading col-md-6">
                                 <div className="row">
-                                    {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
                                     <h1>Become a High Vista Guild Subscriber</h1> : 
-                                    <>
-                                    {showAmbassadorOption && (
-                                    <h1>Become a High Vista Guild Ambassador</h1>
-                                    )}
-                                    </>
-                                    }
                                 </div>
                             </div>
                         </div>
@@ -374,15 +368,7 @@ const CoursesDetails = () => {
                                     <div className="col-md-6">
                                         <div className="catimg-wrapper">
                                             <div className="table-pie-image mt-2">
-                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
                                                 <img src={highVista} alt=""/> : 
-                                                <>
-                                                {showAmbassadorOption && (
-                                                <img src={authenticBookClub} alt=""/>
-                                                )}
-                                                </>
-                                            }
-                                                
                                             </div>
 
                                         </div>
@@ -391,8 +377,6 @@ const CoursesDetails = () => {
                                     <div className="col-md-6 ">
                                         <div className="courseCat-content">
                                             <div className="table-heading">
-                                            {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
-                                                <>
                                                 <h3>Become a High Vista Guild Subscriber</h3>
                                                 {/* <p className="pb-2">
                                                 At the High Vista Guild, we believe in the power of lifelong learning. That's why
@@ -408,20 +392,10 @@ const CoursesDetails = () => {
                                                 <br /><br />
                                                 Your subscription unlocks a continuously growing library of online courses, offering endless learning opportunities. 
                                                 </p>
-                                                </> 
-                                                : <>
-                                                <h3>Become a High Vista Guild Ambassador</h3>
-                                                {showAmbassadorOption && (
-                                                <p className="pb-2">Sign up for the High Vista Course Programme and choose to become an Ambassador! As an ambassador, you earn commission on every student who subscribes for the High Vista Guild course programme for as long as they stay are a subscriber.Subscribe now for the High Vista course programme to nlock access to the Ambassador programme</p>
-                                                )}
-                                                </>
-                                            }
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
-                                    <>
                                     <div className="col-md-12">
                                     <p className="pb-2 content-para">
                                     We encourage our subscribers to stay engaged and revisit our platform regularly to discover the latest additions tailored for an evolving learning experience.
@@ -445,39 +419,12 @@ const CoursesDetails = () => {
                                       Become an ambassador<span className="arrow-btn"><img src={solarArrowUpBroken} alt="" /></span>
                                     </button>
                                     </div>
-                                    </>
-                                    : 
-                                    <>
-                                    {showAmbassadorOption && (
-                                        ""
-                                    )}
-                                    </>
-                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                {locations && (locations.state != null) && (locations.state.title === "The High Vista Course Package") && !showAmbassadorOption ?
-                "" :
-                <>
-                {showAmbassadorOption && (
-                <div className="courseCat-grid-section mt-5">
-                    <div className="container">
-                        <div className="hvg__card_section mb-0">
-                            <div className="card">
-                                <div className="card-body" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                    <img src={ambassador_layout} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }} />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                )}
-                </>
-                }
-
 
                 <div className="courseCat-grid-section mt-5">
                     <div className="container">
@@ -494,6 +441,8 @@ const CoursesDetails = () => {
                                         </span>
                                     </button>
                                 </span> */}
+
+                              
                                 {userInfo && userInfo.id && userInfo.role !=='learner' ? 
                                     <span className="amb-btn mt-2">
                                         <button type="button" 

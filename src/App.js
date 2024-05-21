@@ -15,6 +15,7 @@ const PrivacyPolicy = lazy(() => import('./containers/Privacy-policy'));
 const TermsOfService = lazy(() => import('./containers/Terms-of-service'));
 const Courses = lazy(() => import('./containers/store/Courses'));
 const CoursesDetails = lazy(() => import('./containers/store/CoursesDetails'));
+const BecomeAmbassador = lazy(() => import('./containers/store/BecomeAmbassador'));
 const Cart = lazy(() => import('./containers/store/Cart'));
 const OrderHistory = lazy(() => import('./containers/learner/OrderHistory'));
 const MyCourses = lazy(() => import('./containers/learner/MyCourses'));
@@ -86,6 +87,7 @@ export const PrivateRoutes = () => {
         <Route path='/terms-of-service' element={<TermsOfService/>} />
         <Route path='/browse-courses' element={<Courses/>} />
         <Route path='/courses-details' element={<CoursesDetails/>} />
+        <Route path='/become-ambassador' element={<BecomeAmbassador/>} />
         <Route path='/cart' element={<Cart/>} />
         <Route path='/premium-courses' element={<PremiumCourses/>} />
         <Route path='/about-us' element={<AboutUs/>} />

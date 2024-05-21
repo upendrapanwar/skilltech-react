@@ -20,11 +20,14 @@ const Footer = () => {
     }
   }, [refresh]);
 
-  const handleVistaDetails = (e, title) => {
-    e.preventDefault();
-    navigate("/courses-details", { state: { title: title } }); 
-    setRefresh(true);
+  const handleVistaDetails = () => {
+    navigate("/courses-details"); 
   };
+  // const handleVistaDetails = (e, title) => {
+  //   e.preventDefault();
+  //   navigate("/courses-details", { state: { title: title } }); 
+  //   setRefresh(true);
+  // };
  
   return (
     <React.Fragment>
@@ -102,11 +105,14 @@ const Footer = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="" onClick={(e) =>
+                    <Link to="/become-ambassador">
+                      Become an ambassador
+                    </Link>
+                    {/* <Link to="" onClick={(e) =>
                       handleVistaDetails(e, "Become a High Vista Guild Ambassador")
                     }>
                       Become an ambassador
-                    </Link>
+                    </Link> */}
                   </li>
                   {/* <li>
                     <Link to="/premium-courses">Premium Courses</Link>

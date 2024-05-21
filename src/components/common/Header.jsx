@@ -156,11 +156,16 @@ const Header = () => {
                         </>
                       )} 
 
-                      <li className="nav-item" onClick={() => handleVistaDetails("Become a High Vista Guild Ambassador")}>
-                        <Link className="nav-link" to="/courses-details">
+                      <li className="nav-item">
+                        <Link className="nav-link" to="/become-ambassador">
                           Become an Ambassador
                         </Link>
                       </li>
+                      {/* <li className="nav-item" onClick={() => handleVistaDetails("Become a High Vista Guild Ambassador")}>
+                        <Link className="nav-link" to="/courses-details">
+                          Become an Ambassador
+                        </Link>
+                      </li> */}
                       {/* <li className="nav-item dropdown">
                                             <Link className="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Become an Ambassador

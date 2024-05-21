@@ -81,8 +81,11 @@ const Home = () => {
    * Redirects to course details page
    *
    */
-  const handleVistaDetails = (title) => {
-    navigate("/courses-details", { state: { title: title } }); 
+  const handleVistaDetails = () => {
+    navigate("/courses-details"); 
+  };
+  const handleBecomeAmbassador = () => {
+    navigate("/become-ambassador"); 
   };
   /***********************************************************************/
   /***********************************************************************/
@@ -491,8 +494,11 @@ const Home = () => {
                     type="button"
                     className="btn btn-primary btn-color bt-size"
                     onClick={() =>
-                      handleVistaDetails("The High Vista Course Package")
+                      handleVistaDetails()
                     }
+                    // onClick={() =>
+                    //   handleVistaDetails("The High Vista Course Package")
+                    // }
                   >
                     Learn More
                     <span className="arrow-btn">
@@ -547,8 +553,11 @@ const Home = () => {
                     type="button"
                     className="btn btn-white-color bt-size"
                     onClick={() =>
-                      handleVistaDetails("Become a High Vista Guild Ambassador")
+                      handleBecomeAmbassador()
                     }
+                    // onClick={() =>
+                    //   handleVistaDetails("Become a High Vista Guild Ambassador")
+                    // }
                   >
                     Learn More
                     <span className="arrow-btn">
