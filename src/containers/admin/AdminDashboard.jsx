@@ -216,7 +216,7 @@ const AdminDashboard = () => {
     const [bulkPaymentData, setBulkPaymentData] = useState([]);
     const [columns, setColumns] = useState([]);
     const [orderDataSet, setOrderDataSet] = useState([]);
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState(0); 
     const dispatch = useDispatch()
     const statsData = [];
 

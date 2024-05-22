@@ -2,29 +2,37 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Form, ErrorMessage, Field, resetForm } from 'formik';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import TitleCard from '../../components/admin/common/TitleCard';
 import ReportSchema from "../../validation-schemas/ReportSchema";
 
 export const Reports = ({userId}) => {
     const reportTitleAndUrl = [
         { title: "Defaulted Subscription Payment of Subscribers", url: "defaulted-subscription-paymentof-subscriber" },
+        { title: "Subscription Cancelled by Subscribers", url: "subscription-cancelledby-subscriber" },
+        { title: "YTD Referrals per Ambassador", url: "yld-referrals" },
         { title: "My Active Referrals", url: "my-active-referral" },
         { title: "My Inactive Referrals", url: "my-inactive-referral" },
-        // { title: "Payment due to me this month", url: "payment-due-this-month" }
+        { title: "Payments due", url: "payment-due" },
+        { title: "Payments made", url: "payment-made" },
     ];
 
     const reportTableHeader = [
         ["Referral (Subscriber) First Name", "Referral (Subscriber) Last Name", "Payment Failure Reason"],
+        ["Subscriber First Name", "Subscriber Last Name", "Date of HVG subscription Cancellation"],
+        [],
         ["Referral (Subscriber) First Name", "Referral (Subscriber) Last Name", "Date of use of referral code", "Referral Status (by Subscriber)"],
         ["Referral (Subscriber) First Name", "Referral (Subscriber) Last Name", "Date of use of referral code", "Referral Status (by Subscriber)"],
-        // ["Ambassador First Name", "Ambassador Last Name", "Ambassador Referral Code", "Current active referrals", "Total amount due this month"]
+        [],
+        [],
     ];
 
     const [reportApiUrl, setReportApiUrl] = useState([]);
     const [defaultedSubscriptionPaymentofsubscriber, setDefaultedSubscriptionPaymentofsubscriber] = useState([]);
     const [myActiveReferral, setActiveReferral] = useState([]);
     const [myInactiveReferral, setInactiveReferral] = useState([]);
-    // const [paymentDueThisMonth, setPaymentDueThisMonth] = useState([]);
+    const [subscriptionCancelledbySubscriber, setSubscriptionCancelledbySubscriber ] = useState([]);
+    const [yldAmbassador, setYldAmbassador ] = useState([]);
+    const [paymentDue, setPaymentDue ] = useState([]);
+    const [paymentMade, setPaymentMade] = useState([]);
     const [index, setIndex] = useState(0);
 
     const apiUrl = 'defaulted-subscription-paymentof-subscriber';
@@ -81,9 +89,18 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'my-inactive-referral') {
                     setInactiveReferral(response.data.data);
                 }
-                // if (apiUrl === 'payment-due-this-month') {
-                //     setPaymentDueThisMonth(response.data.data);
-                // }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    setSubscriptionCancelledbySubscriber(response.data.data);
+                }
+                if (apiUrl === 'yld-referrals') {
+                    setYldAmbassador(response.data.data);
+                }
+                if (apiUrl === 'payment-due') {
+                    setPaymentDue(response.data.data);
+                }
+                if (apiUrl === 'payment-made') {
+                    setPaymentMade(response.data.data);
+                }
             } else {
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
                     setDefaultedSubscriptionPaymentofsubscriber('');
@@ -94,9 +111,18 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'my-inactive-referral') {
                     setInactiveReferral('');
                 }
-                // if (apiUrl === 'payment-due-this-month') {
-                //     setPaymentDueThisMonth('');
-                // }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    setSubscriptionCancelledbySubscriber('');
+                }
+                if (apiUrl === 'yld-referrals') {
+                    setYldAmbassador('');
+                }
+                if (apiUrl === 'payment-due') {
+                    setPaymentDue('');
+                }
+                if (apiUrl === 'payment-made') {
+                    setPaymentMade('');
+                }
             }
         }).catch(error => {
             toast.dismiss();
@@ -110,7 +136,13 @@ export const Reports = ({userId}) => {
 
 
     const handleResetButton = (resetForm) => {
-        resetForm();
+        resetForm({
+            values: {
+                start_date: '',
+                end_date: '',
+                report_type: ''
+            }
+        });
         const apiUrl = reportTitleAndUrl[index].url;
         setReportApiUrl(apiUrl);
 
@@ -127,9 +159,18 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'my-inactive-referral') {
                     setInactiveReferral(response.data.data);
                 }
-                // if (apiUrl === 'payment-due-this-month') {
-                //     setPaymentDueThisMonth(response.data.data);
-                // }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    setSubscriptionCancelledbySubscriber(response.data.data);
+                }
+                if (apiUrl === 'yld-referrals') {
+                    setYldAmbassador(response.data.data);
+                }
+                if (apiUrl === 'payment-due') {
+                    setPaymentDue(response.data.data);
+                }
+                if (apiUrl === 'payment-made') {
+                    setPaymentMade(response.data.data);
+                }
             } else {
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
                     setDefaultedSubscriptionPaymentofsubscriber('');
@@ -140,9 +181,18 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'my-inactive-referral') {
                     setInactiveReferral('');
                 }
-                // if (apiUrl === 'payment-due-this-month') {
-                //     setPaymentDueThisMonth('');
-                // }
+                if (apiUrl === 'subscription-cancelledby-subscriber') {
+                    setSubscriptionCancelledbySubscriber('');
+                }
+                if (apiUrl === 'yld-referrals') {
+                    setYldAmbassador('');
+                }
+                if (apiUrl === 'payment-due') {
+                    setPaymentDue('');
+                }
+                if (apiUrl === 'payment-made') {
+                    setPaymentMade('');
+                }
             }
         }).catch(error => {
             toast.dismiss();
@@ -181,10 +231,15 @@ export const Reports = ({userId}) => {
                                         //     handleSubmit(values, { resetForm });
                                         // }}
                                         onSubmit={(values, { resetForm }) => {
-                                            const endDate = new Date(values.end_date);
-                                            endDate.setDate(endDate.getDate() + 1);
-                                            const adjustedValues = { ...values, end_date: endDate.toISOString().slice(0, 10) };
-                                            handleSubmit(adjustedValues, { resetForm });
+                                            if(values.end_date){
+                                                const endDate = new Date(values.end_date);
+                                                endDate.setDate(endDate.getDate() + 1);
+                                                const adjustedValues = { ...values, end_date: endDate.toISOString().slice(0, 10) };
+                                                handleSubmit(adjustedValues, { resetForm });
+                                            } else{
+                                                handleSubmit(values, { resetForm });
+                                            }
+
                                         }}
                                     >
                                         {({ resetForm }) => (
@@ -206,10 +261,13 @@ export const Reports = ({userId}) => {
                                                 <label htmlFor="report_type">Report Type: </label>
                                                 <Field as="select" name="report_type" id="report_type" className="form-control dropdown-content z-[1] menu p-2 shadow bg-base-100 w-64">
                                                     <option value="">Select an option</option>
-                                                    <option value={0}> Defaulted Subscriptions Payments of Subscribers</option>
-                                                    <option value={1}> My Active Referrals</option>
-                                                    <option value={2}> My Inactive Referrals</option>
-                                                    {/* <option value={3}> Payment due to me this month</option> */}
+                                                    <option value={0}> Defaulted Subscription Payments of Subscribers</option>
+                                                    <option value={1}> Subscription Cancelled by Subscribers</option>
+                                                    <option value={2}> YTD Referrals per Ambassador</option>
+                                                    <option value={3}> My Active Referrals</option>
+                                                    <option value={4}> My Inactive Referrals</option>
+                                                    <option value={5}> Payments due</option>
+                                                    <option value={6}> Payments made</option>
                                                 </Field>
                                                 <ErrorMessage name="report_type" component="div" className="text-danger text-sm" />
                                             </div>
@@ -284,7 +342,17 @@ export const Reports = ({userId}) => {
                                                 </>
                                             })}
 
-                                            {/* {reportApiUrl === 'payment-due-this-month' && paymentDueThisMonth && paymentDueThisMonth.map((user, index) => {
+                                           
+                                            {reportApiUrl === 'subscription-cancelledby-subscriber' && subscriptionCancelledbySubscriber && subscriptionCancelledbySubscriber.map((user, index) => {
+                                                return <>
+                                                    <tr key={index}>
+                                                        <td>{user.Subscriber_firstname ? user.Subscriber_firstname : 'N/A'} </td>
+                                                        <td>{user.Subscriber_lastname ? user.Subscriber_lastname : 'N/A'}</td>
+                                                        <td>{user.cancellation_date ? new Date(user.cancellation_date).toLocaleDateString() : 'N/A'}</td>
+                                                    </tr>
+                                                </>
+                                            })}
+                                             {reportApiUrl === 'yld-referrals' && yldAmbassador && yldAmbassador.map((user, index) => {
                                                 return <>
                                                     <tr key={index}>
                                                         <td>{user.firstname ? user.firstname : 'N/A'} </td>
@@ -294,7 +362,29 @@ export const Reports = ({userId}) => {
                                                         <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
                                                     </tr>
                                                 </>
-                                            })} */}
+                                            })}
+                                            {reportApiUrl === 'payment-due' && paymentDue && paymentDue.map((user, index) => {
+                                                return <>
+                                                    <tr key={index}>
+                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
+                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                        <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
+                                                        <td>{user.referral_count ? user.referral_count : 'N/A'}</td>
+                                                        <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
+                                                    </tr>
+                                                </>
+                                            })}
+                                            {reportApiUrl === 'payment-made' && paymentMade && paymentMade.map((user, index) => {
+                                                return <>
+                                                    <tr key={index}>
+                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
+                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                        <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
+                                                        <td>{user.referral_count ? user.referral_count : 'N/A'}</td>
+                                                        <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
+                                                    </tr>
+                                                </>
+                                            })}
                                         </tbody>
                                     </table>
                                 </div>

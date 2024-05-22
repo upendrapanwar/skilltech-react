@@ -106,7 +106,7 @@ const Dashboard = () => {
    *
    */
   const handleOrderHistory = () => {
-    navigate("/learner/order-history");
+    navigate("/learner/order-history"); 
   };
   /***********************************************************************/
   /***********************************************************************/
