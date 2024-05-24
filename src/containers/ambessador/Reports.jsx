@@ -4,25 +4,21 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import ReportSchema from "../../validation-schemas/ReportSchema";
 
-export const Reports = ({userId}) => {
+export const Reports = ({referral_code, userId}) => {
     const reportTitleAndUrl = [
         { title: "Defaulted Subscription Payment of Subscribers", url: "defaulted-subscription-paymentof-subscriber" },
         { title: "Subscription Cancelled by Subscribers", url: "subscription-cancelledby-subscriber" },
-        { title: "YTD Referrals per Ambassador", url: "yld-referrals" },
         { title: "My Active Referrals", url: "my-active-referral" },
         { title: "My Inactive Referrals", url: "my-inactive-referral" },
         { title: "Payments due", url: "payment-due" },
-        { title: "Payments made", url: "payment-made" },
     ];
 
     const reportTableHeader = [
         ["Referral (Subscriber) First Name", "Referral (Subscriber) Last Name", "Payment Failure Reason"],
         ["Subscriber First Name", "Subscriber Last Name", "Date of HVG subscription Cancellation"],
-        [],
         ["Referral (Subscriber) First Name", "Referral (Subscriber) Last Name", "Date of use of referral code", "Referral Status (by Subscriber)"],
         ["Referral (Subscriber) First Name", "Referral (Subscriber) Last Name", "Date of use of referral code", "Referral Status (by Subscriber)"],
-        [],
-        [],
+        ["Subscriber First Name", "Subscriber Last Name", "Ambassador Referral Code", "Subscriber Subscription Status"],
     ];
 
     const [reportApiUrl, setReportApiUrl] = useState([]);
@@ -30,9 +26,8 @@ export const Reports = ({userId}) => {
     const [myActiveReferral, setActiveReferral] = useState([]);
     const [myInactiveReferral, setInactiveReferral] = useState([]);
     const [subscriptionCancelledbySubscriber, setSubscriptionCancelledbySubscriber ] = useState([]);
-    const [yldAmbassador, setYldAmbassador ] = useState([]);
     const [paymentDue, setPaymentDue ] = useState([]);
-    const [paymentMade, setPaymentMade] = useState([]);
+    const [payementDueAmount, setPayementDueAmount ] = useState([]);
     const [index, setIndex] = useState(0);
 
     const apiUrl = 'defaulted-subscription-paymentof-subscriber';
@@ -76,7 +71,7 @@ export const Reports = ({userId}) => {
             urls += '/' + values.end_date;
         }
 
-        axios.post(`common/${urls}`, { userId: userId.id })
+        axios.post(`common/${urls}`, { userId: userId.id, referral_code: referral_code })
         .then(response => {
             if (response.data.status) {
                 toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
@@ -92,14 +87,13 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'subscription-cancelledby-subscriber') {
                     setSubscriptionCancelledbySubscriber(response.data.data);
                 }
-                if (apiUrl === 'yld-referrals') {
-                    setYldAmbassador(response.data.data);
-                }
                 if (apiUrl === 'payment-due') {
                     setPaymentDue(response.data.data);
-                }
-                if (apiUrl === 'payment-made') {
-                    setPaymentMade(response.data.data);
+                    const paymentDueData = response.data.data;
+                    const countActiveStatus = paymentDueData.filter(subscriber => subscriber.referral_status === "Active").length;
+                    const payement_due_amount = countActiveStatus * 5;
+                    setPayementDueAmount(payement_due_amount);
+                    console.log('paymentDue', response.data.data);
                 }
             } else {
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
@@ -114,14 +108,8 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'subscription-cancelledby-subscriber') {
                     setSubscriptionCancelledbySubscriber('');
                 }
-                if (apiUrl === 'yld-referrals') {
-                    setYldAmbassador('');
-                }
                 if (apiUrl === 'payment-due') {
                     setPaymentDue('');
-                }
-                if (apiUrl === 'payment-made') {
-                    setPaymentMade('');
                 }
             }
         }).catch(error => {
@@ -162,14 +150,8 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'subscription-cancelledby-subscriber') {
                     setSubscriptionCancelledbySubscriber(response.data.data);
                 }
-                if (apiUrl === 'yld-referrals') {
-                    setYldAmbassador(response.data.data);
-                }
                 if (apiUrl === 'payment-due') {
                     setPaymentDue(response.data.data);
-                }
-                if (apiUrl === 'payment-made') {
-                    setPaymentMade(response.data.data);
                 }
             } else {
                 if (apiUrl === 'defaulted-subscription-paymentof-subscriber') {
@@ -184,14 +166,8 @@ export const Reports = ({userId}) => {
                 if (apiUrl === 'subscription-cancelledby-subscriber') {
                     setSubscriptionCancelledbySubscriber('');
                 }
-                if (apiUrl === 'yld-referrals') {
-                    setYldAmbassador('');
-                }
                 if (apiUrl === 'payment-due') {
                     setPaymentDue('');
-                }
-                if (apiUrl === 'payment-made') {
-                    setPaymentMade('');
                 }
             }
         }).catch(error => {
@@ -203,6 +179,8 @@ export const Reports = ({userId}) => {
             console.log(error);
         })
     };
+
+    
 
   return (
     <div>
@@ -263,11 +241,9 @@ export const Reports = ({userId}) => {
                                                     <option value="">Select an option</option>
                                                     <option value={0}> Defaulted Subscription Payments of Subscribers</option>
                                                     <option value={1}> Subscription Cancelled by Subscribers</option>
-                                                    <option value={2}> YTD Referrals per Ambassador</option>
-                                                    <option value={3}> My Active Referrals</option>
-                                                    <option value={4}> My Inactive Referrals</option>
-                                                    <option value={5}> Payments due</option>
-                                                    <option value={6}> Payments made</option>
+                                                    <option value={2}> My Active Referrals</option>
+                                                    <option value={3}> My Inactive Referrals</option>
+                                                    <option value={4}> Payments due to ambassador</option>
                                                 </Field>
                                                 <ErrorMessage name="report_type" component="div" className="text-danger text-sm" />
                                             </div>
@@ -310,8 +286,8 @@ export const Reports = ({userId}) => {
                                             {reportApiUrl === 'defaulted-subscription-paymentof-subscriber' && defaultedSubscriptionPaymentofsubscriber.length > 0 && defaultedSubscriptionPaymentofsubscriber.map((user, index) => {
                                                     return (
                                                         <tr key={index}>
-                                                            <td>{user.firstname ? user.firstname : 'N/A'} </td>
-                                                            <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                            <td>{user.Subscriber_firstname ? user.Subscriber_firstname : 'N/A'} </td>
+                                                            <td>{user.Subscriber_lastname ? user.Subscriber_lastname : 'N/A'}</td>
                                                             <td>{user.payment_status ? 'Payment failed' : 'N/A'}</td>
                                                         </tr>
                                                     );
@@ -322,8 +298,8 @@ export const Reports = ({userId}) => {
                                             {reportApiUrl === 'my-active-referral' && myActiveReferral.length > 0 && myActiveReferral.map((user, index) => {
                                                 return (
                                                     <tr key={index}>
-                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
-                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                        <td>{user.Subscriber_firstname ? user.Subscriber_firstname : 'N/A'} </td>
+                                                        <td>{user.Subscriber_lastname ? user.Subscriber_lastname : 'N/A'}</td>
                                                         <td>{user.referral_used_date ? new Date(user.referral_used_date).toLocaleDateString() : 'N/A'}</td>
                                                         <td>{user.referral_status ? user.referral_status : 'N/A'}</td>
                                                     </tr>
@@ -334,8 +310,8 @@ export const Reports = ({userId}) => {
                                             {reportApiUrl === 'my-inactive-referral' && myInactiveReferral && myInactiveReferral.map((user, index) => {
                                                 return <>
                                                     <tr key={index}>
-                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
-                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                        <td>{user.Subscriber_firstname ? user.Subscriber_firstname : 'N/A'} </td>
+                                                        <td>{user.Subscriber_lastname ? user.Subscriber_lastname : 'N/A'}</td>
                                                         <td>{user.referral_used_date ? new Date(user.referral_used_date).toLocaleDateString() : 'N/A'}</td>
                                                         <td>{user.referral_status ? user.referral_status : 'N/A'}</td>
                                                     </tr>
@@ -352,46 +328,38 @@ export const Reports = ({userId}) => {
                                                     </tr>
                                                 </>
                                             })}
-                                             {reportApiUrl === 'yld-referrals' && yldAmbassador && yldAmbassador.map((user, index) => {
-                                                return <>
-                                                    <tr key={index}>
-                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
-                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
-                                                        <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
-                                                        <td>{user.referral_count ? user.referral_count : 'N/A'}</td>
-                                                        <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
+                                            {reportApiUrl === 'payment-due' && paymentDue && (
+                                                <>
+                                                    {paymentDue.map((user, index) => (
+                                                        <tr key={index}>
+                                                            <td>{user.Subscriber_firstname ? user.Subscriber_firstname : 'N/A'}</td>
+                                                            <td>{user.Subscriber_lastname ? user.Subscriber_lastname : 'N/A'}</td>
+                                                            <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
+                                                            <td>{user.referral_status ? user.referral_status : 'N/A'}</td>
+                                                        </tr>
+                                                    ))}
+                                                    <tr>
+                                                        <td colSpan="3" style={{ textAlign: 'right' }}>Total Amount Due:  </td>
+                                                        <td>{payementDueAmount ? payementDueAmount : 0 }</td>
                                                     </tr>
                                                 </>
-                                            })}
-                                            {reportApiUrl === 'payment-due' && paymentDue && paymentDue.map((user, index) => {
+                                            )}
+                                            {/* {reportApiUrl === 'payment-due' && paymentDue && paymentDue.map((user, index) => {
                                                 return <>
                                                     <tr key={index}>
-                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
-                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
+                                                        <td>{user.Subscriber_firstname ? user.Subscriber_firstname : 'N/A'} </td>
+                                                        <td>{user.Subscriber_lastname ? user.Subscriber_lastname : 'N/A'}</td>
                                                         <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
-                                                        <td>{user.referral_count ? user.referral_count : 'N/A'}</td>
-                                                        <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
+                                                        <td>{user.referral_status ? user.referral_status : 'N/A'}</td>
                                                     </tr>
                                                 </>
-                                            })}
-                                            {reportApiUrl === 'payment-made' && paymentMade && paymentMade.map((user, index) => {
-                                                return <>
-                                                    <tr key={index}>
-                                                        <td>{user.firstname ? user.firstname : 'N/A'} </td>
-                                                        <td>{user.surname ? user.surname : 'N/A'}</td>
-                                                        <td>{user.referral_code ? user.referral_code : 'N/A'}</td>
-                                                        <td>{user.referral_count ? user.referral_count : 'N/A'}</td>
-                                                        <td>{user.due_amount ? user.due_amount : 'N/A'}</td>
-                                                    </tr>
-                                                </>
-                                            })}
+                                            })} */}
                                         </tbody>
                                     </table>
                                 </div>
                                 </div>
                             </div>
                         </div>
-
                 </div>
               </div>
             </div>

@@ -64,8 +64,8 @@ const Dashboard = () => {
     }
     getMyCourses();
     getReferralCode();
-    paymentDueToAmbassador();
     getReferralsThisMonth();
+    paymentDueToAmbassador();
   }, []);
   toast.configure();
 
@@ -404,7 +404,7 @@ const Dashboard = () => {
 };
 
 const paymentDueToAmbassador = () => {
-  axios.post(`common/payment-due-this-month`, { userId: userInfo.id })
+  axios.post(`common/payment-due`, { referral_code: referralCode })
   .then(response => {
       if (response.data.status) {
           toast.success(response.data.message, { position: "top-center", autoClose: 3000 });
@@ -614,7 +614,7 @@ const paymentDueToAmbassador = () => {
             </div>
           </div>
 
-         <Reports userId={userData}/>
+         <Reports referral_code={referralCode} userId={userData}/>
 
           <div className="hvg__card_section mb-4">
             <div className="card">

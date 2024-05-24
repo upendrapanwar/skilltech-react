@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import banner from "../assets/images/homeBanner.svg";
-import about from "../assets/images/about-3-5.svg";
+import about from "../assets/images/HVG-2024-Inages-1.jpg";
 import grid1 from "../assets/images/grid1.svg";
 import grid2 from "../assets/images/grid2.svg";
-import highVista from "../assets/images/4-410x260_1.svg";
+import highVista from "../assets/images/HVG-2024-Inages-2.jpg";
 import employability from "../assets/images/Employability.png";
 import processimg from "../assets/images/Process.png";
 import brokenArrow from "../assets/images/solar_arrow-up-broken.svg";
@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { addToCart } from "../redux/cartSlice";
 import solarArrowUpBroken from "../assets/images/solar_arrow-up-broken.svg";
-import authenticBookClub from "../assets/images/authentic-book-club-scene-3-min1.jpg";
+import authenticBookClub from "../assets/images/HVG-2024-Inages-3.jpg";
 import womanSitting from "../assets/images/woman-sitting-library-with-her-laptop-min1.jpg";
 import Modal from "../components/common/Modal";
 import { toast } from "react-toastify";
@@ -420,7 +420,7 @@ const Home = () => {
         <div className="home-about">
           <div className="container">
             <div className="row">
-              <div className="col-md-7">
+              <div className="col-md-6">
                 <div className="home-about-content-wrapper">
                   <div className="content-heading">
                     <h3 className="mb-3">
@@ -454,11 +454,18 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-5">
+              {/* <div className="col-md-5">
                 <div className="home-about-img-wrapper">
                   <img className="home-about-img2" src={about} alt="" />
                 </div>
+              </div> */}
+               <div className="col-md-6">
+              <div className="catimg-wrapper">
+                <div className="table-pie-image mt-2">
+                  <img src={about} alt="" />
+                </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -481,11 +488,11 @@ const Home = () => {
                 <div className="table-heading">
                   <h3>Become a High Vista Guild Subscriber</h3>
                   <p className="pb-2 content-para">
-                  At the High Vista Guild, we believe in the power of lifelong learning. That’s why
-                  we’ve developed 10 unique online short courses, tailor-made with your interests in
-                  mind. Whether you're looking at starting your own business, unleashing the power
-                  of social media income, epic event planning or mastering the art of blogging, our
-                  courses have something for everyone.
+                  Your subscription unlocks a continuously growing library of online courses, offering endless learning opportunities.
+                  <br />
+                  We encourage our subscribers to stay engaged and revisit our platform regularly to discover the latest additions tailored for an evolving learning experience.
+                  <br />
+                  Anyone can become a subscriber, including students, gap year participants, current learners, employed individuals, and those currently seeking employment. Regardless of your current status or circumstances, everyone is encouraged to become a subscriber and benefit from our online training.
                   </p>
                   {/*<p className="priceperMonth"><span>R500 /</span> per month</p>*/}
                 </div>

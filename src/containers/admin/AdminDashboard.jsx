@@ -651,6 +651,12 @@ const AdminDashboard = () => {
                                             whiteSpace: 'nowrap', // add white-space nowrap to prevent wrapping
                                         },
                                         },
+                                        headCells: {
+                                            style: {
+                                                color: '#FFFFFF', // set your desired color here, e.g., blue
+                                                backgroundColor: '#828282'
+                                            },
+                                        },
                                     }}
                                     />
                                 </DataTableExtensions>
