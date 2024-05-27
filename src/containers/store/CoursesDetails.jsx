@@ -230,7 +230,7 @@ const CoursesDetails = () => {
         if (fullname === "Assistant Life Coach ") {
           return "Employability";
         } else if (fullname === "Community Counsellor") {
-          return "Technopreour";
+          return "Technopreneur";
         } else {
           return fullname;
         }
@@ -281,7 +281,6 @@ const CoursesDetails = () => {
             if (response.data) {
               if (response.data.data.length === 1) {
                 setIsSubscribed(true);
-                console.log("setMyCourses#######***** ", response.data.data);
               }
             }
           })
@@ -299,11 +298,11 @@ const CoursesDetails = () => {
     /***********************************************************************/ 
     
     const indexOfLastPost = currentPage * postsPerPage; 
-    console.log("indexOfLastPost", indexOfLastPost)
+    console.log("indexOfLastPost", indexOfLastPost);
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    console.log("indexOfFirstPost", indexOfFirstPost)
+    console.log("indexOfFirstPost", indexOfFirstPost);
     const currentPosts = myApi?.slice(indexOfFirstPost, indexOfLastPost);
-    console.log("currentPosts", currentPosts)
+    console.log("currentPosts", currentPosts);
 
     const handleBackToBrowse = () => {
         navigate('/browse-courses');

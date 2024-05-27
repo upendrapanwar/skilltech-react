@@ -466,6 +466,68 @@ const Cart = () => {
   /***********************************************************************/
 
 
+const handleMoodleRegistration = async () => {
+  const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
+  const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
+  const MOODLE_CREATE_FUNCTION = 'core_user_create_users';
+
+  console.log('Moodle URL:', MOODLE_URL);
+  console.log('Moodle Token:', MOODLE_TOKEN);
+
+  try {
+    const response = await axios.post(MOODLE_URL, null, {
+      params: {
+        wstoken: MOODLE_TOKEN,
+        moodlewsrestformat: 'json',
+        wsfunction: MOODLE_CREATE_FUNCTION,
+        users: [
+          {
+            username: 'nextuser',
+            email: 'next@mailinator.com',
+            password: 'Nest@123',
+            firstname: 'Nest',
+            lastname: 'User',
+          },
+        ],
+      },
+    });
+
+    console.log('User created:', response.data);
+  } catch (error) {
+    console.error('Error creating user:', error.response ? error.response.data : error.message);
+  }
+};
+
+
+const handleMoodleUserData = async () => {
+  const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
+  const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
+  // const MOODLE_GET_FUNCTION = 'core_user_get_users';
+  const MOODLE_GET_FUNCTION = 'core_user_get_users_by_field';
+  // const SEARCH_CRITERIA = {
+  //   key: 'useremail',
+  //   value: '%'
+  // };
+
+  try {
+    const response = await axios.post(MOODLE_URL, null, {
+      params: {
+        wstoken: MOODLE_TOKEN,
+        moodlewsrestformat: 'json',
+        wsfunction: MOODLE_GET_FUNCTION,
+        // criteria: JSON.stringify([SEARCH_CRITERIA]),
+        field: 'id',
+        values: JSON.stringify([289]),
+      },
+    });
+
+    console.log('User data:', response.data);
+  } catch (error) {
+    console.error('Error creating user:', error.response ? error.response.data : error.message);
+  }
+};
+
+
   return (
     <>
       {identifier && (
@@ -661,6 +723,18 @@ const Cart = () => {
             <span></span>
           )}
         </div>
+        <span className="amb-btn mt-4">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-color bt-size signbtn"
+                  onClick={() => handleMoodleUserData()}
+                >
+                  Test Moodle
+                  <span className="arrow-btn">
+                    <img src={solarArrowUpBroken} alt="" />
+                  </span>
+                </button>
+              </span>
       </div>
       <Footer />
     </>
