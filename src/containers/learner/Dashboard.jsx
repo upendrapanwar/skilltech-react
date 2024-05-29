@@ -25,9 +25,12 @@ const Dashboard = () => {
     const referral = sessionStorage.getItem("referralCode");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [userProfileData, setUserProfileData] = useState([]);
+    const [isProfileLoaded, setIsProfileLoaded] = useState(false); 
 
     useEffect(() => {
         //console.log('isSubscriberRegister',userInfo.isSubscriberRegister);
+        getUserDetails();
         if (userInfo && userInfo.isSubscriberRegister === null) {
             //completeRegistration();
         }
@@ -48,12 +51,13 @@ const Dashboard = () => {
           }
 
         getMyCourses();
-
+        console.log("userProfileData>>>>>>>>>>>>>>>>>>>>>>>>>>>", userProfileData)
     }, []);
     toast.configure();
     const navigate = useNavigate();
-    /***********************************************************************/
-    /***********************************************************************/
+    
+  /***********************************************************************/
+  /***********************************************************************/
     /**
      * Handle payment success from payfast
      * 
@@ -102,6 +106,7 @@ const Dashboard = () => {
           .then((response) => {
             if (response) {
               console.log("Save subscription: ", response)
+              
               toast.success("Payment Successful!", {
                 position: "top-center",
                 autoClose: 3000,
@@ -313,6 +318,27 @@ const Dashboard = () => {
             }
         });
 };
+    /***********************************************************************/
+    /***********************************************************************/
+     /**
+   * Handle User details
+   *
+   */
+  const getUserDetails = () => {
+    axios.get('user/get-profile-details/'+ userData.id).then(response => {
+            if (response.data) {
+                if(response.data.status) {
+                  setUserProfileData(response.data.data[0]);
+                  setIsProfileLoaded(true);
+                    console.log("getUserDetails Response Data: ",response.data.data[0]);
+                }
+            }
+        }).catch(error => {
+            if (error.response) {
+              console.log("getUserDetails eror: ",  error.message);
+            }
+        })
+  };
 
     /***********************************************************************/
     /***********************************************************************/
@@ -371,6 +397,80 @@ const Dashboard = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
+    useEffect(() => {
+      if (isProfileLoaded && location.pathname.includes("/success")) {
+        handleMoodleCreateUser();
+      }
+    }, [isProfileLoaded]);
+    /***********************************************************************/
+    /***********************************************************************/
+     /**
+     * Handle Moddle create user
+     * 
+     */
+    const handleMoodleCreateUser = async () => {
+      if (!userProfileData.firstname || !userProfileData.surname) {
+        console.error('User profile data is incomplete.');
+        return;
+      }
+      const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
+      const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
+      const MOODLE_CREATE_FUNCTION = 'core_user_create_users';
+      var moodleLoginId = '';
+    
+    
+      console.log("userData_________________", userProfileData);
+      console.log("username_________________", `${userProfileData.firstname}_${userProfileData.surname}`.toLowerCase());
+      // console.log("moodle_pass_________________", atob( userProfileData.moodle_pass ));
+      const moodle_pass = 'MTIzNDU2';
+
+      try {
+        //Create user in Moodle
+        const response = await axios.post(MOODLE_URL, null, {
+          params: {
+            wstoken: MOODLE_TOKEN,
+            moodlewsrestformat: 'json',
+            wsfunction: MOODLE_CREATE_FUNCTION,
+            users: [
+              {
+                username: `${userProfileData.firstname}_${userProfileData.surname}`.toLowerCase(),
+                email: userProfileData.email,
+                // password: atob( moodle_pass ),
+                password: atob( userProfileData.moodle_pass ),
+                // password: 'Mnbaaa@123',
+                firstname: userProfileData.firstname,
+                lastname: userProfileData.surname,
+              },
+            ],
+          },
+        });
+    
+        console.log('User created:', response.data);
+        moodleLoginId = response.data[0].id;
+        console.log('User created moodleLoginId:', response.data[0].id);
+      } catch (error) {
+        console.error('Error creating user:', error.response ? error.response.data : error.message);
+      }
+    
+      //Save Moodle Id in database
+        axios.post('user/save-moodle-id/'+ userData.id, {moodleLoginId: moodleLoginId})
+        .then(response => {
+                if (response.data) {
+                    if(response.data.status) {
+                        console.log("save-moodle-id: ",response.data);
+                    }
+                }
+            }).catch(error => {
+                if (error.response) {
+                console.log("error in save-moodle-id: ", error.message);
+                }
+            })
+    };
+
+    /***********************************************************************/
+    /***********************************************************************/
+
+
     return (
 
         <>
