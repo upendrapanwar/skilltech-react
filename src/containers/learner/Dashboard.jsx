@@ -51,7 +51,6 @@ const Dashboard = () => {
           }
 
         getMyCourses();
-        console.log("userProfileData>>>>>>>>>>>>>>>>>>>>>>>>>>>", userProfileData)
     }, []);
     toast.configure();
     const navigate = useNavigate();
@@ -251,16 +250,64 @@ const Dashboard = () => {
    * Cancel course by user
    *
    */
-  const handleCancelClick = async (merchantData, orderId) => {
-    const merchant_data = JSON.parse(merchantData);
-        const token = merchant_data.token;
-        const merchantId = merchant_data.merchant_id;
-        const signature = merchant_data.signature;
+  const handleCancelClick = async (merchant_Data, orderId) => {
+    console.log('merchantData***********', merchant_Data)
+    const merchantData = JSON.parse(merchant_Data);
+
+    const spayId = '';
+    await axios
+    .post("common/getSubscriptionId", userData.id)
+    .then((response) => {
+      console.log("subscriptionId", response.data.data);
+      
+      localStorage.setItem("subscriptionId", response.data.data);
+      spayId = response.data.data;
+      // Generate payment identifier
+    })
+    .catch((error) => {
+      
+      if (error.response) {
+        toast.error("Please complete your registation", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      }
+    })
+
+    let userName = userData.name;
+    let userArray = userName.split(" ");
+    let firstName = userArray[0];
+    let lastName = userArray[1];
+    const merchant_data = {
+      merchant_id: process.env.REACT_APP_MERCHANT_ID,
+      merchant_key: process.env.REACT_APP_MERCHANT_KEY,
+      return_url: process.env.REACT_APP_NGROK_URL + "/learner/dashboard/success",
+      cancel_url: process.env.REACT_APP_NGROK_URL + "/learner/dashboard/cancel",
+      notify_url: process.env.REACT_APP_NGROK_NODE_URL + "/common/notify" +'/'+ spayId,
+      name_first: firstName,
+      name_last: lastName,
+      email_address: userData.email,
+      cell_number: "0765434543",
+      m_payment_id: merchantData.m_payment_id,
+      amount:  merchantData.amount_gross,
+      item_name: merchantData.item_name,
+      item_description: "Order for Hign Vista Subscription",
+      email_confirmation: 1,
+      confirmation_address: userData.email,
+      subscription_type: 1,
+      billing_date: new Date().toISOString().slice(0, 10),
+      recurring_amount: merchantData.amount_gross,
+      frequency: 3,
+      cycles: 12,
+    };
+
+    // const merchant_data = JSON.parse(merchantData);
 
         const reqData = {
-          token: token,
-          merchantId: merchantId,
-          signature: signature,
+          token: merchantData.token,
+          merchantId: merchantData.merchant_id,
+          signature: merchantData.signature,
+          merchant_data: merchant_data
         }
         console.log("reqData", reqData);
     axios
@@ -270,7 +317,7 @@ const Dashboard = () => {
 
         if (response.data && response.data.status) {
             console.log("Cancel response data:", response.data.data);
-            cancelCourseByUser(orderId);
+            // cancelCourseByUser(orderId);
             toast.success("Payment cancelled.", {
                 position: "top-center",
                 autoClose: 3000,
@@ -405,8 +452,8 @@ const Dashboard = () => {
     /***********************************************************************/
     /***********************************************************************/
      /**
-     * Handle Moddle create user
-     * 
+     * Handle Moddle create user   
+     *                          
      */
     const handleMoodleCreateUser = async () => {
       if (!userProfileData.firstname || !userProfileData.surname) {
@@ -417,7 +464,7 @@ const Dashboard = () => {
       const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
       const MOODLE_CREATE_FUNCTION = 'core_user_create_users';
       var moodleLoginId = '';
-    
+       
     
       console.log("userData_________________", userProfileData);
       console.log("username_________________", `${userProfileData.firstname}_${userProfileData.surname}`.toLowerCase());
@@ -559,8 +606,8 @@ const Dashboard = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary btn-color bt-size-auto"
-                                                            // onClick={() => handleCancelClick(item.merchantData, item._id)}
-                                                            onClick={() => cancelCourseByUser(item._id)}
+                                                            onClick={() => handleCancelClick(item.merchantData, item._id)}
+                                                            // onClick={() => cancelCourseByUser(item._id)}
                                                         >
                                                             Unsubscribe
                                                         </button>
