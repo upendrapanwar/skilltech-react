@@ -274,31 +274,31 @@ const Dashboard = () => {
       }
     })
 
-    let userName = userData.name;
-    let userArray = userName.split(" ");
-    let firstName = userArray[0];
-    let lastName = userArray[1];
+    // let userName = userData.name;
+    // let userArray = userName.split(" ");
+    // let firstName = userArray[0];
+    // let lastName = userArray[1];
     const merchant_data = {
       merchant_id: process.env.REACT_APP_MERCHANT_ID,
       merchant_key: process.env.REACT_APP_MERCHANT_KEY,
-      return_url: process.env.REACT_APP_NGROK_URL + "/learner/dashboard/success",
-      cancel_url: process.env.REACT_APP_NGROK_URL + "/learner/dashboard/cancel",
-      notify_url: process.env.REACT_APP_NGROK_NODE_URL + "/common/notify" +'/'+ spayId,
-      name_first: firstName,
-      name_last: lastName,
-      email_address: userData.email,
-      cell_number: "0765434543",
-      m_payment_id: merchantData.m_payment_id,
+      // return_url: process.env.REACT_APP_NGROK_URL + "/learner/dashboard/success",
+      // cancel_url: process.env.REACT_APP_NGROK_URL + "/learner/dashboard/cancel",
+      // notify_url: process.env.REACT_APP_NGROK_NODE_URL + "/common/notify" +'/'+ spayId,
+      // name_first: firstName,
+      // name_last: lastName,
+      // email_address: userData.email,
+      // cell_number: "0765434543",
+      // m_payment_id: merchantData.m_payment_id,
       amount:  merchantData.amount_gross,
       item_name: merchantData.item_name,
-      item_description: "Order for Hign Vista Subscription",
-      email_confirmation: 1,
-      confirmation_address: userData.email,
-      subscription_type: 1,
-      billing_date: new Date().toISOString().slice(0, 10),
-      recurring_amount: merchantData.amount_gross,
-      frequency: 3,
-      cycles: 12,
+      // item_description: "Order for Hign Vista Subscription",
+      // email_confirmation: 1,
+      // confirmation_address: userData.email,
+      // subscription_type: 1,
+      // billing_date: new Date().toISOString().slice(0, 10),
+      // recurring_amount: merchantData.amount_gross,
+      // frequency: 3,
+      // cycles: 12,
     };
 
     // const merchant_data = JSON.parse(merchantData);
@@ -464,12 +464,6 @@ const Dashboard = () => {
       const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
       const MOODLE_CREATE_FUNCTION = 'core_user_create_users';
       var moodleLoginId = '';
-       
-    
-      console.log("userData_________________", userProfileData);
-      console.log("username_________________", `${userProfileData.firstname}_${userProfileData.surname}`.toLowerCase());
-      // console.log("moodle_pass_________________", atob( userProfileData.moodle_pass ));
-      const moodle_pass = 'MTIzNDU2';
 
       try {
         //Create user in Moodle
@@ -482,9 +476,7 @@ const Dashboard = () => {
               {
                 username: `${userProfileData.firstname}_${userProfileData.surname}`.toLowerCase(),
                 email: userProfileData.email,
-                // password: atob( moodle_pass ),
                 password: atob( userProfileData.moodle_pass ),
-                // password: 'Mnbaaa@123',
                 firstname: userProfileData.firstname,
                 lastname: userProfileData.surname,
               },
