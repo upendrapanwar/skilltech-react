@@ -254,7 +254,7 @@ const Dashboard = () => {
     console.log('merchantData***********', merchant_Data)
     const merchantData = JSON.parse(merchant_Data);
 
-    const spayId = '';
+    const spayId = ''; 
     await axios
     .post("common/getSubscriptionId", userData.id)
     .then((response) => {
@@ -349,6 +349,7 @@ const Dashboard = () => {
             if (response.data && response.data.status) {
                 console.log("Cancel response data:", response.data.data);
                 getMyCourses();
+                // handleMoodleUserSuspension();
                 toast.success("Payment cancelled.", {
                     position: "top-center",
                     autoClose: 3000,
@@ -509,6 +510,32 @@ const Dashboard = () => {
     /***********************************************************************/
     /***********************************************************************/
 
+    const handleMoodleUserSuspension = async () => {
+      const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
+      const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
+      const MOODLE_GET_FUNCTION = 'core_user_update_users';
+    
+      try {
+        const response = await axios.post(MOODLE_URL, null, {
+          params: { 
+            wstoken: MOODLE_TOKEN,
+            moodlewsrestformat: 'json',
+            wsfunction: MOODLE_GET_FUNCTION,
+            users: [
+              {
+                id: userProfileData.moodle_login_id,
+                suspended: 1 //1 to suspend, 0 to not suspend(active)
+                // firstname: 'Testing'
+              },
+            ],
+          },
+        });
+    
+        console.log('User data:', response.data);
+      } catch (error) {
+        console.error('Error creating user:', error.response ? error.response.data : error.message);
+      }
+    };
 
     return (
 
@@ -598,8 +625,8 @@ const Dashboard = () => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary btn-color bt-size-auto"
-                                                            onClick={() => handleCancelClick(item.merchantData, item._id)}
-                                                            // onClick={() => cancelCourseByUser(item._id)}
+                                                            // onClick={() => handleCancelClick(item.merchantData, item._id)}
+                                                            onClick={() => cancelCourseByUser(item._id)}
                                                         >
                                                             Unsubscribe
                                                         </button>

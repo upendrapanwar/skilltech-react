@@ -12,10 +12,12 @@ import SignupSchema from "../validation-schemas/SignupSchema";
 import { Formik } from 'formik';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Signup = () => {
     //const clientId = "598585225797-ghhnu1br04uep4s544mdn67kmq46v2tt.apps.googleusercontent.com";
     let [loading, setLoading] = useState('false');
+    const [isCaptchaVerified, setIsCaptchaVerified] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
 
@@ -84,7 +86,11 @@ const Signup = () => {
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                toast.error(error.response.data.message, { position: "top-center",autoClose: 3000 });
+                const message = "User already Exist!<br>Please login or complete the Subscription Registration Form if not already completed.";
+                toast.error(
+                    <div dangerouslySetInnerHTML={{ __html: message }} />,
+                    { position: "top-center", autoClose: 3000 }
+        );
             }
         }).finally(() => {
             setTimeout(() => {
@@ -97,6 +103,13 @@ const Signup = () => {
     /*const responseFacebook = (response) => {
         console.log(response);
     }*/
+
+    function onCaptchaChange(value) {
+        console.log("Captcha value:", value);
+        setIsCaptchaVerified(!!value);
+      }
+
+
     return (
         <>
             {loading === true ? <Loader /> : ''}
@@ -211,7 +224,16 @@ const Signup = () => {
                                                         <small className="text-danger">{errors.role}</small>
                                                     ) : null}
                                                 </div>*/}
-                                                <button type="submit" className="btn btn-primary login-btn bt-size">Next <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
+                                                <ReCAPTCHA
+                                                    sitekey="6Lf5TvApAAAAAFaQQL4wHw9AMg5uX3oRtTdiJ0Zz"
+                                                    onChange={onCaptchaChange}
+                                                />
+                                                <br />
+                                                <button 
+                                                type="submit" 
+                                                className="btn btn-primary login-btn bt-size"
+                                                disabled={!isCaptchaVerified}
+                                                >Next <span className="arrow-btn"><img src={solarArrowUpBroken} alt="My Happy SVG" /></span></button>
 
                                                 {/*<div className="or text-center mt-3">
                                                     <h6>OR</h6>

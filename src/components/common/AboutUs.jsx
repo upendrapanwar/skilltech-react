@@ -56,7 +56,7 @@ const AboutUs = () => {
 
                 if (response.data.status) {
                     setMyCourses(response.data.data);
-                    console.log(response.data)
+                    console.log(response.data);
                 }
 
             }
@@ -80,7 +80,7 @@ const AboutUs = () => {
     /***********************************************************************/
     /***********************************************************************/
 
-
+ 
     return (
 
         <>
@@ -136,10 +136,20 @@ const AboutUs = () => {
                                             For more information on this innovative and exciting opportunity, please contact one of our friendly call centre agents on 012 110 4205.
                                         </p>
                                     </div>
-                                    <div className="col-md-12">
-                                        <img style={{ display: "block", margin: "auto" }} src={demo_video_image} alt="" />
-                                    </div>
                                 </div>
+                                <div className="row">
+                                <div className="col-md-2"></div>
+                                        <div className="col-md-8">
+                                                <h3 className="text-center txt-blue">Watch our introduction video !</h3>
+                                                <div className="amb_learn_video mb-4">
+                                                    <iframe width="100%" height="480" src="https://www.youtube.com/embed/yAoLSRbwxL8"
+                                                        title="Dummy Video" frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                                </div>
+                                        </div>
+                                        <div className="col-md-2"></div>
+                                    </div>
                             </div>
                         </div>
                     </div>

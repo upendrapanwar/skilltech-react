@@ -91,6 +91,8 @@ section#shadow-host-companion {
 .bg-blue {
   background-color: #f3f3f3;
 }
+
+.txt-blue { color: #134573;}
 /* section img { max-width: 100%;} */
 .headingcls {
   text-align: center;

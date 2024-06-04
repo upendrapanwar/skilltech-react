@@ -467,34 +467,6 @@ const Cart = () => {
   /***********************************************************************/
 
 
-const handleMoodleUserData = async () => {
-  const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
-  const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
-  const MOODLE_GET_FUNCTION = 'core_user_update_users';
-
-  try {
-    const response = await axios.post(MOODLE_URL, null, {
-      params: {
-        wstoken: MOODLE_TOKEN,
-        moodlewsrestformat: 'json',
-        wsfunction: MOODLE_GET_FUNCTION,
-        users: [
-          {
-            id: '289',
-            // suspended: 0
-            firstname: 'Testing'
-          },
-        ],
-      },
-    });
-
-    console.log('User data:', response.data);
-  } catch (error) {
-    console.error('Error creating user:', error.response ? error.response.data : error.message);
-  }
-};
-
-
   return (
     <>
       {identifier && (
