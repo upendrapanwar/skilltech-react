@@ -90,6 +90,7 @@ const Dashboard = () => {
         const dataArray = {
           merchantData: merchantDataResult,
           userid: userData.id,
+          email: userData.email,
           payment_status: "success",
           is_recurring: is_recurring,
           is_active: "true",
@@ -342,18 +343,20 @@ const Dashboard = () => {
    */
   const cancelCourseByUser = (orderId) => {
     axios
-        .put("common/cancel-course/" + orderId)
+        .put("common/cancel-course/" + orderId, {userId: userData.id})
         .then((response) => {
             toast.dismiss();
 
             if (response.data && response.data.status) {
                 console.log("Cancel response data:", response.data.data);
-                getMyCourses();
-                // handleMoodleUserSuspension();
+                // getMyCourses();
+                handleMoodleUserSuspension();
                 toast.success("Payment cancelled.", {
                     position: "top-center",
                     autoClose: 3000,
                 });
+                localStorage.clear();
+                navigate('/signup');
             }
         })
         .catch((error) => {
@@ -445,11 +448,19 @@ const Dashboard = () => {
     }
     /***********************************************************************/
     /***********************************************************************/
+    // useEffect(() => {
+    //   if (isProfileLoaded && location.pathname.includes("/success")) {
+    //     handleMoodleCreateUser();
+    //   }
+    // }, [isProfileLoaded]);
     useEffect(() => {
-      if (isProfileLoaded && location.pathname.includes("/success")) {
+      const hasCalledHandleMoodleCreateUser = localStorage.getItem('hasCalledHandleMoodleCreateUser');
+  
+      if (isProfileLoaded && location.pathname.includes("/success") && !hasCalledHandleMoodleCreateUser) {
         handleMoodleCreateUser();
+        localStorage.setItem('hasCalledHandleMoodleCreateUser', 'true');
       }
-    }, [isProfileLoaded]);
+    }, [isProfileLoaded, location.pathname]);
     /***********************************************************************/
     /***********************************************************************/
      /**
@@ -461,8 +472,8 @@ const Dashboard = () => {
         console.error('User profile data is incomplete.');
         return;
       }
-      const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
-      const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
+      const MOODLE_URL = process.env.REACT_APP_MOODLE_COURSES_URL;
+      const MOODLE_TOKEN = process.env.REACT_APP_MOODLE_TOKEN;
       const MOODLE_CREATE_FUNCTION = 'core_user_create_users';
       var moodleLoginId = '';
 
@@ -511,8 +522,10 @@ const Dashboard = () => {
     /***********************************************************************/
 
     const handleMoodleUserSuspension = async () => {
-      const MOODLE_URL = 'https://skilltechsa.online/webservice/rest/server.php';
-      const MOODLE_TOKEN = 'fe95c9babb55eccd43c80162403b1614';
+      getUserDetails();
+      console.log(" userProfileData.moodle_login_id",  userProfileData.moodle_login_id)
+      const MOODLE_URL = process.env.REACT_APP_MOODLE_COURSES_URL;
+      const MOODLE_TOKEN = process.env.REACT_APP_MOODLE_TOKEN;
       const MOODLE_GET_FUNCTION = 'core_user_update_users';
     
       try {
@@ -524,7 +537,7 @@ const Dashboard = () => {
             users: [
               {
                 id: userProfileData.moodle_login_id,
-                suspended: 1 //1 to suspend, 0 to not suspend(active)
+                suspended: 1,    //1 to suspend, 0 to not suspend(active)
                 // firstname: 'Testing'
               },
             ],

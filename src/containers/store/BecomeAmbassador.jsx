@@ -378,8 +378,8 @@ const CoursesDetails = () => {
                             <div className="call-to-action-wrapper text-center">
                                 <h3 className="mb-4">Watch our explainer video where complex ideas become simple, engaging and
                                     captivating.</h3>
-                                <p className="mw-600 mb-4">To become a High Vista Ambassador, select the option
-                                    below</p>
+                                {/* <p className="mw-600 mb-4">To become a High Vista Ambassador, select the option
+                                    below</p> */}
 
                                 <div className="amb_learn_video mb-4">
                                     <iframe width="100%" height="480" src="https://www.youtube.com/embed/yAoLSRbwxL8"

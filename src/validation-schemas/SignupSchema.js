@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const passwordRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+const passwordRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}$/;
 
 export default Yup.object().shape({
     firstname: Yup.string().required("First name is required").max(80, 'First name is too long - should be 80 chars maximum.'),

@@ -26,6 +26,7 @@ const Dashboard = () => {
   let [referralCode, setReferralCode] = useState(false);
   let [referralsThisMonth, setReferralsThisMonth] = useState(false);
   let [paymentDueThisMonth, setPaymentDueThisMonth] = useState([]);
+  const [userProfileData, setUserProfileData] = useState([]);
 
   // ****************************
   const [isLoading, setIsLoading] = useState(false);
@@ -66,6 +67,7 @@ const Dashboard = () => {
     getReferralCode();
     getReferralsThisMonth();
     paymentDueToAmbassador();
+    getUserDetails();
   }, []);
   toast.configure();
 
@@ -250,6 +252,26 @@ const Dashboard = () => {
   /***********************************************************************/
   /***********************************************************************/
   /**
+   * Get User profile details
+   *
+   */
+  const getUserDetails = () => {
+    axios.get('user/get-profile-details/'+ userData.id).then(response => {
+            if (response.data) {
+                if(response.data.status) {
+                  setUserProfileData(response.data.data[0]);
+                    console.log("getUserDetails Response Data: ",response.data.data[0]);
+                }
+            }
+        }).catch(error => {
+            if (error.response) {
+              console.log("getUserDetails eror: ",  error.message);
+            }
+        })
+  };
+  /***********************************************************************/
+  /***********************************************************************/
+  /**
    * Get User courses list
    *
    */
@@ -379,17 +401,20 @@ const Dashboard = () => {
    */
   const cancelCourseByUser = (orderId) => {
     axios
-        .put("common/cancel-course/" + orderId)
+        .put("common/cancel-course/" + orderId, {userId: userData.id})
         .then((response) => {
             toast.dismiss();
 
             if (response.data && response.data.status) {
                 console.log("Cancel response data:", response.data.data);
-                getMyCourses();
+                // getMyCourses();
+                handleMoodleUserSuspension();
                 toast.success("Payment cancelled.", {
                     position: "top-center",
                     autoClose: 3000,
                 });
+                localStorage.clear();
+                navigate('/signup');
             }
         })
         .catch((error) => {
@@ -401,6 +426,7 @@ const Dashboard = () => {
                 });
             }
         });
+        handleMoodleUserSuspension();
 };
 
 const paymentDueToAmbassador = () => {
@@ -419,6 +445,35 @@ const paymentDueToAmbassador = () => {
         console.log(error);
     })
   }
+
+
+  const handleMoodleUserSuspension = async () => {
+    console.log(" userProfileData.moodle_login_id",  userProfileData.moodle_login_id)
+    const MOODLE_URL = process.env.REACT_APP_MOODLE_COURSES_URL;
+    const MOODLE_TOKEN = process.env.REACT_APP_MOODLE_TOKEN;
+    const MOODLE_GET_FUNCTION = 'core_user_update_users';
+  
+    try {
+      const response = await axios.post(MOODLE_URL, null, {
+        params: { 
+          wstoken: MOODLE_TOKEN,
+          moodlewsrestformat: 'json',
+          wsfunction: MOODLE_GET_FUNCTION,
+          users: [
+            {
+              id: userProfileData.moodle_login_id,
+              suspended: 1,    //1 to suspend, 0 to not suspend(active)
+              // firstname: 'Testing'
+            },
+          ],
+        },
+      });
+  
+      console.log('User data:', response.data);
+    } catch (error) {
+      console.error('Error creating user:', error.response ? error.response.data : error.message);
+    }
+  };
 
 
   return (
