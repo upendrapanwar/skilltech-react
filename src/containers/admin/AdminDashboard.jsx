@@ -233,6 +233,7 @@ const AdminDashboard = () => {
     let [userid, setUserid] = useState(authInfo ? authInfo.id : null);
     const navigate = useNavigate();
     const { newNotificationMessage, newNotificationStatus } = useState('');
+    // const [monthlyreport, setMonthlyreport] = useState(false);
     const apiUrl = 'active-subscribed-ambassador';
 
     useEffect(() => {
@@ -242,6 +243,13 @@ const AdminDashboard = () => {
             dispatch(removeNotificationMessage())
         }
         firstRenderReport();
+
+        // const monthly_report = localStorage.getItem('monthlyreport');
+        // console.log("monthly_report", monthly_report)
+        // if (monthly_report === 'true') {
+        //     setMonthlyreport(true);
+        // }
+
     }, []);
     toast.configure();
 
@@ -538,6 +546,35 @@ const AdminDashboard = () => {
         saveAs(blob, `bulk_payment_report_of_ambassador.csv`);
       };
 
+
+    // const getCurrentMonthDates = () => {
+    //     const now = new Date();
+    //     const start = new Date(now.getFullYear(), now.getMonth(), 1); // First date of current month
+    //     const end = new Date(now.getFullYear(), now.getMonth() + 1, 0); // Last date of current month
+    //     console.log("getCurrentMonthDates - start", start.toISOString().slice(0, 10));
+    //     console.log("getCurrentMonthDates - end", end.toISOString().slice(0, 10));
+    //     return {
+    //         start_date: start.toISOString().slice(0, 10),
+    //         end_date: end.toISOString().slice(0, 10)
+    //     };
+    // };
+
+    // const valuecheck = {
+    //     ...getCurrentMonthDates(),
+    //     report_type: null
+    // }
+    // console.log("valuecheck", valuecheck);
+    
+    // const initialValues = monthlyreport ? {
+    //     ...getCurrentMonthDates(),
+    //     report_type: null
+    // } : {
+    //     start_date: '',
+    //     end_date: '',
+    //     report_type: null
+    // };
+    
+
      
 
     return (
@@ -560,6 +597,7 @@ const AdminDashboard = () => {
                             <div className="">
                                 <div className="flex w-[100%] align-center">
                                     <Formik
+                                        // initialValues={initialValues}
                                         initialValues={{
                                             start_date: '',
                                             end_date: '',
@@ -583,18 +621,28 @@ const AdminDashboard = () => {
                                         }}
                                         
                                     >
-                                        {({ resetForm }) => (
+                                        {({ values, resetForm }) => (
                                         <Form className="flex w-[100%] justify-between align-center py-3 rounded-sl bg-base-100 rounded px-2">
 
                                             <div className="flex flex-col">
                                                 <label htmlFor="start_date">Start Date</label>
-                                                <Field name="start_date" type="date" className="input input-bordered w-full max-w-xs" />
+                                                <Field 
+                                                    name="start_date" 
+                                                    type="date" 
+                                                    className="input input-bordered w-full max-w-xs" 
+                                                    // value={values.start_date} 
+                                                />
                                                 <ErrorMessage name="start_date" component="div" className="text-red-500 text-sm" />
                                             </div>
 
                                             <div className="flex flex-col">
                                                 <label htmlFor="end_date">End Date</label>
-                                                <Field name="end_date" type="date" className="input input-bordered w-full max-w-xs" />
+                                                <Field 
+                                                    name="end_date" 
+                                                    type="date" 
+                                                    className="input input-bordered w-full max-w-xs" 
+                                                    // value={values.end_date} 
+                                                />
                                                 <ErrorMessage name="end_date" component="div" className="text-red-500 text-sm" />
                                             </div>
                                             <div className="flex flex-col">

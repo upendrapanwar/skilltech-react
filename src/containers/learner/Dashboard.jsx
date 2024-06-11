@@ -349,7 +349,7 @@ const Dashboard = () => {
 
             if (response.data && response.data.status) {
                 console.log("Cancel response data:", response.data.data);
-                // getMyCourses();
+                getMyCourses();
                 handleMoodleUserSuspension();
                 toast.success("Payment cancelled.", {
                     position: "top-center",

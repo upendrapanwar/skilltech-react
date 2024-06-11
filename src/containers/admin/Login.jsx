@@ -22,6 +22,20 @@ const AdminLogin = () => {
     
     console.log('authInfo=',authInfo);
     useEffect(() => {
+        //When this page is redirected by Merchant monthly report Email 
+        function getQueryParams() {
+            let params = {};
+            let queryString = window.location.search.substring(1);
+            let queries = queryString.split("&");
+            for (let i = 0; i < queries.length; i++) {
+                let temp = queries[i].split("=");
+                params[temp[0]] = decodeURIComponent(temp[1]);
+            }
+            return params;
+        }
+        let params = getQueryParams();
+        localStorage.setItem('monthlyreport', params['monthlyreport']);
+        console.log('monthlyreport stored in local storage:', params['monthlyreport']);
         
     }, []);
     toast.configure();
