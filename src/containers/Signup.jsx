@@ -86,7 +86,7 @@ const Signup = () => {
         }).catch(error => {
             toast.dismiss();
             if (error.response) {
-                const message = "User already Exist!<br>Please login or complete the Subscription Registration Form if not already completed.";
+                const message = "User already Exists!<br>Please login or complete the Subscription Registration Form if not already completed.";
                 toast.error(
                     <div dangerouslySetInnerHTML={{ __html: message }} />,
                     { position: "top-center", autoClose: 3000 }
@@ -105,7 +105,7 @@ const Signup = () => {
     }*/
 
     function onCaptchaChange(value) {
-        console.log("Captcha value:", value);
+        console.log("Captcha value:", value); 
         setIsCaptchaVerified(!!value);
       }
 
